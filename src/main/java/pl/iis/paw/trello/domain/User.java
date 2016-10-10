@@ -7,6 +7,7 @@ import org.hibernate.validator.constraints.Email;
 import javax.persistence.*;
 import javax.persistence.Column;
 
+@Entity
 public class User {
 
     @GeneratedValue
