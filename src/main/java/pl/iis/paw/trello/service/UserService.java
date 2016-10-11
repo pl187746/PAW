@@ -68,16 +68,13 @@ public class UserService {
     }
 
     public User updateUser(Long id, User user) {
-        User existingUser = userRepository.findOne(id);
-        if (existingUser == null) {
-            throw new UserNotFoundException(user.getId());
-        }
+        User existingUser = findUserById(id);
 
         existingUser.setLogin(user.getLogin());
         existingUser.setEmail(user.getEmail());
         existingUser.setPassword(user.getPassword());
 
-        return userRepository.save(user);
+        return userRepository.save(existingUser);
     }
 
     public void deleteUser(User user) {

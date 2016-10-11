@@ -41,6 +41,18 @@ public class CardService {
     	return cardRepository.save(card);
     }
     
+    public Card updateCard(Card card) {
+    	return updateCard(card.getId(), card);
+    }
+    
+    public Card updateCard(Long id, Card card) {
+    	Card existingCard = findCardById(id);
+    	
+    	existingCard.setName(card.getName());
+    	
+    	return cardRepository.save(card);
+    }
+    
     public void deleteCard(Card card) {
     	cardRepository.delete(card);
     }

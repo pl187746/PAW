@@ -41,6 +41,18 @@ public class BoardService {
     	return boardRepository.save(board);
     }
     
+    public Board updateBoard(Board board) {
+    	return updateBoard(board.getId(), board);
+    }
+    
+    public Board updateBoard(Long id, Board board) {
+    	Board existingBoard = findBoardById(id);
+    	
+    	existingBoard.setName(board.getName());
+    	
+    	return boardRepository.save(board);
+    }
+    
     public void deleteBoard(Board board) {
     	boardRepository.delete(board);
     }

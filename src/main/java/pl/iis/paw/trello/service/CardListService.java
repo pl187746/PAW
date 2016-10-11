@@ -41,6 +41,18 @@ public class CardListService {
     	return cardListRepository.save(cardList);
     }
     
+    public CardList updateCardList(CardList cardList) {
+    	return updateCardList(cardList.getId(), cardList);
+    }
+    
+    public CardList updateCardList(Long id, CardList cardList) {
+    	CardList existingCardList = findCardListById(id);
+    	
+    	existingCardList.setName(cardList.getName());
+    	
+    	return cardListRepository.save(cardList);
+    }
+    
     public void deleteCardList(CardList cardList) {
     	cardListRepository.delete(cardList);
     }
