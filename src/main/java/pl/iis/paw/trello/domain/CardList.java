@@ -11,6 +11,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class CardList implements Serializable {
 	
@@ -26,6 +28,7 @@ public class CardList implements Serializable {
 	
 	@ManyToOne(targetEntity = Board.class, optional = false)
 	@JoinColumn(name = "board_id", referencedColumnName = "board_id")
+	@JsonIgnore
 	private Board board;
 	
 	@OneToMany(mappedBy = "cardList", targetEntity = Card.class)

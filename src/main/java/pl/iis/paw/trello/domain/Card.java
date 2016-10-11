@@ -8,6 +8,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Card implements Serializable {
 
@@ -23,6 +25,7 @@ public class Card implements Serializable {
 	
 	@ManyToOne
 	@JoinColumn(name = "list_id", referencedColumnName = "list_id")
+	@JsonIgnore
 	private CardList cardList;
 	
 	public Card() { }
