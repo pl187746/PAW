@@ -27,9 +27,8 @@ public class Card implements Serializable {
 	
 	public Card() { }
 
-	public Card(Long id, String name, CardList cardList) {
+	public Card(String name, CardList cardList) {
 		super();
-		this.id = id;
 		this.name = name;
 		this.cardList = cardList;
 	}

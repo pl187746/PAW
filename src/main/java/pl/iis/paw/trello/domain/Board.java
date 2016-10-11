@@ -27,9 +27,8 @@ public class Board implements Serializable {
 	
 	public Board() { }
 
-	public Board(Long id, String name, List<CardList> lists) {
+	public Board(String name, List<CardList> lists) {
 		super();
-		this.id = id;
 		this.name = name;
 		this.lists = lists;
 	}

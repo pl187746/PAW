@@ -33,9 +33,8 @@ public class CardList implements Serializable {
 	
 	public CardList() { }
 
-	public CardList(Long id, String name, Board board, List<Card> cards) {
+	public CardList(String name, Board board, List<Card> cards) {
 		super();
-		this.id = id;
 		this.name = name;
 		this.board = board;
 		this.cards = cards;
