@@ -8,6 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
 import pl.iis.paw.trello.domain.Board;
+import pl.iis.paw.trello.domain.CardList;
 import pl.iis.paw.trello.domain.User;
 import pl.iis.paw.trello.repository.BoardRepository;
 import pl.iis.paw.trello.repository.CardListRepository;
@@ -32,11 +33,19 @@ public class TrelloApplication {
 	}
 	
 	@Bean
-	public CommandLineRunner demoBoards(BoardRepository boardRepository) {
+	public CommandLineRunner demoBoardsLists(BoardRepository boardRepository, CardListRepository cardListRepository) {
 		return (args) -> {
-			boardRepository.save(new Board("Tabliczka 1", null));
-			boardRepository.save(new Board("Tabliczka 2", null));
-			boardRepository.save(new Board("Tabliczka 3", null));
+			Board board1 = boardRepository.save(new Board("Tabliczka 1", new ArrayList<>()));
+			board1.getLists().add(new CardList("Lista 1/1", board1, new ArrayList<>()));
+			board1.getLists().add(new CardList("Lista 1/2", board1, new ArrayList<>()));
+			board1.getLists().add(new CardList("Lista 1/3", board1, new ArrayList<>()));
+			cardListRepository.save(board1.getLists());
+			board1 = boardRepository.save(board1);
+			Board board2 = boardRepository.save(new Board("Tabliczka 2", new ArrayList<>()));
+			board2.getLists().add(new CardList("Lista 2/1", board2, new ArrayList<>()));
+			cardListRepository.save(board2.getLists());
+			board2 = boardRepository.save(board2);
+			boardRepository.save(new Board("Tabliczka 3", new ArrayList<>()));
 		};
 	}
 	
