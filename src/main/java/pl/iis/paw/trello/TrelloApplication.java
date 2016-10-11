@@ -8,6 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
 import pl.iis.paw.trello.domain.Board;
+import pl.iis.paw.trello.domain.Card;
 import pl.iis.paw.trello.domain.CardList;
 import pl.iis.paw.trello.domain.User;
 import pl.iis.paw.trello.repository.BoardRepository;
@@ -33,19 +34,18 @@ public class TrelloApplication {
 	}
 	
 	@Bean
-	public CommandLineRunner demoBoardsLists(BoardRepository boardRepository, CardListRepository cardListRepository) {
+	public CommandLineRunner demoBoardsListsCards(BoardRepository boardRepository, CardListRepository cardListRepository, CardRepository cardRepository) {
 		return (args) -> {
-			Board board1 = boardRepository.save(new Board("Tabliczka 1", new ArrayList<>()));
-			board1.getLists().add(new CardList("Lista 1/1", board1, new ArrayList<>()));
-			board1.getLists().add(new CardList("Lista 1/2", board1, new ArrayList<>()));
-			board1.getLists().add(new CardList("Lista 1/3", board1, new ArrayList<>()));
-			cardListRepository.save(board1.getLists());
-			board1 = boardRepository.save(board1);
-			Board board2 = boardRepository.save(new Board("Tabliczka 2", new ArrayList<>()));
-			board2.getLists().add(new CardList("Lista 2/1", board2, new ArrayList<>()));
-			cardListRepository.save(board2.getLists());
-			board2 = boardRepository.save(board2);
+			Board board1 = boardRepository.save(new Board("Tabliczka 1", null));
+			Board board2 = boardRepository.save(new Board("Tabliczka 2", null));
 			boardRepository.save(new Board("Tabliczka 3", new ArrayList<>()));
+			CardList list11 = cardListRepository.save(new CardList("Lista 1/1", board1, null));
+			cardListRepository.save(new CardList("Lista 1/2", board1, null));
+			cardListRepository.save(new CardList("Lista 1/3", board1, null));
+			CardList list21 = cardListRepository.save(new CardList("Lista 2/1", board2, null));
+			cardRepository.save(new Card("Karta 1/1/1", list11));
+			cardRepository.save(new Card("Karta 1/1/2", list11));
+			cardRepository.save(new Card("Karta 2/1/1", list21));
 		};
 	}
 	
