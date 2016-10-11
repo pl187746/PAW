@@ -1,8 +1,10 @@
 package pl.iis.paw.trello.exception;
 
-public class UserNotFoundException extends RuntimeException {
+public class UserNotFoundException extends NotFoundException {
 
-    public UserNotFoundException(String message) {
+	private static final long serialVersionUID = -5131500150931084053L;
+
+	public UserNotFoundException(String message) {
         super(message);
     }
 
