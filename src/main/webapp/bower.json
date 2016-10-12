@@ -1,0 +1,10 @@
+{
+  "name": "client",
+  "homepage": "https://github.com/pl187746/PAW",
+  "dependencies": {
+    "angular": "^1.5.8",
+    "angular-resource": "^1.5.8",
+    "bootstrap": "^3.3.7",
+    "font-awesome": "^4.6.3"
+  }
+}

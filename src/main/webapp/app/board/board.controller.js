@@ -1,8 +1,5 @@
-/**
- * Created by Krystian on 2016-10-11.
- */
 var app = angular.module('app', []);
-app.controller('mainController', function ($scope) {
+app.controller('BoardController', function ($scope) {
 
     $scope.tab = 1;
 
