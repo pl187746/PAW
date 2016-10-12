@@ -8,7 +8,7 @@
     Board.$inject = ['$resource'];
 
     function Board ($resource) {
-        var service = $resource('/boards/', {}, {
+        var service = $resource('/boards/:id', {}, {
             'query': {method: 'GET', isArray: true},
             'get': {
                 method: 'GET',

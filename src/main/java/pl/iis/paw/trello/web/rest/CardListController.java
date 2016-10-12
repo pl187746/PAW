@@ -19,7 +19,7 @@ import pl.iis.paw.trello.service.CardListService;
 
 @RestController
 public class CardListController {
-	
+
 	private CardListService cardListService;
 	
 	@Autowired

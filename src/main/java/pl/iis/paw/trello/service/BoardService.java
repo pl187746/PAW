@@ -50,7 +50,7 @@ public class BoardService {
     	
     	existingBoard.setName(board.getName());
     	
-    	return boardRepository.save(board);
+    	return boardRepository.save(existingBoard);
     }
     
     public void deleteBoard(Board board) {
