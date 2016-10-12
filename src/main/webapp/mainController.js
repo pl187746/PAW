@@ -17,4 +17,14 @@ app.controller('mainController', function ($scope) {
     $scope.addList = function () {
 
     }
+	
+	$scope.boards = [];
+	
+	$.getJSON("/boards", function(brds) {
+		$scope.boards = brds;
+		$scope.$apply();
+	});
+	
 });
+
+
