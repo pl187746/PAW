@@ -6,7 +6,6 @@
     <title>Title</title>
 
     <link href="assets/bootstrap/dist/css/bootstrap.css" rel="stylesheet" type="text/css">
-    <link href="assets/css/util.css" rel="stylesheet" type="text/css">
 
     <script src="assets/jquery/dist/jquery.js"></script>
     <script src="assets/angular/angular.js"></script>
@@ -16,9 +15,10 @@
     <script src="app/app.module.js"></script>
 
     <script src="app/board/board.controller.js"></script>
+    <script src="app/board/board.service.js"></script>
 </head>
 <body>
-    <div class="container-fluid" ng-app="trello" ng-controller="BoardController">
+    <div class="container-fluid" ng-app="trello" ng-controller="BoardsController">
         <ul class="nav nav-tabs" id="boardList">
             <li ng-repeat="board in boards" ng-class="{ active: isSet(board.id) }">
                 <a href ng-click="setTab(board.id)">{{board.name}}</a>

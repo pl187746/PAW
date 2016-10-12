@@ -1,27 +1,46 @@
-var app = angular.module('app', []);
-app.controller('BoardController', function ($scope) {
+(function() {
+    'use strict';
 
-    $scope.tab = 1;
+    angular
+        .module('trello')
+        .controller('BoardsController', BoardsController);
 
-    $scope.setTab = function (newTab) {
-        $scope.tab = newTab;
-    };
+    BoardsController.$inject = ['$rootScope', '$scope', 'Board'];
 
-    $scope.isSet = function (tabNum) {
-        return $scope.tab === tabNum;
-    };
+    function BoardsController ($rootScope, $scope, Board) {
+        $scope.setTab = setTab;
+        $scope.isSet = isSet;
+        $scope.addList = addList;
+        $scope.getBoards = loadAll;
 
-    $scope.addList = function () {
+        $scope.tab = 1;
+        $scope.boards = [];
 
+        loadAll();
+
+        function setTab(newTab) {
+            $scope.tab = newTab;
+        };
+
+        function isSet(tabNum) {
+            return $scope.tab === tabNum;
+        };
+
+        function addList () {
+            // TODO implement
+        };
+
+        function loadAll() {
+            Board.query(onSuccess, onError);
+            
+            function onSuccess(data) {
+                $scope.boards = data;
+            }
+            
+            function onError() {
+                console.log('Error while loading boards');
+            }
+        };
     }
-	
-	$scope.boards = [];
-	
-	$.getJSON("/boards", function(brds) {
-		$scope.boards = brds;
-		$scope.$apply();
-	});
-	
-});
-
+})();
 
