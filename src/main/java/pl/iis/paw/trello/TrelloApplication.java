@@ -41,10 +41,14 @@ public class TrelloApplication {
 			boardRepository.save(new Board("Tabliczka 3", new ArrayList<>()));
 			CardList list11 = cardListRepository.save(new CardList("Lista 1/1", board1, null));
 			cardListRepository.save(new CardList("Lista 1/2", board1, null));
-			cardListRepository.save(new CardList("Lista 1/3", board1, null));
+			CardList list13 = cardListRepository.save(new CardList("Lista 1/3", board1, null));
 			CardList list21 = cardListRepository.save(new CardList("Lista 2/1", board2, null));
 			cardRepository.save(new Card("Karta 1/1/1", list11));
 			cardRepository.save(new Card("Karta 1/1/2", list11));
+			cardRepository.save(new Card("Karta 1/3/1", list13));
+			cardRepository.save(new Card("Karta 1/3/2", list13));
+			cardRepository.save(new Card("Karta 1/3/3", list13));
+			cardRepository.save(new Card("Karta 1/3/4", list13));
 			cardRepository.save(new Card("Karta 2/1/1", list21));
 		};
 	}
