@@ -50,7 +50,7 @@ public class CardListService {
     	
     	existingCardList.setName(cardList.getName());
     	
-    	return cardListRepository.save(cardList);
+    	return cardListRepository.save(existingCardList);
     }
     
     public void deleteCardList(CardList cardList) {
