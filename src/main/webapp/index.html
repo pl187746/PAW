@@ -15,10 +15,10 @@
     <script src="assets/bootstrap/dist/js/bootstrap.js"></script>
 
     <script src="app/app.module.js"></script>
-
     <script src="app/services/card.service.js"></script>
     <script src="app/services/list.service.js"></script>
     <script src="app/services/board.service.js"></script>
+    <script src="app/services/user.service.js"></script>
     <script src="app/board/board.controller.js"></script>
 </head>
 <body>
@@ -26,6 +26,16 @@
         <ul class="nav nav-tabs" id="boardList">
             <li ng-repeat="board in boards" ng-class="{ active: isSet(board.id) }">
                 <a href ng-click="setTab(board.id)">{{board.name}}</a>
+            </li>
+            <li class="dropdown" style="margin-left: 400px;">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                    <i ng-show="user">{{user.login}}</i>
+                    <i ng-show="!user">Guest</i>
+                <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                    <li ng-show="!user"><a ng-click="logIn()" href="">Log in</a></li>
+                    <li ng-show="user"><a ng-click="logOut()" href="">Log out</a></li>
+                </ul>
             </li>
         </ul>
 

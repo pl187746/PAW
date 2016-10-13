@@ -5,12 +5,13 @@
         .module('trello')
         .controller('BoardsController', BoardsController);
 
-    BoardsController.$inject = ['$rootScope', '$scope', 'Board', 'Card', 'List'];
+    BoardsController.$inject = ['$rootScope', '$scope', 'Board', 'Card', 'List', 'User'];
 
-    function BoardsController ($rootScope, $scope, Board, Card, List) {
+    function BoardsController ($rootScope, $scope, Board, Card, List, User) {
         $scope.setTab = setTab;
         $scope.isSet = isSet;
-        $scope.addList = addList;
+
+        // Boards
         $scope.getBoards = loadAll;
 
         // Cards
@@ -18,8 +19,17 @@
         $scope.removeCard = removeCard;
         $scope.addCard = addCard;
 
+        // Cards List
         $scope.removeList = removeList;
         $scope.updateList = updateList;
+        $scope.addList = addList;
+
+        // User
+        $scope.user = {
+            login : "admin"
+        };
+        $scope.logIn = logIn;
+        $scope.logOut = logOut;
 
         $scope.tab = 1;
         $scope.boards = [];
@@ -156,6 +166,25 @@
         function getLists(boardIndex) {
             var board = getBoard(boardIndex);
             return board.lists;
+        }
+
+        function logIn() {
+            User.get({id : "1"}, onSuccess, onError);
+
+            function onSuccess(data) {
+                console.log('User ' + data.login + ' logged in');
+                $scope.user = data;
+                localStorage.setItem('user', data);
+            }
+
+            function onError() {
+                console.log('Error while loading user');
+            }
+        }
+
+        function logOut() {
+            $scope.user = null;
+            localStorage.removeItem('user');
         }
     }
 })();
