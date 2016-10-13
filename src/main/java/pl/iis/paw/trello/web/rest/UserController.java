@@ -25,6 +25,11 @@ public class UserController {
     public ResponseEntity<?> getUsers(Pageable pageable) {
         return ResponseEntity.ok(userService.getUsers(pageable));
     }
+    
+    @RequestMapping(value = "/users/me", method = RequestMethod.GET)
+    public ResponseEntity<?> getCurrentUser() {
+        return getUser(1L);
+    }
 
     @RequestMapping(value = "/users/{id}", method = RequestMethod.GET)
     public ResponseEntity<?> getUser(@PathVariable(value = "id") Long userId) {
