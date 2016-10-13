@@ -34,10 +34,6 @@
             return $scope.tab === tabNum;
         }
 
-        function addList () {
-            // TODO implement
-        }
-
         function loadAll() {
             Board.query(onSuccess, onError);
             
@@ -77,6 +73,22 @@
 
             function onError() {
                 console.log('Error while updating list with index ' + list.id);
+            }
+        }
+
+        function addList(boardIndex) {
+            var lists = getLists(boardIndex);
+            var boardId = getBoard(boardIndex).id;
+
+            List.save( {boardId : boardId, name : ''}, onSuccess, onError);
+
+            function onSuccess(response) {
+                console.log('Added new list to board with index ' + boardIndex);
+                lists.push(response);
+            }
+
+            function onError() {
+                console.log('Error while adding list')
             }
         }
 

@@ -6,6 +6,7 @@ import java.util.List;
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
 public class CardList implements Serializable {
@@ -69,4 +70,9 @@ public class CardList implements Serializable {
 		this.cards = cards;
 	}
 
+	@JsonProperty(value = "boardId")
+	public void setBoardId(Long boardId) {
+		this.board = new Board();
+		this.board.setId(boardId);
+	}
 }

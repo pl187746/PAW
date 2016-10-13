@@ -24,7 +24,7 @@ import pl.iis.paw.trello.service.CardService;
 @RestController
 public class CardController {
 
-    private Logger log = LoggerFactory.getLogger(this.getClass());
+    private final Logger log = LoggerFactory.getLogger(this.getClass());
 	
 	private CardService cardService;
 

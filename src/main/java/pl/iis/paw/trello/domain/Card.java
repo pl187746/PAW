@@ -59,6 +59,6 @@ public class Card implements Serializable {
 	@JsonProperty(value = "listId")
 	public void setListId(Long listId) {
 		this.cardList = new CardList();
-		cardList.setId(listId);
+		this.cardList.setId(listId);
 	}
 }
