@@ -3,13 +3,7 @@ package pl.iis.paw.trello.domain;
 import java.io.Serializable;
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -31,7 +25,7 @@ public class CardList implements Serializable {
 	@JsonIgnore
 	private Board board;
 	
-	@OneToMany(mappedBy = "cardList", targetEntity = Card.class)
+	@OneToMany(mappedBy = "cardList", targetEntity = Card.class, cascade = CascadeType.REMOVE)
 	private List<Card> cards;
 	
 	public CardList() { }

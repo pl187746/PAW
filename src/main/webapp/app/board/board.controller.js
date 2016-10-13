@@ -5,9 +5,9 @@
         .module('trello')
         .controller('BoardsController', BoardsController);
 
-    BoardsController.$inject = ['$rootScope', '$scope', 'Board', 'Card'];
+    BoardsController.$inject = ['$rootScope', '$scope', 'Board', 'Card', 'List'];
 
-    function BoardsController ($rootScope, $scope, Board, Card) {
+    function BoardsController ($rootScope, $scope, Board, Card, List) {
         $scope.setTab = setTab;
         $scope.isSet = isSet;
         $scope.addList = addList;
@@ -17,6 +17,9 @@
         $scope.updateCard = updateCard;
         $scope.removeCard = removeCard;
         $scope.addCard = addCard;
+
+        $scope.removeList = removeList;
+        $scope.updateList = updateList;
 
         $scope.tab = 1;
         $scope.boards = [];
@@ -48,8 +51,37 @@
             }
         }
 
+        function removeList(list, boardIndex, listIndex) {
+            console.log('Remove list request for boardIndex: ' + boardIndex + ", listIndex: " + listIndex);
+            var lists = getLists(boardIndex);
+
+            List.delete({id: list.id}, onSuccess, onError);
+
+            function onSuccess() {
+                console.log('Deleted list with index ' + list.id);
+                lists.splice(listIndex, 1);
+            }
+
+            function onError() {
+                console.log('Error while removing list');
+            }
+        }
+
+        function updateList(list, boardIndex, listIndex) {
+            console.log('Update list request for boardIndex: ' + boardIndex + ", listIndex: " + listIndex);
+            List.update(list, onSuccess, onError);
+
+            function onSuccess() {
+                console.log('Updated list with index ' + list.id);
+            }
+
+            function onError() {
+                console.log('Error while updating list with index ' + list.id);
+            }
+        }
+
         function updateCard(card, boardIndex, listIndex, cardIndex) {
-            console.log('Change card request for boardIndex: ' + boardIndex +
+            console.log('Update card request for boardIndex: ' + boardIndex +
                 ", listIndex: " + listIndex + ", cardIndex: " + cardIndex);
             Card.update(card, onSuccess, onError);
 
@@ -107,6 +139,11 @@
 
         function getBoard(boardIndex) {
             return $scope.boards[boardIndex];
+        }
+
+        function getLists(boardIndex) {
+            var board = getBoard(boardIndex);
+            return board.lists;
         }
     }
 })();
