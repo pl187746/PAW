@@ -1,3 +1,6 @@
+/src/main/webapp/assets/*
+!/src/main/webapp/assets/css/
+
 
 # Created by https://www.gitignore.io/api/eclipse maven,eclipse,maven,bower
 
