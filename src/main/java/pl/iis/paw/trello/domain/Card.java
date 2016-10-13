@@ -9,6 +9,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
 public class Card implements Serializable {
@@ -58,5 +59,11 @@ public class Card implements Serializable {
 
 	public void setCardList(CardList cardList) {
 		this.cardList = cardList;
+	}
+
+	@JsonProperty(value = "listId")
+	public void setListId(Long listId) {
+		this.cardList = new CardList();
+		cardList.setId(listId);
 	}
 }

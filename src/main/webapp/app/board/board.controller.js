@@ -16,6 +16,7 @@
         // Cards
         $scope.updateCard = updateCard;
         $scope.removeCard = removeCard;
+        $scope.addCard = addCard;
 
         $scope.tab = 1;
         $scope.boards = [];
@@ -78,9 +79,34 @@
             }
         }
 
+        function addCard(boardIndex, listIndex) {
+            var cards = getCards(boardIndex, listIndex);
+            var listId = getList(boardIndex, listIndex).id;
+
+            Card.save( {listId : listId, name : ''}, onSuccess, onError);
+
+            function onSuccess(response) {
+                console.log('Added new card to board with index ' + boardIndex + ' and list with index ' + listIndex);
+                cards.push(response);
+            }
+
+            function onError() {
+                console.log('Error while adding card')
+            }
+        }
+
         function getCards(boardIndex, listIndex) {
-            var board = $scope.boards[boardIndex];
-            return board.lists[listIndex].cards;
+            var list = getList(boardIndex, listIndex);
+            return list.cards;
+        }
+
+        function getList(boardIndex, listIndex) {
+            var board = getBoard(boardIndex);
+            return board.lists[listIndex];
+        }
+
+        function getBoard(boardIndex) {
+            return $scope.boards[boardIndex];
         }
     }
 })();

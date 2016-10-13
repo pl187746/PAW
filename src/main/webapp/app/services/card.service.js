@@ -3,11 +3,11 @@
 
     angular
         .module('trello')
-        .factory('Card', Board);
+        .factory('Card', Card);
 
-    Board.$inject = ['$resource'];
+    Card.$inject = ['$resource'];
 
-    function Board ($resource) {
+    function Card ($resource) {
         var service = $resource('/cards/:id', {}, {
             'query': {method: 'GET', isArray: true},
             'get': {

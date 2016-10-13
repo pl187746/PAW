@@ -29,22 +29,27 @@
         </ul>
 
         <div ng-repeat="board in boards" ng-init="boardIndex = $index" ng-show="isSet(board.id)">
-            <div class="row">
-                <div ng-repeat="list in board.lists" ng-init="listIndex = $index" class="panel panel-default col-sm-2">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">{{list.name}}</h3>
+            <div class="row board">
+                <div ng-repeat="list in board.lists" ng-init="listIndex = $index" class="col-sm-2 card-list">
+                    <div class="card-list-heading">
+                        <h3 class="card-list-title">{{list.name}}</h3>
                     </div>
-                    <div class="panel-body">
+                    <div class="card-list-body">
                         <div ng-repeat="card in list.cards" ng-init="cardIndex = $index" class="list-group">
                                 <a ng-show="!input" ng-click="input = true" href="#" class="card">{{card.name}}</a>
                                 <input ng-show="input" type="text" ng-model="card.name" value="card.name" class="card card-editable">
 
                             <span class="center-block text-center">
                                 <button ng-show="input" ng-click="updateCard(card, boardIndex); input = false"
-                                        class="btn btn-success card-button"><i class="fa fa-check" aria-hidden="true"></i></button>
+                                        class="btn btn-success card-button-manage"><i class="fa fa-check" aria-hidden="true"></i></button>
                                 <button ng-show="input" ng-click="removeCard(card, boardIndex, listIndex, cardIndex); input = false"
-                                        class="btn btn-danger card-button"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                                        class="btn btn-danger card-button-manage"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
                             </span>
+                        </div>
+
+                        <div class="center-block text-center">
+                            <button class="btn btn-success card-button-add" ng-click="addCard(boardIndex, listIndex)">
+                                <i class="fa fa-plus" aria-hidden="true"></i></button>
                         </div>
                     </div>
                 </div>

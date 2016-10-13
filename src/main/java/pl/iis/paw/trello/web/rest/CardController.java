@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import pl.iis.paw.trello.domain.Card;
+import pl.iis.paw.trello.domain.CardList;
+import pl.iis.paw.trello.service.CardListService;
 import pl.iis.paw.trello.service.CardService;
 
 @RestController
@@ -25,10 +27,13 @@ public class CardController {
     private Logger log = LoggerFactory.getLogger(this.getClass());
 	
 	private CardService cardService;
+
+    private CardListService cardListService;
 	
 	@Autowired
-    public CardController(CardService cardService) {
+    public CardController(CardService cardService, CardListService cardListService) {
         this.cardService = cardService;
+        this.cardListService = cardListService;
     }
 	
 	@RequestMapping(value = "/cards", method = RequestMethod.GET)
@@ -44,6 +49,10 @@ public class CardController {
     @RequestMapping(value = "/cards", method = RequestMethod.POST)
     public ResponseEntity<?> createCard(@Valid @RequestBody Card card) throws URISyntaxException {
         log.info("Creating card with name" + card.getName());
+
+        CardList cardList = cardListService.findCardListById(card.getCardList().getId());
+        card.setCardList(cardList);
+
         return ResponseEntity
             .created(new URI("/cards/" + card.getId()))
             .body(cardService.addCard(card));
