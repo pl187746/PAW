@@ -19,9 +19,15 @@ app.controller('mainController', function ($scope) {
     }
 	
 	$scope.boards = [];
+	$scope.user = {};
 	
 	$.getJSON("/boards", function(brds) {
 		$scope.boards = brds;
+		$scope.$apply();
+	});
+	
+	$.getJSON("/users/me", function(usr) {
+		$scope.user = usr;
 		$scope.$apply();
 	});
 	

@@ -17,11 +17,11 @@
 </head>
 <body>
 <div class="container-fluid" ng-app="app" ng-controller="mainController">
+	<div style="float: right;">{{user.login}}</div>
     <ul class="nav nav-tabs" id="boardList">
         <li ng-repeat="board in boards" ng-class="{ active: isSet(board.id) }">
             <a href ng-click="setTab(board.id)">{{board.name}}</a>
         </li>
-        
     </ul>
     <div ng-repeat="board in boards" ng-show="isSet(board.id)">
         <div class="row">
