@@ -3,17 +3,11 @@
 
     angular
         .module('trello')
-        .controller('BoardsController', BoardsController);
+        .controller('BoardController', BoardController);
 
-    BoardsController.$inject = ['$rootScope', '$scope', 'Board', 'Card', 'List', 'User'];
+    BoardController.$inject = ['$rootScope', '$scope', '$stateParams', 'Board', 'Card', 'List', 'User'];
 
-    function BoardsController ($rootScope, $scope, Board, Card, List, User) {
-        $scope.setTab = setTab;
-        $scope.isSet = isSet;
-
-        // Boards
-        $scope.getBoards = loadAll;
-
+    function BoardController ($rootScope, $scope, $stateParams, Board, Card, List, User) {
         // Cards
         $scope.updateCard = updateCard;
         $scope.removeCard = removeCard;
@@ -24,42 +18,32 @@
         $scope.updateList = updateList;
         $scope.addList = addList;
 
-        // User
-        $scope.user = {
-            login : "admin"
-        };
-        $scope.logIn = logIn;
-        $scope.logOut = logOut;
+        $scope.board = null;
+        $scope.user = null;
 
-        $scope.tab = 1;
-        $scope.boards = [];
+        loadBoard($stateParams.id);
 
-        loadAll();
+        function loadBoard(id) {
+            Board.get({"id" : id}, onSuccess, onError);
 
-        function setTab(newTab) {
-            $scope.tab = newTab;
-        }
-
-        function isSet(tabNum) {
-            return $scope.tab === tabNum;
-        }
-
-        function loadAll() {
-            Board.query(onSuccess, onError);
-            
             function onSuccess(data) {
-                console.log('Loaded boards of size: ' + data.length)
-                $scope.boards = data;
+                $scope.board = data;
+                console.log('Loaded board of of name: ' + $scope.board.name)
             }
-            
-            function onError() {
-                console.log('Error while loading boards');
+
+            function onError(response) {
+                console.log('Error while loading board');
+
+                var boardId = $stateParams.id;
+                if (response.status === 404 || response.status === 400) {
+                    $scope.error = 'Invalid board id : ' + boardId;
+                    console.log($scope.error);
+                }
             }
         }
 
-        function removeList(list, boardIndex, listIndex) {
-            console.log('Remove list request for boardIndex: ' + boardIndex + ", listIndex: " + listIndex);
-            var lists = getLists(boardIndex);
+        function removeList(list, listIndex) {
+            var lists = getLists();
 
             List.delete({id: list.id}, onSuccess, onError);
 
@@ -73,8 +57,8 @@
             }
         }
 
-        function updateList(list, boardIndex, listIndex) {
-            console.log('Update list request for boardIndex: ' + boardIndex + ", listIndex: " + listIndex);
+        function updateList(list, listIndex) {
+            console.log('Update list request for listIndex: " + listIndex');
             List.update(list, onSuccess, onError);
 
             function onSuccess() {
@@ -86,14 +70,13 @@
             }
         }
 
-        function addList(boardIndex) {
-            var lists = getLists(boardIndex);
-            var boardId = getBoard(boardIndex).id;
+        function addList() {
+            var lists = getLists();
 
-            List.save( {boardId : boardId, name : ''}, onSuccess, onError);
+            List.save( {boardId : $scope.board.id, name : ''}, onSuccess, onError);
 
             function onSuccess(response) {
-                console.log('Added new list to board with index ' + boardIndex);
+                console.log('Added new list to board with id ' + $scope.board.id);
                 lists.push(response);
             }
 
@@ -102,9 +85,8 @@
             }
         }
 
-        function updateCard(card, boardIndex, listIndex, cardIndex) {
-            console.log('Update card request for boardIndex: ' + boardIndex +
-                ", listIndex: " + listIndex + ", cardIndex: " + cardIndex);
+        function updateCard(card, listIndex, cardIndex) {
+            console.log('Update card request for listIndex: ' + listIndex + ", cardIndex: " + cardIndex);
             Card.update(card, onSuccess, onError);
 
             function onSuccess() {
@@ -116,10 +98,9 @@
             }
         }
 
-        function removeCard(card, boardIndex, listIndex, cardIndex) {
-            console.log('Remove card request for boardIndex: ' + boardIndex +
-                ", listIndex: " + listIndex + ", cardIndex: " + cardIndex);
-            var cards = getCards(boardIndex, listIndex);
+        function removeCard(card, listIndex, cardIndex) {
+            console.log("Remove card request for listIndex: " + listIndex + ", cardIndex: " + cardIndex);
+            var cards = getCards(listIndex);
             cards.splice(cardIndex, 1);
 
             Card.delete({id: card.id}, onSuccess, onError);
@@ -133,14 +114,14 @@
             }
         }
 
-        function addCard(boardIndex, listIndex) {
-            var cards = getCards(boardIndex, listIndex);
-            var listId = getList(boardIndex, listIndex).id;
+        function addCard(listIndex) {
+            var cards = getCards(listIndex);
+            var listId = getList(listIndex).id;
 
             Card.save( {listId : listId, name : ''}, onSuccess, onError);
 
             function onSuccess(response) {
-                console.log('Added new card to board with index ' + boardIndex + ' and list with index ' + listIndex);
+                console.log('Added new card to list with index ' + listIndex);
                 cards.push(response);
             }
 
@@ -149,42 +130,17 @@
             }
         }
 
-        function getCards(boardIndex, listIndex) {
-            var list = getList(boardIndex, listIndex);
+        function getCards(listIndex) {
+            var list = getList(listIndex);
             return list.cards;
         }
 
-        function getList(boardIndex, listIndex) {
-            var board = getBoard(boardIndex);
-            return board.lists[listIndex];
+        function getList(listIndex) {
+            return $scope.board.lists[listIndex];
         }
 
-        function getBoard(boardIndex) {
-            return $scope.boards[boardIndex];
-        }
-
-        function getLists(boardIndex) {
-            var board = getBoard(boardIndex);
-            return board.lists;
-        }
-
-        function logIn() {
-            User.get({id : "1"}, onSuccess, onError);
-
-            function onSuccess(data) {
-                console.log('User ' + data.login + ' logged in');
-                $scope.user = data;
-                localStorage.setItem('user', data);
-            }
-
-            function onError() {
-                console.log('Error while loading user');
-            }
-        }
-
-        function logOut() {
-            $scope.user = null;
-            localStorage.removeItem('user');
+        function getLists() {
+            return $scope.board.lists;
         }
     }
 })();

@@ -5,84 +5,44 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Title</title>
 
+    <!-- CSS -->
     <link href="assets/bootstrap/dist/css/bootstrap.css" rel="stylesheet" type="text/css">
     <link href="assets/css/main.css" rel="stylesheet" type="text/css">
     <link href="assets/font-awesome/css/font-awesome.css" rel="stylesheet" type="text/css">
 
+    <!-- Libraries -->
     <script src="assets/jquery/dist/jquery.js"></script>
     <script src="assets/angular/angular.js"></script>
     <script src="assets/angular-resource/angular-resource.js"></script>
+    <script src="assets/angular-ui-router/release/angular-ui-router.js"></script>
     <script src="assets/bootstrap/dist/js/bootstrap.js"></script>
 
     <script src="app/app.module.js"></script>
-    <script src="app/services/card.service.js"></script>
-    <script src="app/services/list.service.js"></script>
-    <script src="app/services/board.service.js"></script>
-    <script src="app/services/user.service.js"></script>
+
+    <!-- Board -->
+    <script src="app/board/card.service.js"></script>
+    <script src="app/board/list.service.js"></script>
+    <script src="app/board/board.service.js"></script>
     <script src="app/board/board.controller.js"></script>
+    <script src="app/board/board.state.js"></script>
+
+    <!-- Navbar -->
+    <script src="app/navbar/navbar.controller.js"></script>
+
+    <!-- Home -->
+    <script src="app/home/home.state.js"></script>
+
+    <!-- User -->
+    <script src="app/user/user.service.js"></script>
+
+    <!-- Config -->
+    <script src="app/app.state.js"></script>
+    <script src="app/config/state.handler.js"></script>
 </head>
-<body>
-    <div class="container-fluid" ng-app="trello" ng-controller="BoardsController">
-        <ul class="nav nav-tabs" id="boardList">
-            <li ng-repeat="board in boards" ng-class="{ active: isSet(board.id) }">
-                <a href ng-click="setTab(board.id)">{{board.name}}</a>
-            </li>
-            <li class="dropdown" style="margin-left: 400px;">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                    <i ng-show="user">{{user.login}}</i>
-                    <i ng-show="!user">Guest</i>
-                <span class="caret"></span></a>
-                <ul class="dropdown-menu">
-                    <li ng-show="!user"><a ng-click="logIn()" href="">Log in</a></li>
-                    <li ng-show="user"><a ng-click="logOut()" href="">Log out</a></li>
-                </ul>
-            </li>
-        </ul>
 
-        <div ng-repeat="board in boards" ng-init="boardIndex = $index" ng-show="isSet(board.id)">
-            <div class="row board">
-                <div ng-repeat="list in board.lists" ng-init="listIndex = $index" class="col-sm-2 card-list">
-                    <div class="card-list-heading">
+<body ng-app="trello" ng-strict-di>
+    <div ui-view="navbar"></div>
 
-                        <a ng-show="!listInput" ng-click="listInput = true" href="#" class="list"><h3 class="card-list-title">{{list.name}}</h3></a>
-                        <input ng-show="listInput" type="text" ng-model="list.name" value="list.name" class="list list-editable">
-
-                        <span class="center-block text-center">
-                            <button ng-show="listInput" ng-click="updateList(list, boardIndex, listIndex); listInput = false"
-                                    class="btn btn-success card-button-manage"><i class="fa fa-check" aria-hidden="true"></i></button>
-                            <button ng-show="listInput" ng-click="removeList(list, boardIndex, listIndex); listInput = false"
-                                    class="btn btn-danger card-button-manage"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
-                        </span>
-                    </div>
-                    <div class="card-list-body">
-                        <div ng-repeat="card in list.cards" ng-init="cardIndex = $index" class="list-group">
-                            <a ng-show="!cardInput" ng-click="cardInput = true" href="#" class="card">{{card.name}}</a>
-                            <input ng-show="cardInput" type="text" ng-model="card.name" value="card.name" class="card card-editable">
-
-                            <span class="center-block text-center">
-                                <button ng-show="cardInput" ng-click="updateCard(card, boardIndex); cardInput = false"
-                                        class="btn btn-success card-button-manage"><i class="fa fa-check" aria-hidden="true"></i></button>
-                                <button ng-show="cardInput" ng-click="removeCard(card, boardIndex, listIndex, cardIndex); cardInput = false"
-                                        class="btn btn-danger card-button-manage"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
-                            </span>
-                        </div>
-
-                        <div class="center-block text-center">
-                            <button class="btn btn-success card-button-add" ng-click="addCard(boardIndex, listIndex)">
-                                <i class="fa fa-plus" aria-hidden="true"></i></button>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-1 card-list">
-                    <div class="card-list-body">
-                        <div class="center-block text-center">
-                            <button class="btn btn-success card-button-add" ng-click="addList(boardIndex)">
-                                <i class="fa fa-plus" aria-hidden="true"></i></button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    <div ui-view="content"></div>
 </body>
 </html>
