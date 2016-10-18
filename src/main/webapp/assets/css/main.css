@@ -87,3 +87,11 @@
     font-size: 10px;
     text-align: center;
 }
+
+.whole-page {
+    background-color: #4286f4;
+}
+
+.tab_text {
+    color: #ffffff;
+}

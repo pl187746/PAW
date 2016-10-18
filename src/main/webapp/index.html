@@ -21,14 +21,14 @@
     <script src="app/services/user.service.js"></script>
     <script src="app/board/board.controller.js"></script>
 </head>
-<body>
+<body class="whole-page">
     <div class="container-fluid" ng-app="trello" ng-controller="BoardsController">
         <ul class="nav nav-tabs" id="boardList">
             <li ng-repeat="board in boards" ng-class="{ active: isSet(board.id) }">
-                <a href ng-click="setTab(board.id)">{{board.name}}</a>
+                <a href ng-click="setTab(board.id)" class="tab_text">{{board.name}}</a>
             </li>
             <li class="dropdown" style="margin-left: 400px;">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                <a href="#" class="dropdown-toggle tab_text" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                     <i ng-show="user">{{user.login}}</i>
                     <i ng-show="!user">Guest</i>
                 <span class="caret"></span></a>
