@@ -3,11 +3,7 @@ package pl.iis.paw.trello.domain;
 import java.io.Serializable;
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 
 @Entity
 public class Board implements Serializable {
@@ -22,7 +18,7 @@ public class Board implements Serializable {
 	@Column(name = "name")
 	private String name;
 	
-	@OneToMany(mappedBy = "board", targetEntity = CardList.class)
+	@OneToMany(mappedBy = "board", targetEntity = CardList.class, cascade = CascadeType.ALL)
 	private List<CardList> lists;
 	
 	public Board() { }

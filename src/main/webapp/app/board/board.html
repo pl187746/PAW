@@ -23,11 +23,11 @@
                     <input ng-show="cardInput" type="text" ng-model="card.name" value="card.name" class="card card-editable">
 
                     <span class="center-block text-center">
-                            <button ng-show="cardInput" ng-click="updateCard(card); cardInput = false"
-                                    class="btn btn-success card-button-manage"><i class="fa fa-check" aria-hidden="true"></i></button>
-                            <button ng-show="cardInput" ng-click="removeCard(card, listIndex, cardIndex); cardInput = false"
-                                    class="btn btn-danger card-button-manage"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
-                        </span>
+                        <button ng-show="cardInput" ng-click="updateCard(card); cardInput = false"
+                                class="btn btn-success card-button-manage"><i class="fa fa-check" aria-hidden="true"></i></button>
+                        <button ng-show="cardInput" ng-click="removeCard(card, listIndex, cardIndex); cardInput = false"
+                                class="btn btn-danger card-button-manage"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                    </span>
                 </div>
 
                 <div class="center-block text-center">

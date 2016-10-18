@@ -1,12 +1,31 @@
 <div class="well container text-center center-block">
     <h2>Boards</h2>
-    <div class="center-block text-center">
-        <div ng-repeat="board in boards">
-            <a ui-sref="board({id:board.id})" href="">
-                <div class="col-md-2 home-board">
-                    <h3>{{board.name}}</h3>
+    <div class="center-block text-center col-md-12">
+        <div ng-repeat="board in boards" ng-init="boardIndex = $index" class="col-md-3 board-sign">
+            <div class="board-sign">
+                <a ng-show="!boardInput" ng-click="boardInput = true" href="" class="board-input">
+                    <h5 class="board-sign-title">{{board.name}}</h5>
+                </a>
+                <input ng-show="boardInput" type="text" ng-model="board.name" value="board.name" class="board-input board-input-editable">
+
+                <span class="center-block text-center">
+                    <button ng-show="boardInput" ng-click="updateBoard(board); boardInput = false"
+                            class="btn btn-success board-button-manage"><i class="fa fa-check" aria-hidden="true"></i></button>
+                    <button ng-show="boardInput" ng-click="removeBoard(board, boardIndex); boardInput = false"
+                            class="btn btn-danger board-button-manage"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                </span>
+
+                <div class="text-center center-block">
+                    <button ui-sref="board({id:board.id})" class="btn btn-info board-button-go">
+                        <i class="fa fa-sign-in" aria-hidden="true"></i>
+                    </button>
                 </div>
-            </a>
+            </div>
+        </div>
+
+        <div class="board-add col-md-1">
+            <button class="btn btn-success card-button-add" ng-click="addBoard()">
+                <i class="fa fa-plus" aria-hidden="true"></i></button>
         </div>
     </div>
 </div>
