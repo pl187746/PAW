@@ -1,13 +1,16 @@
 package pl.iis.paw.trello.service;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import pl.iis.paw.trello.domain.Board;
+import pl.iis.paw.trello.domain.BoardInfo;
 import pl.iis.paw.trello.exception.BoardNotFoundException;
 import pl.iis.paw.trello.repository.BoardRepository;
 
@@ -29,6 +32,18 @@ public class BoardService {
     
     public List<Board> getBoards(Pageable pageable) {
     	return boardRepository.findAll(pageable).getContent();
+    }
+    
+    public List<BoardInfo> getBoardInfos() {
+    	return boardsToBoardInfos(getBoards());
+    }
+    
+    public List<BoardInfo> getBoardInfos(Pageable pageable) {
+    	return boardsToBoardInfos(getBoards(pageable));
+    }
+    
+    public static List<BoardInfo> boardsToBoardInfos(Collection<Board> boards) {
+    	return boards.stream().map(Board::getInfo).collect(Collectors.toList());
     }
     
     public Board findBoardById(Long boardId) {
