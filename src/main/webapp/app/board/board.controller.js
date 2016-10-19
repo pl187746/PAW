@@ -58,7 +58,7 @@
         }
 
         function updateList(list, listIndex) {
-            console.log('Update list request for listIndex: " + listIndex');
+            console.log('Update list request for listIndex: ' + listIndex);
             List.update(list, onSuccess, onError);
 
             function onSuccess() {

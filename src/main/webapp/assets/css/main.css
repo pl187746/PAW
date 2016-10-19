@@ -3,6 +3,10 @@
     margin: 0;
 }
 
+.page {
+    background-color: #2e6da4;
+}
+
 .board {
     padding: 10px 30px;
 }
@@ -44,14 +48,11 @@
     margin-top: 0;
     margin-bottom: 0;
     font-size: 16px;
-    color: inherit;
-    text-align: center;
+    text-align: left;
 }
 
 .card-list-heading {
     width: 100%;
-    background-color: #dbe1ef;
-    padding: 10px 15px;
 }
 
 .card-list-body {
@@ -72,6 +73,7 @@
 
 .card:hover {
     text-decoration: none;
+    background-color: rgba(173, 173, 173, 0.61)
 }
 
 .card-editable {
