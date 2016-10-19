@@ -29,7 +29,7 @@ public class BoardController {
 	
 	@RequestMapping(value = "/boards", method = RequestMethod.GET)
     public ResponseEntity<?> getBoards(Pageable pageable) {
-        return ResponseEntity.ok(boardService.getBoards(pageable));
+        return ResponseEntity.ok(boardService.getBoardInfos(pageable));
     }
 	
 	@RequestMapping(value = "/boards/{id}", method = RequestMethod.GET)
