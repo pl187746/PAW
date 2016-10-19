@@ -9,11 +9,17 @@ public class BoardInfo implements Serializable {
 	private Long id;
 	
 	private String name;
+	
+	public BoardInfo() {}
 
 	public BoardInfo(Long id, String name) {
 		super();
 		this.id = id;
 		this.name = name;
+	}
+	
+	public BoardInfo(Board board) {
+		this(board.getId(), board.getName());
 	}
 
 	public Long getId() {
@@ -32,6 +38,8 @@ public class BoardInfo implements Serializable {
 		this.name = name;
 	}
 	
-	
+	public Board toBoard() {
+		return new Board(this);
+	}
 
 }

@@ -28,6 +28,10 @@ public class Board implements Serializable {
 		this.name = name;
 		this.lists = lists;
 	}
+	
+	public Board(BoardInfo info) {
+		setInfo(info);
+	}
 
 	public Long getId() {
 		return id;
@@ -51,6 +55,15 @@ public class Board implements Serializable {
 
 	public void setLists(List<CardList> lists) {
 		this.lists = lists;
+	}
+	
+	public BoardInfo getInfo() {
+		return new BoardInfo(this);
+	}
+	
+	public void setInfo(BoardInfo info) {
+		setId(info.getId());
+		setName(info.getName());
 	}
 
 }
