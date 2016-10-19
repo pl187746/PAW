@@ -4,7 +4,7 @@
 }
 
 body {
-    background-color: #00b3ee;
+    background-color: #0375b4;
 }
 
 .board {
@@ -154,15 +154,7 @@ body {
 }
 
 .navbar-default {
-    background-color: #2e6da4;
-}
-
-.hidden-sm {
-    color: white;
-}
-
-.navbar-brand {
-    color:white !important;
+    background-color: #ffce00;
 }
 
 
