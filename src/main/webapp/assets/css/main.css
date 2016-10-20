@@ -17,7 +17,7 @@ body {
 
 .list {
     width: 100%;
-    background-color: #fff9f6;
+    background-color: gainsboro;
     position: relative;
     display: block;
     padding: 10px 15px;
@@ -28,7 +28,7 @@ body {
 }
 
 .list-editable {
-    background-color: #ccffd8;
+    background-color: gainsboro;
 }
 
 .list-button-manage {
@@ -77,7 +77,7 @@ body {
 }
 
 .card-editable {
-    background-color: #fff8e1;
+    background-color: gainsboro;
 }
 
 .card-button-manage {
@@ -163,6 +163,18 @@ body {
 
 .navbar-brand {
     color:white !important;
+}
+
+.well {
+    background-color: gainsboro;
+}
+
+.dropdown-toggle:active, .dropdown-toggle {
+    background-color: #2e6da4 !important;
+}
+
+.user-login {
+    color: white !important;
 }
 
 
