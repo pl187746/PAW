@@ -21,7 +21,10 @@ public class CardList implements Serializable {
 	
 	@Column(name = "name")
 	private String name;
-	
+
+	@Column(name = "archive")
+	private boolean archive;
+
 	@ManyToOne(targetEntity = Board.class, optional = false)
 	@JoinColumn(name = "board_id", referencedColumnName = "board_id")
 	@JsonIgnore
@@ -93,5 +96,13 @@ public class CardList implements Serializable {
 
 	public void setOrd(Long ord) {
 		this.ord = ord;
+	}
+
+	public boolean isArchive() {
+		return archive;
+	}
+
+	public void setArchive(boolean archive) {
+		this.archive = archive;
 	}
 }

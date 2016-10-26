@@ -17,9 +17,13 @@
         $scope.removeList = removeList;
         $scope.updateList = updateList;
         $scope.addList = addList;
+        $scope.archiveList = archiveList;
+        $scope.returnArchiveList = returnArchiveList;
 
         $scope.board = null;
         $scope.user = null;
+
+        $scope.archList = [];
 
         loadBoard($stateParams.id);
 
@@ -42,14 +46,18 @@
             }
         }
 
-        function removeList(list, listIndex) {
+        function removeList(list) {
             var lists = getLists();
+            var index = lists.indexOf(list);
+            console.log('Delete list request for listIndex: ' + index);
+
 
             List.delete({id: list.id}, onSuccess, onError);
 
             function onSuccess() {
                 console.log('Deleted list with index ' + list.id);
-                lists.splice(listIndex, 1);
+                lists.splice(index, 1);
+
             }
 
             function onError() {
@@ -57,8 +65,8 @@
             }
         }
 
-        function updateList(list, listIndex) {
-            console.log('Update list request for listIndex: ' + listIndex);
+        function updateList(list) {
+            console.log('Update list request for listIndex: ' + getLists().indexOf(list));
             List.update(list, onSuccess, onError);
 
             function onSuccess() {
@@ -85,7 +93,20 @@
             }
         }
 
-        function updateCard(card, listIndex, cardIndex) {
+        function archiveList(list){
+            list.archive = true;
+            updateList(list);
+        }
+
+        function returnArchiveList(list){
+            list.archive = false;
+            updateList(list);
+        }
+
+        function updateCard(card,list) {
+            var listIndex = getLists().indexOf(list);
+            var cards = getCards(listIndex);
+            var cardIndex = cards.indexOf(card);
             console.log('Update card request for listIndex: ' + listIndex + ", cardIndex: " + cardIndex);
             Card.update(card, onSuccess, onError);
 
@@ -98,9 +119,11 @@
             }
         }
 
-        function removeCard(card, listIndex, cardIndex) {
-            console.log("Remove card request for listIndex: " + listIndex + ", cardIndex: " + cardIndex);
+        function removeCard(card,list) {
+            var listIndex = getLists().indexOf(list);
             var cards = getCards(listIndex);
+            var cardIndex = cards.indexOf(card);
+            console.log("Remove card request for listIndex: " + listIndex + ", cardIndex: " + cardIndex);
             cards.splice(cardIndex, 1);
 
             Card.delete({id: card.id}, onSuccess, onError);
@@ -114,7 +137,8 @@
             }
         }
 
-        function addCard(listIndex) {
+        function addCard(list) {
+            var listIndex = getLists().indexOf(list);
             var cards = getCards(listIndex);
             var listId = getList(listIndex).id;
 
