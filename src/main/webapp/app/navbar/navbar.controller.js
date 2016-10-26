@@ -5,9 +5,9 @@
         .module('trello')
         .controller('NavbarController', NavbarController);
 
-    NavbarController.$inject = ['$scope', '$state', 'User', 'Board'];
+    NavbarController.$inject = ['$rootScope', '$scope', '$state', 'User', 'Board'];
 
-    function NavbarController ($scope, $state, User, Board) {
+    function NavbarController ($rootScope, $scope, $state, User, Board) {
         $scope.login = login;
         $scope.logout = logout;
         $scope.isAuthenticated = isAuthenticated;
@@ -38,6 +38,7 @@
                 console.log('User ' + data.login + ' logged in');
                 $scope.user = data;
                 localStorage.setItem('user', data);
+				$rootScope.$emit('loginEvent', data);
             }
 
             function onError() {
@@ -49,6 +50,7 @@
             console.log('User ' + $scope.user.login + ' logged out');
             $scope.user = null;
             localStorage.removeItem('user');
+			$rootScope.$emit('loginEvent', null);
         }
 
         function isAuthenticated() {
