@@ -49,6 +49,7 @@ public class CardListService {
     	CardList existingCardList = findCardListById(id);
     	
     	existingCardList.setName(cardList.getName());
+        existingCardList.setArchive(cardList.isArchive());
     	
     	return cardListRepository.save(existingCardList);
     }

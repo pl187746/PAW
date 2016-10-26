@@ -4,7 +4,7 @@
     </div>
 
     <div ng-show="error == null"class="row board">
-        <div ng-repeat="list in board.lists" class="col-sm-2 card-list">
+        <div ng-repeat="list in board.lists" class="col-sm-2 card-list" ng-show="list.archive == false">
             <div class="card-list-heading">
                 <a ng-show="!listInput" ng-click="listInput = true" href="" class="list"><h3 class="card-list-title">{{list.name}}</h3></a>
                 <input ng-show="listInput" type="text" ng-model="list.name" value="list.name" class="list list-editable">
@@ -48,19 +48,19 @@
                 </div>
             </div>
         </div>
+
+        <div class="dropdown navbar-right">
+            <a href="" class="dropdown-toggle dropdown-toggle-archive" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                <span class="hidden-sm">Archive</span>
+                <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu">
+                <li ng-repeat="list in board.lists">
+                    <a ng-click="returnArchiveList(list)" ng-show="list.archive == true">{{list.name}}</a>
+                </li>
+            </ul>
+        </div>
     </div>
 
-    <div class="dropdown">
-        <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-            <span class="hidden-sm">Archive</span>
-            <span class="caret"></span>
-        </a>
-        <ul class="dropdown-menu">
-            <div ng-repeat="lists in archList">
-                <li ng-repeat="list in lists">
-                    <button ng-click="returnArchiveList(list)">{{list.name}}</button>
-                </li>
-            </div>
-        </ul>
-    </div>
+
 </div>

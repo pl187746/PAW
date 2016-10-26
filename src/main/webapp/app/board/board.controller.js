@@ -94,75 +94,13 @@
         }
 
         function archiveList(list){
-            var lists = getLists();
-            var listIndex = lists.indexOf(list);
-            var listCards = getCards(listIndex);
-
-            List.delete({id: list.id}, onSuccess, onError);
-
-            function onSuccess() {
-                console.log('Deleted list with index ' + list.id);
-                lists.splice(listIndex, 1);
-                if (list.name == '') {
-                    list.name = "No name"
-                }
-                $scope.archList.push([list,listCards]);
-            }
-
-            function onError() {
-                console.log('Error while removing list');
-            }
+            list.archive = true;
+            updateList(list);
         }
 
         function returnArchiveList(list){
-            var lists = getLists();
-
-            List.save( {boardId : $scope.board.id, name : list.name}, onSuccess, onError);
-
-            function onSuccess(response) {
-                console.log('Added new list to board with id ' + $scope.board.id);
-                lists.push(response);
-
-                lists = getLists();
-                var listIndex = lists.indexOf(response);
-                var cards = getCards(listIndex);
-
-                angular.forEach($scope.archList,function (value, key) {
-
-                    angular.forEach(value,function (value2, key2) {
-
-                        if (key2 == '1') {
-
-                            angular.forEach(value2,function (value3, key3) {
-
-                                Card.save( {listId : response.id, name : value3.name}, onSuccess, onError);
-
-                                function onSuccess(response) {
-                                    console.log('Added new card to list with index ' + response.id);
-                                    cards.push(response);
-                                }
-
-                                function onError() {
-                                    console.log('Error while adding card')
-                                }
-                            })
-                        }
-                    })
-                })
-
-                var listIndexArchive = $scope.archList.indexOf(response);
-                $scope.archList.splice(listIndexArchive-1,1);
-
-
-            }
-
-            function onError() {
-                console.log('Error while adding list')
-            }
-
-
-
-
+            list.archive = false;
+            updateList(list);
         }
 
         function updateCard(card,list) {

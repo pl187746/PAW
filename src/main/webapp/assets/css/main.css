@@ -4,7 +4,7 @@
 }
 
 body {
-    background-color: #00b3ee;
+    background-color: #0079BF;
 }
 
 .board {
@@ -154,7 +154,7 @@ body {
 }
 
 .navbar-default {
-    background-color: #2e6da4;
+    background-color: #0067A3;
 }
 
 .hidden-sm {
@@ -170,11 +170,17 @@ body {
 }
 
 .dropdown-toggle:active, .dropdown-toggle {
-    background-color: #2e6da4 !important;
+    background-color: #0067A3 !important;
+}
+
+.dropdown-toggle-archive {
+    background-color: #0079BF !important;
 }
 
 .user-login {
     color: white !important;
 }
+
+
 
 
