@@ -106,6 +106,7 @@
 			
 			function onSuccess() {
                 console.log('User id=' + $scope.user.id + ' liked board id=' + boardId);
+				$rootScope.$emit('updateUser');
             }
 
             function onError() {
@@ -118,6 +119,7 @@
 			
 			function onSuccess() {
                 console.log('User id=' + $scope.user.id + ' unliked board id=' + boardId);
+				$rootScope.$emit('updateUser');
             }
 
             function onError() {

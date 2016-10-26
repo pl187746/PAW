@@ -15,6 +15,8 @@
         $scope.$state = $state;
         $scope.user = null;
         $scope.boards = null;
+		
+		$rootScope.$on('updateUser', reloadUser);
 
         loadBoards();
 
@@ -32,7 +34,17 @@
         }
 
         function login() {
-            User.get({id : "1"}, onSuccess, onError);
+            loadUser(1);
+        }
+		
+		function reloadUser() {
+			if(isAuthenticated()) {
+				loadUser($scope.user.id);
+			}
+		}
+		
+		function loadUser(userId) {
+			User.get({id : userId}, onSuccess, onError);
 
             function onSuccess(data) {
                 console.log('User ' + data.login + ' logged in');
@@ -44,7 +56,7 @@
             function onError() {
                 console.log('Error while loading user');
             }
-        }
+		}
 
         function logout() {
             console.log('User ' + $scope.user.login + ' logged out');
