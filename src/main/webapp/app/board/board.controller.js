@@ -20,6 +20,8 @@
         $scope.archiveList = archiveList;
         $scope.returnArchiveList = returnArchiveList;
 		$scope.moveList = moveList;
+		$scope.isListFirst = isListFirst;
+		$scope.isListLast = isListLast;
 
         $scope.board = null;
         $scope.user = null;
@@ -49,6 +51,15 @@
                 }
             }
         }
+		
+		function isListFirst(list) {
+			return getLists().indexOf(list) == 0;
+		}
+		
+		function isListLast(list) {
+			var lists = getLists();
+			return lists.indexOf(list) == (lists.length - 1);
+		}
 		
 		function moveList(list, dir) {
 			if(!dir)
