@@ -63,12 +63,12 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    private boolean emailExists(RegisterVM registerVM) {
-        return userRepository.findByEmail(registerVM.getEmail()) != null;
+    private boolean emailExists(String email) {
+        return userRepository.findByEmail(email) != null;
     }
 
-    private boolean loginExists(RegisterVM registerVM) {
-        return userRepository.findByLogin(registerVM.getLogin()) != null;
+    private boolean loginExists(String login) {
+        return userRepository.findByLogin(login) != null;
     }
 
     public User updateUser(User user) {
@@ -97,8 +97,8 @@ public class UserService {
     }
 
     private void validateUser(RegisterVM registerVM) {
-        boolean loginExists = loginExists(registerVM);
-        boolean emailExists = emailExists(registerVM);
+        boolean loginExists = loginExists(registerVM.getLogin());
+        boolean emailExists = emailExists(registerVM.getEmail());
 
         Field field = null;
         if (loginExists && emailExists) {
@@ -110,7 +110,7 @@ public class UserService {
         }
 
         if (loginExists || emailExists) {
-            throw new UserAlreadyExistsException(registerVM.getEmail(), field);
+            throw new UserAlreadyExistsException(registerVM.getLogin(), field);
         }
     }
 }
