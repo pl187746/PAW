@@ -19,6 +19,7 @@
         $scope.addList = addList;
         $scope.archiveList = archiveList;
         $scope.returnArchiveList = returnArchiveList;
+		$scope.moveList = moveList;
 
         $scope.board = null;
         $scope.user = null;
@@ -48,6 +49,27 @@
                 }
             }
         }
+		
+		function moveList(list, dir) {
+			if(!dir)
+				return;
+			dir = ((dir < -1) ? -1 : ((dir > 1) ? 1 : dir));
+			var lists = getLists();
+			var index = lists.indexOf(list);
+			var newIdx = index;
+			for(;;) {
+				newIdx += dir;
+				if(newIdx < 0 || newIdx >= lists.length)
+					break;
+				if(!lists[newIdx].archive)
+					break;
+			}
+			newIdx = ((newIdx < 0) ? 0 : ((newIdx >= lists.length) ? (lists.length - 1) : newIdx));
+			if(newIdx != index) {
+				lists.splice(newIdx, 0, lists.splice(index, 1)[0]);
+				updateListOrds();
+			}
+		}
 		
 		function updateListOrds() {
 			var lists = getLists();
