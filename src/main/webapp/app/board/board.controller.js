@@ -22,6 +22,9 @@
 		$scope.moveList = moveList;
 		$scope.isListFirst = isListFirst;
 		$scope.isListLast = isListLast;
+		$scope.moveCard = moveCard;
+		$scope.isCardFirst = isCardFirst;
+		$scope.isCardLast = isCardLast;
 
         $scope.board = null;
         $scope.user = null;
@@ -29,14 +32,21 @@
         $scope.archList = [];
 
         loadBoard($stateParams.id);
+		
+		function sortByOrd(arr) {
+			arr.sort(function(a, b) {
+				return (a.ord == null) ? ((b.ord == null) ? (a.id - b.id) : 1) : ((b.ord == null) ? -1 : ((a.ord != b.ord) ? (a.ord - b.ord) : (a.id - b.id)));
+			});
+		}
 
         function loadBoard(id) {
             Board.get({"id" : id}, onSuccess, onError);
 
             function onSuccess(data) {
-				data.lists.sort(function(a, b) {
-					return (a.ord == null) ? ((b.ord == null) ? (a.id - b.id) : 1) : ((b.ord == null) ? -1 : ((a.ord != b.ord) ? (a.ord - b.ord) : (a.id - b.id)));
-				});
+				sortByOrd(data.lists);
+				for(var li in data.lists) {
+					sortByOrd(data.lists[li].cards);
+				}
                 $scope.board = data;
                 console.log('Loaded board of of name: ' + $scope.board.name)
             }
@@ -61,6 +71,14 @@
 			return lists.indexOf(list) == (lists.length - 1);
 		}
 		
+		function isCardFirst(list, card) {
+			return list.cards.indexOf(card) == 0;
+		}
+		
+		function isCardLast(list, card) {
+			return list.cards.indexOf(card) == (list.cards.length - 1);
+		}
+		
 		function moveList(list, dir) {
 			if(!dir)
 				return;
@@ -82,6 +100,19 @@
 			}
 		}
 		
+		function moveCard(list, card, dir) {
+			if(!dir)
+				return;
+			dir = ((dir < -1) ? -1 : ((dir > 1) ? 1 : dir));
+			var cards = list.cards;
+			var index = cards.indexOf(card);
+			var newIdx = index + dir;
+			if((newIdx < 0) || (newIdx >= cards.length))
+				return;
+			cards.splice(index + dir, 0, cards.splice(index, 1)[0]);
+			updateCardOrds(list);
+		}
+		
 		function updateListOrds() {
 			var lists = getLists();
 			for(var li in lists) {
@@ -89,6 +120,17 @@
 				lists[li].ord = li;
 				if(up) {
 					updateList(lists[li]);
+				}
+			}
+		}
+		
+		function updateCardOrds(list) {
+			var cards = list.cards;
+			for(var ci in cards) {
+				var up = (cards[ci].ord != ci);
+				cards[ci].ord = ci;
+				if(up) {
+					updateCard(cards[ci]);
 				}
 			}
 		}
@@ -152,18 +194,15 @@
         }
 
         function updateCard(card,list) {
-            var listIndex = getLists().indexOf(list);
-            var cards = getCards(listIndex);
-            var cardIndex = cards.indexOf(card);
-            console.log('Update card request for listIndex: ' + listIndex + ", cardIndex: " + cardIndex);
+            console.log('Update card request for card,id: ' + card.id);
             Card.update(card, onSuccess, onError);
 
             function onSuccess() {
-                console.log('Updated card with index ' + card.id);
+                console.log('Updated card with id ' + card.id);
             }
 
             function onError() {
-                console.log('Error while updating card with index ' + card.id);
+                console.log('Error while updating card with id ' + card.id);
             }
         }
 
