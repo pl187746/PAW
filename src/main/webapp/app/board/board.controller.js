@@ -271,6 +271,7 @@
 			var oldIdx = fromList.cards.indexOf(card);
 			fromList.cards.splice(oldIdx, 1);
 			updateCardOrds(fromList);
+			card.listId = toList.id;
 			card.ord = toList.cards.length;
 			toList.cards.push(card);
 			updateCard(card);
