@@ -10,10 +10,12 @@ import org.springframework.context.annotation.Bean;
 import pl.iis.paw.trello.domain.Board;
 import pl.iis.paw.trello.domain.Card;
 import pl.iis.paw.trello.domain.CardList;
+import pl.iis.paw.trello.domain.FavBoard;
 import pl.iis.paw.trello.domain.User;
 import pl.iis.paw.trello.repository.BoardRepository;
 import pl.iis.paw.trello.repository.CardListRepository;
 import pl.iis.paw.trello.repository.CardRepository;
+import pl.iis.paw.trello.repository.FavBoardRepository;
 import pl.iis.paw.trello.repository.UserRepository;
 
 @SpringBootApplication
@@ -50,6 +52,18 @@ public class TrelloApplication {
 			cardRepository.save(new Card("Karta 1/3/3", list13));
 			cardRepository.save(new Card("Karta 1/3/4", list13));
 			cardRepository.save(new Card("Karta 2/1/1", list21));
+		};
+	}
+	
+	@Bean
+	public CommandLineRunner demoFavBoards(UserRepository userRepository, BoardRepository boardRepository, FavBoardRepository favBoardRepository) {
+		return (args) -> {
+			//User user1 = userRepository.findOne(1L);
+			//Board board1 = boardRepository.findOne(1L);
+			FavBoard favBoard = new FavBoard();
+			favBoard.setUserId(1L);
+			favBoard.setBoardId(1L);
+			favBoardRepository.save(favBoard);
 		};
 	}
 	
