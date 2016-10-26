@@ -41,6 +41,7 @@
         function logout() {
             console.log('User ' + $rootScope.user.login + ' logged out');
             $rootScope.user = null;
+            sessionStorage.removeItem('user');
             localStorage.removeItem('user');
         }
 
