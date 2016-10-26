@@ -15,6 +15,7 @@
 		$scope.moveCard = moveCard;
 		$scope.isCardFirst = isCardFirst;
 		$scope.isCardLast = isCardLast;
+		$scope.transferCardToNextList = transferCardToNextList;
 
         // Cards List
         $scope.removeList = removeList;
@@ -253,6 +254,28 @@
         function getLists() {
             return $scope.board.lists;
         }
+		
+		function transferCardToNextList(card, list, dir) {
+			if(!dir)
+				return;
+			dir = ((dir < -1) ? -1 : ((dir > 1) ? 1 : dir));
+			var lists = getLists();
+			var idxList = lists.indexOf(list);
+			var newIdxList = idxList + dir;
+			if((newIdxList < 0) || (newIdxList >= lists.length))
+				return;
+			transferCardBetweenLists(card, list, lists[newIdxList]);
+		}
+		
+		function transferCardBetweenLists(card, fromList, toList) {
+			var oldIdx = fromList.cards.indexOf(card);
+			fromList.cards.splice(oldIdx, 1);
+			updateCardOrds(fromList);
+			card.ord = toList.cards.length;
+			toList.cards.push(card);
+			updateCard(card);
+		}
+		
     }
 })();
 
