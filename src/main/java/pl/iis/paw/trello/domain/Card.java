@@ -1,6 +1,8 @@
 package pl.iis.paw.trello.domain;
 
 import java.io.Serializable;
+import java.util.Optional;
+
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -60,5 +62,12 @@ public class Card implements Serializable {
 	public void setListId(Long listId) {
 		this.cardList = new CardList();
 		this.cardList.setId(listId);
+	}
+	
+	@JsonProperty(value = "listId")
+	public Long getListId() {
+		return Optional.ofNullable(cardList)
+				.map(CardList::getId)
+				.orElse(null);
 	}
 }

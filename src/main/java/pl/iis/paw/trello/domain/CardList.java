@@ -2,6 +2,7 @@ package pl.iis.paw.trello.domain;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Optional;
 
 import javax.persistence.*;
 
@@ -74,5 +75,12 @@ public class CardList implements Serializable {
 	public void setBoardId(Long boardId) {
 		this.board = new Board();
 		this.board.setId(boardId);
+	}
+	
+	@JsonProperty(value = "boardId")
+	public Long getBoardId() {
+		return Optional.ofNullable(board)
+				.map(Board::getId)
+				.orElse(null);
 	}
 }
