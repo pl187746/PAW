@@ -7,8 +7,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import pl.iis.paw.trello.domain.User;
 import pl.iis.paw.trello.exception.UserAlreadyExistsException;
+import pl.iis.paw.trello.exception.UserAlreadyExistsException.Field;
 import pl.iis.paw.trello.exception.UserNotFoundException;
 import pl.iis.paw.trello.repository.UserRepository;
+import pl.iis.paw.trello.web.viewmodel.RegisterVM;
 
 import java.util.List;
 import java.util.Optional;
@@ -51,16 +53,22 @@ public class UserService {
             .orElseThrow(() -> new UserNotFoundException(email));
     }
 
-    public User addUser(User user) {
-        if (userRepository.findByLogin(user.getLogin()) != null) {
-            throw new UserAlreadyExistsException(user.getLogin());
-        }
+    public User registerUser(RegisterVM registerVM) {
+        validateUser(registerVM);
 
-        if (userRepository.findByEmail(user.getEmail()) != null) {
-            throw new UserAlreadyExistsException(user.getEmail());
-        }
+        User user = new User();
+        user.setLogin(registerVM.getLogin());
+        user.setEmail(registerVM.getEmail());
 
         return userRepository.save(user);
+    }
+
+    private boolean emailExists(RegisterVM registerVM) {
+        return userRepository.findByEmail(registerVM.getEmail()) != null;
+    }
+
+    private boolean loginExists(RegisterVM registerVM) {
+        return userRepository.findByLogin(registerVM.getLogin()) != null;
     }
 
     public User updateUser(User user) {
@@ -86,5 +94,23 @@ public class UserService {
             .ofNullable(userRepository.findOne(id))
             .orElseThrow(() -> new UserNotFoundException(id));
         this.deleteUser(user);
+    }
+
+    private void validateUser(RegisterVM registerVM) {
+        boolean loginExists = loginExists(registerVM);
+        boolean emailExists = emailExists(registerVM);
+
+        Field field = null;
+        if (loginExists && emailExists) {
+            field = Field.All;
+        } else if (loginExists) {
+            field = Field.Login;
+        } else if (emailExists) {
+            field = Field.Email;
+        }
+
+        if (loginExists || emailExists) {
+            throw new UserAlreadyExistsException(registerVM.getEmail(), field);
+        }
     }
 }

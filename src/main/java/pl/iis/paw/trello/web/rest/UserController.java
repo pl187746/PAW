@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.iis.paw.trello.domain.User;
 import pl.iis.paw.trello.service.UserService;
+import pl.iis.paw.trello.web.viewmodel.RegisterVM;
 
 import javax.validation.Valid;
 import java.net.URI;
@@ -32,10 +33,12 @@ public class UserController {
     }
 
     @RequestMapping(value = "/users", method = RequestMethod.POST)
-    public ResponseEntity<?> createUser(@Valid @RequestBody User user) throws URISyntaxException {
+    public ResponseEntity<?> createUser(@Valid @RequestBody RegisterVM registerVM) throws URISyntaxException {
+        User registeredUser = userService.registerUser(registerVM);
+
         return ResponseEntity
-            .created(new URI("/users/" + user.getId()))
-            .body(userService.addUser(user));
+            .created(new URI("/users/" + registeredUser.getId()))
+            .body(registeredUser);
     }
 
     @RequestMapping(value = "/users", method = RequestMethod.PUT)
