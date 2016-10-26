@@ -74,8 +74,17 @@ public class FavBoardController {
     }
 	
 	@RequestMapping(value = "/favboards/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity<?> deleteBoard(@PathVariable Long id) {
+    public ResponseEntity<?> deleteFavBoard(@PathVariable Long id) {
         favBoardService.deleteFavBoard(id);
+        return ResponseEntity.ok().build();
+    }
+	
+	@RequestMapping(value = "/favboards", params = { "userId", "boardId" }, method = RequestMethod.DELETE)
+    public ResponseEntity<?> deleteFavBoardUB(@RequestParam("userId") Long userId, @RequestParam("boardId") Long boardId) {
+		User user = userService.findUserById(userId);
+		Board board = boardService.findBoardById(boardId);
+		favBoardService.getFavBoardByUserAndBoard(user, board)
+			.ifPresent(favBoard -> favBoardService.deleteFavBoard(favBoard));
         return ResponseEntity.ok().build();
     }
 
