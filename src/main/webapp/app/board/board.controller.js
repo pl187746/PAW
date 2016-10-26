@@ -31,6 +31,9 @@
             Board.get({"id" : id}, onSuccess, onError);
 
             function onSuccess(data) {
+				data.lists.sort(function(a, b) {
+					return (a.ord == null) ? ((b.ord == null) ? (a.id - b.id) : 1) : ((b.ord == null) ? -1 : ((a.ord != b.ord) ? (a.ord - b.ord) : (a.id - b.id)));
+				});
                 $scope.board = data;
                 console.log('Loaded board of of name: ' + $scope.board.name)
             }
@@ -45,6 +48,17 @@
                 }
             }
         }
+		
+		function updateListOrds() {
+			var lists = getLists();
+			for(var li in lists) {
+				var up = (lists[li].ord != li);
+				lists[li].ord = li;
+				if(up) {
+					updateList(lists[li]);
+				}
+			}
+		}
 
         function removeList(list) {
             var lists = getLists();
@@ -57,7 +71,7 @@
             function onSuccess() {
                 console.log('Deleted list with index ' + list.id);
                 lists.splice(index, 1);
-
+				updateListOrds();
             }
 
             function onError() {
@@ -81,11 +95,12 @@
         function addList() {
             var lists = getLists();
 
-            List.save( {boardId : $scope.board.id, name : ''}, onSuccess, onError);
+            List.save( {boardId : $scope.board.id, name : '', ord : lists.length }, onSuccess, onError);
 
             function onSuccess(response) {
                 console.log('Added new list to board with id ' + $scope.board.id);
                 lists.push(response);
+				updateListOrds();
             }
 
             function onError() {
