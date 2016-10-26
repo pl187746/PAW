@@ -24,47 +24,48 @@ public class TrelloApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(TrelloApplication.class, args);
 	}
-	
+
 	@Bean
-	public CommandLineRunner demoUsers(UserRepository userRepository) {
+	public CommandLineRunner initDummyData(UserRepository userRepository,
+										   BoardRepository boardRepository,
+										   CardListRepository cardListRepository,
+										   CardRepository cardRepository,
+										   FavBoardRepository favBoardRepository) {
 		return (args) -> {
-			userRepository.save(new User("admin", "ap", "a@x.com"));
-			userRepository.save(new User("bbb", "bp", "b@x.com"));
-			userRepository.save(new User("ccc", "cp", "c@x.com"));
-			userRepository.save(new User("ddd", "dp", "d@x.com"));
+			demoUsers(userRepository);
+			demoBoards(boardRepository, cardListRepository, cardRepository);
+			demoFavBoards(favBoardRepository);
 		};
 	}
-	
-	@Bean
-	public CommandLineRunner demoBoardsListsCards(BoardRepository boardRepository, CardListRepository cardListRepository, CardRepository cardRepository) {
-		return (args) -> {
-			Board board1 = boardRepository.save(new Board("Tabliczka 1", null));
-			Board board2 = boardRepository.save(new Board("Tabliczka 2", null));
-			boardRepository.save(new Board("Tabliczka 3", new ArrayList<>()));
-			CardList list11 = cardListRepository.save(new CardList("Lista 1/1", board1, null));
-			cardListRepository.save(new CardList("Lista 1/2", board1, null));
-			CardList list13 = cardListRepository.save(new CardList("Lista 1/3", board1, null));
-			CardList list21 = cardListRepository.save(new CardList("Lista 2/1", board2, null));
-			cardRepository.save(new Card("Karta 1/1/1", list11));
-			cardRepository.save(new Card("Karta 1/1/2", list11));
-			cardRepository.save(new Card("Karta 1/3/1", list13));
-			cardRepository.save(new Card("Karta 1/3/2", list13));
-			cardRepository.save(new Card("Karta 1/3/3", list13));
-			cardRepository.save(new Card("Karta 1/3/4", list13));
-			cardRepository.save(new Card("Karta 2/1/1", list21));
-		};
+
+	private void demoUsers(UserRepository userRepository) {
+		userRepository.save(new User("admin", "ap", "a@x.com"));
+		userRepository.save(new User("bbb", "bp", "b@x.com"));
+		userRepository.save(new User("ccc", "cp", "c@x.com"));
+		userRepository.save(new User("ddd", "dp", "d@x.com"));
 	}
-	
-	@Bean
-	public CommandLineRunner demoFavBoards(UserRepository userRepository, BoardRepository boardRepository, FavBoardRepository favBoardRepository) {
-		return (args) -> {
-			//User user1 = userRepository.findOne(1L);
-			//Board board1 = boardRepository.findOne(1L);
-			FavBoard favBoard = new FavBoard();
-			favBoard.setUserId(1L);
-			favBoard.setBoardId(1L);
-			favBoardRepository.save(favBoard);
-		};
+
+	private void demoBoards(BoardRepository boardRepository, CardListRepository cardListRepository, CardRepository cardRepository) {
+		Board board1 = boardRepository.save(new Board("Tabliczka 1", null));
+		Board board2 = boardRepository.save(new Board("Tabliczka 2", null));
+		boardRepository.save(new Board("Tabliczka 3", new ArrayList<>()));
+		CardList list11 = cardListRepository.save(new CardList("Lista 1/1", board1, null));
+		cardListRepository.save(new CardList("Lista 1/2", board1, null));
+		CardList list13 = cardListRepository.save(new CardList("Lista 1/3", board1, null));
+		CardList list21 = cardListRepository.save(new CardList("Lista 2/1", board2, null));
+		cardRepository.save(new Card("Karta 1/1/1", list11));
+		cardRepository.save(new Card("Karta 1/1/2", list11));
+		cardRepository.save(new Card("Karta 1/3/1", list13));
+		cardRepository.save(new Card("Karta 1/3/2", list13));
+		cardRepository.save(new Card("Karta 1/3/3", list13));
+		cardRepository.save(new Card("Karta 1/3/4", list13));
+		cardRepository.save(new Card("Karta 2/1/1", list21));
 	}
-	
+
+	private void demoFavBoards(FavBoardRepository favBoardRepository) {
+		FavBoard favBoard = new FavBoard();
+		favBoard.setUserId(1L);
+		favBoard.setBoardId(1L);
+		favBoardRepository.save(favBoard);
+	}
 }
