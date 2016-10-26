@@ -21,6 +21,9 @@ public class Board implements Serializable {
 	@OneToMany(mappedBy = "board", targetEntity = CardList.class, cascade = CascadeType.ALL)
 	private List<CardList> lists;
 	
+	@OneToMany(mappedBy = "board", targetEntity = FavBoard.class, cascade = CascadeType.REMOVE)
+    private List<FavBoard> likingUsers;
+	
 	public Board() { }
 
 	public Board(String name, List<CardList> lists) {
@@ -51,6 +54,14 @@ public class Board implements Serializable {
 
 	public void setLists(List<CardList> lists) {
 		this.lists = lists;
+	}
+
+	public List<FavBoard> getLikingUsers() {
+		return likingUsers;
+	}
+
+	public void setLikingUsers(List<FavBoard> likingUsers) {
+		this.likingUsers = likingUsers;
 	}
 
 }
