@@ -26,7 +26,7 @@ public class TrelloApplication {
 	@Bean
 	public CommandLineRunner demoUsers(UserRepository userRepository) {
 		return (args) -> {
-			userRepository.save(new User("admin", "ap", "a@x.com"));
+			userRepository.save(new User("admin", "admin", "admin@localhost"));
 			userRepository.save(new User("bbb", "bp", "b@x.com"));
 			userRepository.save(new User("ccc", "cp", "c@x.com"));
 			userRepository.save(new User("ddd", "dp", "d@x.com"));

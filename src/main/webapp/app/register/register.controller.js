@@ -5,9 +5,9 @@
         .module('trello')
         .controller('RegisterController', RegisterController);
 
-    RegisterController.$inject = ['$scope', '$http'];
+    RegisterController.$inject = ['$scope', '$state', '$http', 'LoginService'];
 
-    function RegisterController ($scope, $http) {
+    function RegisterController ($scope, $state, $http, LoginService) {
         $scope.register = register;
 
         $scope.passwordDoesntMatch = false;
@@ -23,6 +23,10 @@
         $scope.email = '';
         $scope.password = '';
 
+        if (LoginService.isAuthenticated()) {
+            $state.go('home');
+        }
+
         function register () {
             if ($scope.password !== $scope.confirmPassword) {
                 $scope.passwordDoesntMatch = true;
@@ -31,7 +35,7 @@
 
                 $http({
                     method: 'POST',
-                    url: '/users',
+                    url: '/register',
                     data: {
                         login: $scope.login,
                         email: $scope.email,

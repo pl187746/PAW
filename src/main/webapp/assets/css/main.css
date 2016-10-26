@@ -181,7 +181,7 @@ body {
     color: white !important;
 }
 
-.register-block {
+.register-block, .login-block {
     background-color: #f6f6f6;
     border: #919191 solid 1px;
     border-radius: 4px;

@@ -21,8 +21,6 @@
         $scope.returnArchiveList = returnArchiveList;
 
         $scope.board = null;
-        $scope.user = null;
-
         $scope.archList = [];
 
         loadBoard($stateParams.id);
