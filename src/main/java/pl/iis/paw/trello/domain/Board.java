@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Board implements Serializable {
 	
@@ -20,6 +22,14 @@ public class Board implements Serializable {
 	
 	@OneToMany(mappedBy = "board", targetEntity = CardList.class, cascade = CascadeType.ALL)
 	private List<CardList> lists;
+	
+	@ManyToMany(mappedBy = "favoriteBoards")
+	@JoinTable(name = "UsersFavoriteBoards",
+		joinColumns = { @JoinColumn(name = "board_id", referencedColumnName = "board_id") },
+		inverseJoinColumns = { @JoinColumn(name = "user_id", referencedColumnName = "user_id") }
+		)
+	@JsonIgnore
+	private List<User> likingUsers;
 	
 	public Board() { }
 
@@ -51,6 +61,14 @@ public class Board implements Serializable {
 
 	public void setLists(List<CardList> lists) {
 		this.lists = lists;
+	}
+
+	public List<User> getLikingUsers() {
+		return likingUsers;
+	}
+
+	public void setLikingUsers(List<User> likingUsers) {
+		this.likingUsers = likingUsers;
 	}
 
 }

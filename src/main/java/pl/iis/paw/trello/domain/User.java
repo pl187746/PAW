@@ -4,8 +4,9 @@ package pl.iis.paw.trello.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.validator.constraints.Email;
 
+import java.util.List;
+
 import javax.persistence.*;
-import javax.persistence.Column;
 
 @Entity
 public class User {
@@ -25,13 +26,22 @@ public class User {
     @Email
     @Column(name = "email")
     private String email;
+    
+    @ManyToMany(mappedBy = "likingUsers")
+    @JoinTable(name = "UsersFavoriteBoards",
+		joinColumns = { @JoinColumn(name = "user_id", referencedColumnName = "user_id") },
+		inverseJoinColumns = { @JoinColumn(name = "board_id", referencedColumnName = "board_id") }
+    	)
+    @JsonIgnore
+    private List<Board> favoriteBoards;
 
     public User() { } // JPA
 
-    public User(String login, String password, String email) {
+    public User(String login, String password, String email, List<Board> favoriteBoards) {
         this.login = login;
         this.password = password;
         this.email = email;
+        this.favoriteBoards = favoriteBoards;
     }
 
     public Long getId() {
@@ -65,4 +75,12 @@ public class User {
     public void setEmail(String email) {
         this.email = email;
     }
+
+	public List<Board> getFavoriteBoards() {
+		return favoriteBoards;
+	}
+
+	public void setFavoriteBoards(List<Board> favoriteBoards) {
+		this.favoriteBoards = favoriteBoards;
+	}
 }
