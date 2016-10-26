@@ -48,7 +48,8 @@ public class CardService {
     public Card updateCard(Long id, Card card) {
     	Card existingCard = findCardById(id);
     	
-    	existingCard.setName(card.getName());
+    	Optional.ofNullable(card.getName()).ifPresent(existingCard::setName);
+    	Optional.ofNullable(card.getOrd()).ifPresent(existingCard::setOrd);
     	
     	return cardRepository.save(existingCard);
     }

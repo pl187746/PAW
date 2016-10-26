@@ -26,6 +26,9 @@ public class Card implements Serializable {
 	@JsonIgnore
 	private CardList cardList;
 	
+	@Column(name = "card_ord")
+	private Long ord;
+	
 	public Card() { }
 
 	public Card(String name, CardList cardList) {
@@ -70,4 +73,13 @@ public class Card implements Serializable {
 				.map(CardList::getId)
 				.orElse(null);
 	}
+
+	public Long getOrd() {
+		return ord;
+	}
+
+	public void setOrd(Long ord) {
+		this.ord = ord;
+	}
+
 }
