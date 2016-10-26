@@ -63,13 +63,30 @@
             }
         }
 		
+		function firstListIdx() {
+			var lists = getLists();
+			for(var li = 0; li < lists.length; ++li) {
+				if(!lists[li].archive)
+					return li;
+			}
+			return null;
+		}
+		
+		function lastListIdx() {
+			var lists = getLists();
+			for(var li = lists.length - 1; li >= 0; --li) {
+				if(!lists[li].archive)
+					return li;
+			}
+			return null;
+		}
+		
 		function isListFirst(list) {
-			return getLists().indexOf(list) == 0;
+			return getLists().indexOf(list) == firstListIdx();
 		}
 		
 		function isListLast(list) {
-			var lists = getLists();
-			return lists.indexOf(list) == (lists.length - 1);
+			return getLists().indexOf(list) == lastListIdx();
 		}
 		
 		function isCardFirst(list, card) {
