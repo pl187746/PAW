@@ -12,6 +12,9 @@
         $scope.updateCard = updateCard;
         $scope.removeCard = removeCard;
         $scope.addCard = addCard;
+		$scope.moveCard = moveCard;
+		$scope.isCardFirst = isCardFirst;
+		$scope.isCardLast = isCardLast;
 
         // Cards List
         $scope.removeList = removeList;
@@ -22,9 +25,6 @@
 		$scope.moveList = moveList;
 		$scope.isListFirst = isListFirst;
 		$scope.isListLast = isListLast;
-		$scope.moveCard = moveCard;
-		$scope.isCardFirst = isCardFirst;
-		$scope.isCardLast = isCardLast;
 
         $scope.board = null;
         $scope.user = null;
