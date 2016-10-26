@@ -19,6 +19,10 @@
                     <button ui-sref="board({id:board.id})" class="btn btn-info board-button-go">
                         <i class="fa fa-sign-in" aria-hidden="true"></i>
                     </button>
+					<span ng-show="isAuthenticated()">
+						<button ng-show="!isUserLikingBoard(board.id)" ng-click="likeBoard(board.id)">Like</button>
+						<button ng-show="isUserLikingBoard(board.id)" ng-click="unlikeBoard(board.id)">Unlike</button>
+					</span>
                 </div>
             </div>
         </div>

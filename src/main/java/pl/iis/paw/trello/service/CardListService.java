@@ -48,7 +48,9 @@ public class CardListService {
     public CardList updateCardList(Long id, CardList cardList) {
     	CardList existingCardList = findCardListById(id);
     	
-    	existingCardList.setName(cardList.getName());
+    	Optional.ofNullable(cardList.getName()).ifPresent(existingCardList::setName);
+    	Optional.ofNullable(cardList.getBoard()).ifPresent(existingCardList::setBoard);
+    	Optional.ofNullable(cardList.getOrd()).ifPresent(existingCardList::setOrd);
         existingCardList.setArchive(cardList.isArchive());
     	
     	return cardListRepository.save(existingCardList);

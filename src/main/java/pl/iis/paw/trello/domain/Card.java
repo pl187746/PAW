@@ -1,6 +1,8 @@
 package pl.iis.paw.trello.domain;
 
 import java.io.Serializable;
+import java.util.Optional;
+
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -23,6 +25,9 @@ public class Card implements Serializable {
 	@JoinColumn(name = "list_id", referencedColumnName = "list_id")
 	@JsonIgnore
 	private CardList cardList;
+	
+	@Column(name = "card_ord")
+	private Long ord;
 	
 	public Card() { }
 
@@ -61,4 +66,20 @@ public class Card implements Serializable {
 		this.cardList = new CardList();
 		this.cardList.setId(listId);
 	}
+	
+	@JsonProperty(value = "listId")
+	public Long getListId() {
+		return Optional.ofNullable(cardList)
+				.map(CardList::getId)
+				.orElse(null);
+	}
+
+	public Long getOrd() {
+		return ord;
+	}
+
+	public void setOrd(Long ord) {
+		this.ord = ord;
+	}
+
 }
