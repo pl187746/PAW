@@ -30,6 +30,9 @@ public class CardList implements Serializable {
 	@OneToMany(mappedBy = "cardList", targetEntity = Card.class, cascade = CascadeType.REMOVE)
 	private List<Card> cards;
 	
+	@Column(name = "list_ord")
+	private Long ord;
+	
 	public CardList() { }
 
 	public CardList(String name, Board board, List<Card> cards) {
@@ -82,5 +85,13 @@ public class CardList implements Serializable {
 		return Optional.ofNullable(board)
 				.map(Board::getId)
 				.orElse(null);
+	}
+
+	public Long getOrd() {
+		return ord;
+	}
+
+	public void setOrd(Long ord) {
+		this.ord = ord;
 	}
 }
