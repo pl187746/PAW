@@ -30,6 +30,8 @@
                     <input ng-show="cardInput" type="text" ng-model="card.name" value="card.name" class="card card-editable">
 
                     <span class="center-block text-center">
+						<button ng-show="cardInput && !isListFirst()" ng-click="; cardInput = false"
+                                class="btn list-button-manage"><i class="fa fa-arrow-left" aria-hidden="true"></i></button>
 						<button ng-show="cardInput && !isCardFirst(list, card)" ng-click="moveCard(list, card, -1); cardInput = false"
                                 class="btn list-button-manage"><i class="fa fa-arrow-up" aria-hidden="true"></i></button>
                         <button ng-show="cardInput" ng-click="updateCard(card,list); cardInput = false"
@@ -38,6 +40,8 @@
                                 class="btn btn-danger card-button-manage"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
 						<button ng-show="cardInput && !isCardLast(list, card)" ng-click="moveCard(list, card, 1); cardInput = false"
                                 class="btn list-button-manage"><i class="fa fa-arrow-down" aria-hidden="true"></i></button>
+						<button ng-show="cardInput && !isListLast(list)" ng-click="; cardInput = false"
+                                class="btn list-button-manage"><i class="fa fa-arrow-right" aria-hidden="true"></i></button>
                     </span>
                 </div>
 
