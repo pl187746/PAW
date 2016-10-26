@@ -27,36 +27,54 @@
             $state.go('home');
         }
 
-        function register () {
-            if ($scope.password !== $scope.confirmPassword) {
-                $scope.passwordDoesntMatch = true;
-            } else {
-                $scope.passwordDoesntMatch = $scope.loginTaken = $scope.emailTaken = $scope.success = $scope.error = false;
-
-                $http({
-                    method: 'POST',
-                    url: '/register',
-                    data: {
-                        login: $scope.login,
-                        email: $scope.email,
-                        password: $scope.password
+        function register() {
+            LoginService.register($scope.credentials)
+                .then(function () {
+                    $scope.authenticationError = false;
+                    $scope.authenticationSuccess = true;
+                    console.log($state.current.name);
+                    if ($state.current.name === 'register' || $state.current.name === 'login') {
+                        $state.go('home');
                     }
-                }).then(function successCallback(response) {
+                })
+                .catch(function (response) {
+                    if (response.status >= 400) {
+                        $scope.authenticationError = true;
+                    }
+                });
+        }
+
+        function register () {
+            if (!passwordsMatches()) {
+                $scope.passwordDoesntMatch = true;
+                return;
+            }
+
+            resetStates();
+
+            var credentials = {
+                login: $scope.login,
+                email: $scope.email,
+                password: $scope.password
+            };
+
+            LoginService.register(credentials)
+                .then(function () {
                     console.log('User registered');
                     $scope.success = true;
-                }, function errorCallback(response) {
+                })
+                .catch(function (response) {
                     console.log('Error while registering user');
                     $scope.success = false;
-                    if (response.status === 409) {
+
+                    if (response.status === 409) { // Conflict code
                         var errorMessage = response.data.message;
+
                         if (errorMessage === 'login exists') {
-                            console.log('Login is already in use');
                             $scope.loginTaken = true;
                         } if (errorMessage === 'email exists') {
-                            console.log('Email is already in use');
                             $scope.emailTaken = true;
                         } else if (errorMessage === 'login and email exists') {
-                            console.log('Login and email are already in use');
                             $scope.loginTaken = true;
                             $scope.emailTaken = true;
                         }
@@ -65,6 +83,13 @@
                     }
                 });
             }
-        }
+
+            function passwordsMatches() {
+                return $scope.password === $scope.confirmPassword;
+            }
+
+            function resetStates() {
+                $scope.passwordDoesntMatch = $scope.loginTaken = $scope.emailTaken = $scope.success = $scope.error = false;
+            }
     }
 })();

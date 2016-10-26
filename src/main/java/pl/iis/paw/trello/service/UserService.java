@@ -58,6 +58,7 @@ public class UserService {
 
         User user = new User();
         user.setLogin(registerVM.getLogin());
+        user.setPassword(registerVM.getPassword());
         user.setEmail(registerVM.getEmail());
 
         return userRepository.save(user);

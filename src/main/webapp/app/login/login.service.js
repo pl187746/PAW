@@ -12,6 +12,7 @@
             login: login,
             logout: logout,
             isAuthenticated: isAuthenticated,
+            register: register,
             loadUser: loadUser
         };
 
@@ -47,6 +48,14 @@
 
         function isAuthenticated() {
             return $rootScope.user != null;
+        }
+
+        function register(credentials) {
+            return $http({
+                method: 'POST',
+                url: '/register',
+                data: credentials
+            })
         }
 
         function loadUser() {
