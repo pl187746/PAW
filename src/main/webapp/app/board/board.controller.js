@@ -261,10 +261,18 @@
 			dir = ((dir < -1) ? -1 : ((dir > 1) ? 1 : dir));
 			var lists = getLists();
 			var idxList = lists.indexOf(list);
-			var newIdxList = idxList + dir;
-			if((newIdxList < 0) || (newIdxList >= lists.length))
-				return;
-			transferCardBetweenLists(card, list, lists[newIdxList]);
+			var newIdxList = idxList;
+			for(;;) {
+				newIdxList += dir;
+				if(newIdxList < 0 || newIdxList >= lists.length)
+					break;
+				if(!lists[newIdxList].archive)
+					break;
+			}
+			newIdxList = ((newIdxList < 0) ? 0 : ((newIdxList >= lists.length) ? (lists.length - 1) : newIdxList));
+			if(newIdxList != idxList) {
+				transferCardBetweenLists(card, list, lists[newIdxList]);
+			}
 		}
 		
 		function transferCardBetweenLists(card, fromList, toList) {
