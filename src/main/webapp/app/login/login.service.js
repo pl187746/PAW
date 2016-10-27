@@ -13,7 +13,8 @@
             logout: logout,
             isAuthenticated: isAuthenticated,
             register: register,
-            loadUser: loadUser
+            loadUser: loadUser,
+			saveUser: saveUser
         };
 
         return service;
@@ -62,5 +63,13 @@
             var userAsJSON = sessionStorage.user || localStorage.user;
             $rootScope.user = angular.fromJson(userAsJSON);
         }
+		
+		function saveUser() {
+			var userJSON = JSON.stringify($rootScope.user);
+			if(!!sessionStorage.user)
+				sessionStorage.setItem('user', userJSON);
+			else if(!!localStorage.user)
+				localStorage.setItem('user', userJSON);
+		}
     }
 })();
