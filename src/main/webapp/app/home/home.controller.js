@@ -18,10 +18,6 @@
 		$scope.isUserLikingBoard = isUserLikingBoard;
 		$scope.likeBoard = likeBoard;
 		$scope.unlikeBoard = unlikeBoard;
-		
-		$scope.user = null;
-		
-		$rootScope.$on('loginEvent', onLoginEvent);
 
         loadBoards();
 
@@ -83,47 +79,54 @@
             }
         }
 		
-		function onLoginEvent(event, user) {
-			$scope.user = user;
+		function getUser() {
+			return $rootScope.user;
 		}
 		
 		function isAuthenticated() {
-            return $scope.user != null;
+            return getUser() != null;
         }
 		
 		function isUserLikingBoard(boardId) {
 			if(!isAuthenticated())
 				return false;
-			for(var fb in $scope.user.favoriteBoards) {
-				if($scope.user.favoriteBoards[fb].boardId == boardId)
+			for(var fb in getUser().favoriteBoards) {
+				if(getUser().favoriteBoards[fb].boardId == boardId)
 					return true;
 			}
 			return false;
 		}
 		
 		function likeBoard(boardId) {
-			FavBoard.save({ 'userId': $scope.user.id, 'boardId': boardId}, onSuccess, onError);
+			var user = getUser();
+			FavBoard.save({ 'userId': user.id, 'boardId': boardId}, onSuccess, onError);
 			
-			function onSuccess() {
-                console.log('User id=' + $scope.user.id + ' liked board id=' + boardId);
-				$rootScope.$emit('updateUser');
+			function onSuccess(data) {
+                console.log('User id=' + user.id + ' liked board id=' + boardId);
+				user.favoriteBoards.push(data);
             }
 
             function onError() {
-                console.log('Error while liking user.id=' + $scope.user.id + ' board.id=' + boardId);
+                console.log('Error while liking user.id=' + user.id + ' board.id=' + boardId);
             }
 		}
 		
 		function unlikeBoard(boardId) {
-		FavBoard.delete({ 'userId': $scope.user.id, 'boardId': boardId}, onSuccess, onError);
+			var user = getUser();
+			FavBoard.delete({ 'userId': user.id, 'boardId': boardId}, onSuccess, onError);
 			
 			function onSuccess() {
-                console.log('User id=' + $scope.user.id + ' unliked board id=' + boardId);
-				$rootScope.$emit('updateUser');
+                console.log('User id=' + user.id + ' unliked board id=' + boardId);
+				for(var i in user.favoriteBoards) {
+					if(user.favoriteBoards[i].boardId == boardId) {
+						user.favoriteBoards.splice(i, 1);
+						break;
+					}
+				}
             }
 
             function onError() {
-                console.log('Error while unliking user.id=' + $scope.user.id + ' board.id=' + boardId);
+                console.log('Error while unliking user.id=' + user.id + ' board.id=' + boardId);
             }
 		}
 		
