@@ -70,6 +70,11 @@ public class CardService {
     			existingCard.setListId(i);
     		});
     	
+    	if(existingCard.isArchive() != card.isArchive()) {
+    		recordService.record(existingCard.getCardList().getBoard(), (card.isArchive() ? RecordType.CARD_ARCHIVE : RecordType.CARD_UNARCHIVE), existingCard.getName());
+    		existingCard.setArchive(card.isArchive());
+    	}
+    	
     	return cardRepository.save(existingCard);
     }
     

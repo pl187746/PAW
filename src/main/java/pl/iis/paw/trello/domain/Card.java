@@ -29,6 +29,9 @@ public class Card implements Serializable {
 	@Column(name = "card_ord")
 	private Long ord;
 	
+	@Column(name = "archive")
+	private boolean archive;
+	
 	public Card() { }
 
 	public Card(String name, CardList cardList) {
@@ -80,6 +83,14 @@ public class Card implements Serializable {
 
 	public void setOrd(Long ord) {
 		this.ord = ord;
+	}
+	
+	public boolean isArchive() {
+		return archive;
+	}
+
+	public void setArchive(boolean archive) {
+		this.archive = archive;
 	}
 
 }
