@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import pl.iis.paw.trello.domain.CardList;
+import pl.iis.paw.trello.domain.RecordType;
 import pl.iis.paw.trello.exception.CardListNotFoundException;
 import pl.iis.paw.trello.repository.CardListRepository;
 
@@ -17,10 +18,12 @@ public class CardListService {
 	private final static Logger log = LoggerFactory.getLogger(CardListService.class);
 
     private CardListRepository cardListRepository;
+    private RecordService recordService;
 
     @Autowired
-    public CardListService(CardListRepository cardListRepository) {
+    public CardListService(CardListRepository cardListRepository, RecordService recordService) {
         this.cardListRepository = cardListRepository;
+        this.recordService = recordService;
     }
     
     public List<CardList> getCardLists() {
@@ -38,7 +41,9 @@ public class CardListService {
     }
     
     public CardList addCardList(CardList cardList) {
-    	return cardListRepository.save(cardList);
+    	cardList = cardListRepository.save(cardList);
+    	recordService.record(cardList.getBoard(), RecordType.LIST_CREATE, cardList.getName());
+    	return cardList;
     }
     
     public CardList updateCardList(CardList cardList) {
@@ -48,15 +53,26 @@ public class CardListService {
     public CardList updateCardList(Long id, CardList cardList) {
     	CardList existingCardList = findCardListById(id);
     	
-    	Optional.ofNullable(cardList.getName()).ifPresent(existingCardList::setName);
+    	Optional.ofNullable(cardList.getName())
+		.filter(n -> !n.equals(existingCardList.getName()))
+		.ifPresent(n -> {
+			recordService.record(existingCardList.getBoard(), RecordType.LIST_RENAME, existingCardList.getName(), n);
+			existingCardList.setName(n);
+		});
+    	
     	Optional.ofNullable(cardList.getBoard()).ifPresent(existingCardList::setBoard);
     	Optional.ofNullable(cardList.getOrd()).ifPresent(existingCardList::setOrd);
-        existingCardList.setArchive(cardList.isArchive());
+        
+    	if(existingCardList.isArchive() != cardList.isArchive()) {
+    		recordService.record(existingCardList.getBoard(), (cardList.isArchive() ? RecordType.LIST_ARCHIVE : RecordType.LIST_UNARCHIVE), existingCardList.getName());
+    		existingCardList.setArchive(cardList.isArchive());
+    	}
     	
     	return cardListRepository.save(existingCardList);
     }
     
     public void deleteCardList(CardList cardList) {
+    	recordService.record(cardList.getBoard(), RecordType.LIST_DELETE, cardList.getName());
     	cardListRepository.delete(cardList);
     }
     
