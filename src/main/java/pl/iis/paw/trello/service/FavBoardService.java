@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import pl.iis.paw.trello.domain.Board;
 import pl.iis.paw.trello.domain.FavBoard;
+import pl.iis.paw.trello.domain.RecordType;
 import pl.iis.paw.trello.domain.User;
 import pl.iis.paw.trello.exception.FavBoardNotFoundException;
 import pl.iis.paw.trello.repository.FavBoardRepository;
@@ -21,11 +22,13 @@ public class FavBoardService {
 	private final static Logger log = LoggerFactory.getLogger(BoardService.class);
 	
 	private FavBoardRepository favBoardRepository;
+	private RecordService recordService;
 
 	@Autowired
-	public FavBoardService(FavBoardRepository favBoardRepository) {
+	public FavBoardService(FavBoardRepository favBoardRepository, RecordService recordService) {
 		super();
 		this.favBoardRepository = favBoardRepository;
+		this.recordService = recordService;
 	}
 	
 	public List<FavBoard> getFavBoards() {
@@ -55,10 +58,13 @@ public class FavBoardService {
 	}
 	
 	public FavBoard addFavBoard(FavBoard favBoard) {
-		return favBoardRepository.save(favBoard);
+		favBoard = favBoardRepository.save(favBoard);
+		recordService.record(favBoard.getBoard(), RecordType.BOARD_LIKE);
+		return favBoard;
 	}
 	
 	public void deleteFavBoard(FavBoard favBoard) {
+		recordService.record(favBoard.getBoard(), RecordType.BOARD_UNLIKE);
 		favBoardRepository.delete(favBoard);
 	}
 	
