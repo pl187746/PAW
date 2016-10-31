@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import pl.iis.paw.trello.domain.Card;
+import pl.iis.paw.trello.domain.CardList;
 import pl.iis.paw.trello.domain.RecordType;
 import pl.iis.paw.trello.exception.CardNotFoundException;
 import pl.iis.paw.trello.repository.CardRepository;
@@ -23,11 +24,13 @@ public class CardService {
 
     private CardRepository cardRepository;
     private RecordService recordService;
+    private CardListService cardListService;
 
     @Autowired
-    public CardService(CardRepository cardRepository, RecordService recordService) {
+    public CardService(CardRepository cardRepository, RecordService recordService, CardListService cardListService) {
         this.cardRepository = cardRepository;
         this.recordService = recordService;
+        this.cardListService = cardListService;
     }
     
     public List<Card> getCards() {
@@ -69,8 +72,9 @@ public class CardService {
     	Optional.ofNullable(card.getListId())
     		.filter(i -> !i.equals(existingCard.getListId()))
     		.ifPresent(i -> {
-    			recordService.record(existingCard.getCardList().getBoard(), RecordType.CARD_CHANGE_LIST, p("oldListName", existingCard.getCardList().getName()), p("newListName", card.getCardList().getName()));
-    			existingCard.setListId(i);
+    			CardList dstCardList = cardListService.findCardListById(i);
+    			recordService.record(existingCard.getCardList().getBoard(), RecordType.CARD_CHANGE_LIST, p("cardName", existingCard.getName()), p("oldListName", existingCard.getCardList().getName()), p("newListName", dstCardList.getName()));
+    			existingCard.setCardList(dstCardList);
     		});
     	
     	if(existingCard.isArchive() != card.isArchive()) {
