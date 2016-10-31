@@ -73,6 +73,10 @@
             </ul>
         </div>
     </div>
-
+	
+	<button type="button" ng-click="showDiary = !showDiary">Diary</button>
+	<div ng-show="showDiary">
+		<p ng-repeat="rec in board.diary">{{fmtRecord(rec);}}</p>
+	</div>
 
 </div>

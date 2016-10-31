@@ -26,6 +26,8 @@
 		$scope.moveList = moveList;
 		$scope.isListFirst = isListFirst;
 		$scope.isListLast = isListLast;
+		
+		$scope.fmtRecord = fmtRecord;
 
         $scope.board = null;
         $scope.archList = [];
@@ -298,6 +300,29 @@
 			card.ord = toList.cards.length;
 			toList.cards.push(card);
 			updateCard(card);
+		}
+		
+		function fmtRecord(rec) {
+			var date = new Date(rec.timestamp);
+			var msg = date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds() + " " + date.getDate() + "." + (date.getMonth() + 1) + "." + date.getFullYear() + " ";
+			switch(rec.type) {
+				case "BOARD_CREATE": msg += "Utworzono tablicę pod nazwą " + rec.params.boardName; break;
+				case "BOARD_RENAME": msg += "Zmieniono nazwę tablicy z " + rec.params.oldBoardName + " na " + rec.params.newBoardName; break;
+				case "BOARD_LIKE": msg += "Poluniono tablicę"; break;
+				case "BOARD_UNLIKE": msg += "Odlubiono tablicę"; break;
+				case "LIST_CREATE": msg += "Utworzono listę " + rec.params.listName; break;
+				case "LIST_DELETE": msg += "Usunięto listę " + rec.params.listName; break;
+				case "LIST_RENAME": msg += "Zmieniono nazwę listy " + rec.params.oldListName + " na " + rec.params.newListName; break;
+				case "LIST_ARCHIVE": msg += "Zarchiwizowano listę " + rec.params.listName; break;
+				case "LIST_UNARCHIVE": msg += "Odarchiwizowano listę " + rec.params.listName; break;
+				case "CARD_CREATE": msg += "Utworzono kartę " + rec.params.cardName + " w liście " + rec.params.listName; break;
+				case "CARD_DELETE": msg += "Usunięto kartę " + rec.params.cardName; break;
+				case "CARD_RENAME": msg += "Zmieniono nazwę karty " + rec.params.oldCardName + " na " + rec.params.newCardName; break;
+				case "CARD_CHANGE_LIST": msg += "Przeniesiono kartę " + rec.params.cardName + " z listy " + rec.params.oldListName + " do " + rec.params.newListName; break;
+				case "CARD_ARCHIVE": msg += "Zarchiwizowano kartę " + rec.params.cardName; break;
+				case "CARD_UNARCHIVE": msg += "Odarchiwizowano kartę " + rec.params.cardName; break;
+			}
+			return msg;
 		}
 		
     }
