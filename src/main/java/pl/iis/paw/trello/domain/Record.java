@@ -17,6 +17,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -35,6 +36,7 @@ public class Record implements Serializable {
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "timestamp")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, timezone = "UTC", pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
 	private Date timestamp;
 	
 	@ManyToOne(targetEntity = Board.class)
