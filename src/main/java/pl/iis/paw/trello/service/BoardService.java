@@ -1,12 +1,16 @@
 package pl.iis.paw.trello.service;
 
+import static pl.iis.paw.trello.service.RecordService.P.p;
+
 import java.util.List;
 import java.util.Optional;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
 import pl.iis.paw.trello.domain.Board;
 import pl.iis.paw.trello.domain.RecordType;
 import pl.iis.paw.trello.exception.BoardNotFoundException;
@@ -42,7 +46,7 @@ public class BoardService {
     
     public Board addBoard(Board board) {
     	board = boardRepository.save(board);
-    	recordService.record(board, RecordType.BOARD_CREATE, board.getName());
+    	recordService.record(board, RecordType.BOARD_CREATE, p("boardName", board.getName()));
     	return board;
     }
     
@@ -56,7 +60,7 @@ public class BoardService {
     	Optional.ofNullable(board.getName())
     		.filter(n -> !n.equals(existingBoard.getName()))
     		.ifPresent(n -> {
-    			recordService.record(existingBoard, RecordType.BOARD_RENAME, existingBoard.getName(), n);
+    			recordService.record(existingBoard, RecordType.BOARD_RENAME, p("oldBoardName", existingBoard.getName()), p("newBoardName", n));
     			existingBoard.setName(n);
     		});
     	

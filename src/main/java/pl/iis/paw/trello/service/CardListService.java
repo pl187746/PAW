@@ -1,12 +1,16 @@
 package pl.iis.paw.trello.service;
 
+import static pl.iis.paw.trello.service.RecordService.P.p;
+
 import java.util.List;
 import java.util.Optional;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
 import pl.iis.paw.trello.domain.CardList;
 import pl.iis.paw.trello.domain.RecordType;
 import pl.iis.paw.trello.exception.CardListNotFoundException;
@@ -42,7 +46,7 @@ public class CardListService {
     
     public CardList addCardList(CardList cardList) {
     	cardList = cardListRepository.save(cardList);
-    	recordService.record(cardList.getBoard(), RecordType.LIST_CREATE, cardList.getName());
+    	recordService.record(cardList.getBoard(), RecordType.LIST_CREATE,  p("listName", cardList.getName()));
     	return cardList;
     }
     
@@ -56,7 +60,7 @@ public class CardListService {
     	Optional.ofNullable(cardList.getName())
 		.filter(n -> !n.equals(existingCardList.getName()))
 		.ifPresent(n -> {
-			recordService.record(existingCardList.getBoard(), RecordType.LIST_RENAME, existingCardList.getName(), n);
+			recordService.record(existingCardList.getBoard(), RecordType.LIST_RENAME, p("oldListName", existingCardList.getName()), p("newListName", n));
 			existingCardList.setName(n);
 		});
     	
@@ -64,7 +68,7 @@ public class CardListService {
     	Optional.ofNullable(cardList.getOrd()).ifPresent(existingCardList::setOrd);
         
     	if(existingCardList.isArchive() != cardList.isArchive()) {
-    		recordService.record(existingCardList.getBoard(), (cardList.isArchive() ? RecordType.LIST_ARCHIVE : RecordType.LIST_UNARCHIVE), existingCardList.getName());
+    		recordService.record(existingCardList.getBoard(), (cardList.isArchive() ? RecordType.LIST_ARCHIVE : RecordType.LIST_UNARCHIVE), p("listName", existingCardList.getName()));
     		existingCardList.setArchive(cardList.isArchive());
     	}
     	
@@ -72,7 +76,7 @@ public class CardListService {
     }
     
     public void deleteCardList(CardList cardList) {
-    	recordService.record(cardList.getBoard(), RecordType.LIST_DELETE, cardList.getName());
+    	recordService.record(cardList.getBoard(), RecordType.LIST_DELETE, p("listName", cardList.getName()));
     	cardListRepository.delete(cardList);
     }
     

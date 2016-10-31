@@ -2,7 +2,9 @@ package pl.iis.paw.trello.service;
 
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,15 +44,36 @@ public class RecordService {
 		return user;
 	}
 	
-	public void record(Board board, RecordType type, String... params) {
-		Record rec = new Record(type, new Date(), board, currentUser(), Arrays.asList(params));
+	public void record(Board board, RecordType type, Map<String, String> params) {
+		Record rec = new Record(type, new Date(), board, currentUser(), params);
 		recordRepository.save(rec);
 	}
 	
-	public void record(Long boardId, RecordType type, String... params) {
+	public void record(Board board, RecordType type, P... params) {
+		record(board, type, P.toMap(params));
+	}
+	
+	public void record(Long boardId, RecordType type, P... params) {
 		Board board = new Board();
 		board.setId(boardId);
 		record(board, type, params);
+	}
+	
+	public static class P {
+		public String name;
+		public String value;
+		public P(String name, String value) {
+			this.name = name;
+			this.value = value;
+		}
+		public static P p(String name, String value) {
+			return new P(name, value);
+		}
+		public static Map<String, String> toMap(P[] array) {
+			Map<String, String> map = new HashMap<>();
+			Arrays.stream(array).forEach(p -> map.put(p.name, p.value));
+			return map;
+		}
 	}
 
 }

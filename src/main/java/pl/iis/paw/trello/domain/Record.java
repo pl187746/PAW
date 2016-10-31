@@ -2,7 +2,7 @@ package pl.iis.paw.trello.domain;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import javax.persistence.Column;
@@ -47,12 +47,12 @@ public class Record implements Serializable {
 	@JsonIgnore
 	private User user;
 	
-	@ElementCollection(targetClass = String.class)
-	private List<String> params;
+	@ElementCollection
+	private Map<String, String> params;
 	
 	public Record() { }
 
-	public Record(RecordType type, Date timestamp, Board board, User user, List<String> params) {
+	public Record(RecordType type, Date timestamp, Board board, User user, Map<String, String> params) {
 		super();
 		this.type = type;
 		this.timestamp = timestamp;
@@ -101,11 +101,11 @@ public class Record implements Serializable {
 		this.user = user;
 	}
 
-	public List<String> getParams() {
+	public Map<String, String> getParams() {
 		return params;
 	}
 
-	public void setParams(List<String> params) {
+	public void setParams(Map<String, String> params) {
 		this.params = params;
 	}
 	
