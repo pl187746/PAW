@@ -15,8 +15,6 @@
                                 class="btn list-button-manage"><i class="fa fa-backward" aria-hidden="true"></i></button>
                         <button ng-show="listInput" ng-click="updateList(list); listInput = false"
                                 class="btn btn-success list-button-manage"><i class="fa fa-check" aria-hidden="true"></i></button>
-                        <button ng-show="listInput" ng-click="removeList(list); listInput = false"
-                                class="btn btn-danger list-button-manage"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
                         <button ng-show="listInput" ng-click="archiveList(list); listInput = false"
                                 class="btn btn-default list-button-manage"><i class="fa fa-archive" aria-hidden="true"></i></button>
 						<button ng-show="listInput && !isListLast(list)" ng-click="moveList(list, 1); listInput = false"
@@ -36,8 +34,6 @@
                                 class="btn list-button-manage"><i class="fa fa-arrow-up" aria-hidden="true"></i></button>
                         <button ng-show="cardInput" ng-click="updateCard(card,list); cardInput = false"
                                 class="btn btn-success card-button-manage"><i class="fa fa-check" aria-hidden="true"></i></button>
-                        <button ng-show="cardInput" ng-click="removeCard(card,list); cardInput = false"
-                                class="btn btn-danger card-button-manage"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
                         <button ng-show="cardInput" ng-click="archiveCard(card,list); cardInput = false"
                                 class="btn btn-default card-button-manage"><i class="fa fa-archive" aria-hidden="true"></i></button>
 						<button ng-show="cardInput && !isCardLast(list, card)" ng-click="moveCard(list, card, 1); cardInput = false"
@@ -71,13 +67,17 @@
             <ul class="dropdown-menu">
                 <h1>Lists:</h1>
                 <li ng-repeat="list in board.lists">
-                    <button ng-click="returnArchiveList(list)" ng-show="list.archive == true">{{list.name}}</button>
+                    <a ng-click="returnArchiveList(list)" ng-show="list.archive == true" class="archive-button">{{list.name}}</a>
+                    <a ng-show="list.archive == true" ng-click="removeList(list)"
+                            class="btn btn-danger archive-button"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
                 </li>
                 <hr>
                 <h1>Cards:</h1>
                 <div ng-repeat="list in board.lists">
                     <li ng-repeat="card in list.cards">
-                        <button ng-click="returnArchiveCard(card,list)" ng-show="card.archive == true">{{card.name}} from {{list.name}}</button>
+                        <a ng-click="returnArchiveCard(card,list)" ng-show="card.archive == true" class="archive-button">{{card.name}}({{list.name}})</a>
+                        <a ng-show="card.archive == true" ng-click="removeCard(card,list)"
+                                class="btn btn-danger archive-button"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
                     </li>
                 </div>
             </ul>
