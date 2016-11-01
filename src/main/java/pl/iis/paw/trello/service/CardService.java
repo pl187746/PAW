@@ -51,6 +51,7 @@ public class CardService {
     	Optional.ofNullable(card.getName()).ifPresent(existingCard::setName);
     	Optional.ofNullable(card.getOrd()).ifPresent(existingCard::setOrd);
     	Optional.ofNullable(card.getCardList()).ifPresent(existingCard::setCardList);
+        existingCard.setArchive(card.isArchive());
     	
     	return cardRepository.save(existingCard);
     }

@@ -26,6 +26,8 @@
 		$scope.moveList = moveList;
 		$scope.isListFirst = isListFirst;
 		$scope.isListLast = isListLast;
+		$scope.archiveCard = archiveCard;
+		$scope.returnArchiveCard = returnArchiveCard;
 
         $scope.board = null;
         $scope.archList = [];
@@ -256,6 +258,16 @@
                 console.log('Error while adding card')
             }
         }
+
+		function archiveCard(card,list){
+			card.archive = true;
+			updateCard(card,list);
+		}
+
+		function returnArchiveCard(card,list){
+			card.archive = false;
+			updateCard(card,list);
+		}
 
         function getCards(listIndex) {
             var list = getList(listIndex);

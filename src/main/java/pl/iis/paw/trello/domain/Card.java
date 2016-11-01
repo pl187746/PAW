@@ -20,6 +20,9 @@ public class Card implements Serializable {
 	
 	@Column(name = "name")
 	private String name;
+
+	@Column(name = "archive")
+	private boolean archive;
 	
 	@ManyToOne
 	@JoinColumn(name = "list_id", referencedColumnName = "list_id")
@@ -82,4 +85,11 @@ public class Card implements Serializable {
 		this.ord = ord;
 	}
 
+	public boolean isArchive() {
+		return archive;
+	}
+
+	public void setArchive(boolean archive) {
+		this.archive = archive;
+	}
 }
