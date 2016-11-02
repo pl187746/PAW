@@ -73,11 +73,7 @@ public class UserService {
     }
 
     public User updateUser(User user) {
-        return updateUser(user.getId(), user);
-    }
-
-    public User updateUser(Long id, User user) {
-        User existingUser = findUserById(id);
+        User existingUser = findUserById(user.getId());
 
         existingUser.setLogin(user.getLogin());
         existingUser.setEmail(user.getEmail());

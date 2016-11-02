@@ -26,7 +26,9 @@
 		$scope.moveList = moveList;
 		$scope.isListFirst = isListFirst;
 		$scope.isListLast = isListLast;
-		
+		$scope.archiveCard = archiveCard;
+		$scope.returnArchiveCard = returnArchiveCard;
+
 		$scope.fmtRecord = fmtRecord;
 
         $scope.board = null;
@@ -258,6 +260,16 @@
                 console.log('Error while adding card')
             }
         }
+
+		function archiveCard(card,list){
+			card.archive = true;
+			updateCard(card,list);
+		}
+
+		function returnArchiveCard(card,list){
+			card.archive = false;
+			updateCard(card,list);
+		}
 
         function getCards(listIndex) {
             var list = getList(listIndex);

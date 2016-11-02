@@ -188,6 +188,17 @@ body {
     padding: 20px;
 }
 
+.archive-button {
+    appearance: button;
+    -moz-appearance: button;
+    -webkit-appearance: button;
+    text-decoration: none;
+    font: menu;
+    color: ButtonText;
+    display: inline !important;
+    padding: 2px 2px;
+}
+
 .diary {
 	background-color: gainsboro;
 	padding: 10px;

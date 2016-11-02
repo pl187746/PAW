@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import pl.iis.paw.trello.exception.NotFoundException;
 import pl.iis.paw.trello.exception.UserAlreadyExistsException;
-import pl.iis.paw.trello.exception.UserNotFoundException;
 
 @ControllerAdvice
 public class ExceptionsHandler {
