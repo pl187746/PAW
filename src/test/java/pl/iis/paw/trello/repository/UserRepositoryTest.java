@@ -73,6 +73,13 @@ public class UserRepositoryTest {
     }
 
     @Test
+    public void findByEmail_WithNotExistingEmail_ShouldReturnNull() {
+        User user = userRepository.findByEmail("unknown@localhost");
+
+        assertThat(user, is(nullValue()));
+    }
+
+    @Test
     public void findAll_ShouldReturnAllUsers() {
         List<User> users = userRepository.findAll();
         Set<String> usersLogins = users.stream().map(User::getLogin).collect(Collectors.toSet());
