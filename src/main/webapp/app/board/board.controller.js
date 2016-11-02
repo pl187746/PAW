@@ -126,26 +126,22 @@
 			return moveObj(list.cards, card, dir, function() { updateCardOrds(list); });
 		}
 		
-		function updateListOrds() {
-			var lists = getLists();
-			for(var li in lists) {
-				var up = (lists[li].ord != li);
-				lists[li].ord = li;
+		function updateOrds(arr, updFun) {
+			for(var i in arr) {
+				var up = (arr[i].ord != i);
+				arr[i].ord = i;
 				if(up) {
-					updateList(lists[li]);
+					updFun(arr[i]);
 				}
 			}
 		}
 		
+		function updateListOrds() {
+			return updateOrds(getLists(), updateList);
+		}
+		
 		function updateCardOrds(list) {
-			var cards = list.cards;
-			for(var ci in cards) {
-				var up = (cards[ci].ord != ci);
-				cards[ci].ord = ci;
-				if(up) {
-					updateCard(cards[ci]);
-				}
-			}
+			return updateOrds(list.cards, updateCard);
 		}
 
         function removeList(list) {
@@ -206,7 +202,7 @@
             updateList(list);
         }
 
-        function updateCard(card,list) {
+        function updateCard(card) {
             console.log('Update card request for card,id: ' + card.id);
             Card.update(card, onSuccess, onError);
 
