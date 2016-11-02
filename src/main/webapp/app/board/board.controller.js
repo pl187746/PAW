@@ -63,56 +63,39 @@
             }
         }
 		
-		function firstListIdx() {
-			var lists = getLists();
-			for(var li = 0; li < lists.length; ++li) {
-				if(!lists[li].archive)
-					return li;
+		function firstIdx(arr) {
+			for(var i = 0; i < arr.length; ++i) {
+				if(!arr[i].archive)
+					return i;
 			}
 			return null;
 		}
 		
-		function lastListIdx() {
-			var lists = getLists();
-			for(var li = lists.length - 1; li >= 0; --li) {
-				if(!lists[li].archive)
-					return li;
+		function lastIdx(arr) {
+			for(var i = arr.length - 1; i >= 0; --i) {
+				if(!arr[i].archive)
+					return i;
 			}
 			return null;
 		}
 		
-		function firstCardIdx(list) {
-			var cards = list.cards;
-			for(var ci = 0; ci < cards.length; ++ci) {
-				if(!cards[ci].archive)
-					return ci;
-			}
-			return null;
-		}
-		
-		function lastCardIdx(list) {
-			var cards = list.cards;
-			for(var ci = cards.length - 1; ci >= 0; --ci) {
-				if(!cards[ci].archive)
-					return ci;
-			}
-			return null;
-		}
 		
 		function isListFirst(list) {
-			return getLists().indexOf(list) == firstListIdx();
+			var lists = getLists();
+			return lists.indexOf(list) == firstIdx(lists);
 		}
 		
 		function isListLast(list) {
-			return getLists().indexOf(list) == lastListIdx();
+			var lists = getLists();
+			return lists.indexOf(list) == lastIdx(lists);
 		}
 		
 		function isCardFirst(list, card) {
-			return list.cards.indexOf(card) == firstCardIdx(list);
+			return list.cards.indexOf(card) == firstIdx(list.cards);
 		}
 		
 		function isCardLast(list, card) {
-			return list.cards.indexOf(card) == lastCardIdx(list);
+			return list.cards.indexOf(card) == lastIdx(list.cards);
 		}
 		
 		function moveList(list, dir) {
