@@ -125,11 +125,19 @@
 			dir = ((dir < -1) ? -1 : ((dir > 1) ? 1 : dir));
 			var cards = list.cards;
 			var index = cards.indexOf(card);
-			var newIdx = index + dir;
-			if((newIdx < 0) || (newIdx >= cards.length))
-				return;
-			cards.splice(index + dir, 0, cards.splice(index, 1)[0]);
-			updateCardOrds(list);
+			var newIdx = index;
+			for(;;) {
+				newIdx += dir;
+				if(newIdx < 0 || newIdx >= cards.length)
+					break;
+				if(!cards[newIdx].archive)
+					break;
+			}
+			newIdx = ((newIdx < 0) ? 0 : ((newIdx >= cards.length) ? (cards.length - 1) : newIdx));
+			if(newIdx != index) {
+				cards.splice(newIdx, 0, cards.splice(index, 1)[0]);
+				updateCardOrds(list);
+			}
 		}
 		
 		function updateListOrds() {
