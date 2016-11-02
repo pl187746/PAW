@@ -65,94 +65,85 @@
             }
         }
 		
-		function firstListIdx() {
-			var lists = getLists();
-			for(var li = 0; li < lists.length; ++li) {
-				if(!lists[li].archive)
-					return li;
+		function firstIdx(arr) {
+			for(var i = 0; i < arr.length; ++i) {
+				if(!arr[i].archive)
+					return i;
 			}
 			return null;
 		}
 		
-		function lastListIdx() {
-			var lists = getLists();
-			for(var li = lists.length - 1; li >= 0; --li) {
-				if(!lists[li].archive)
-					return li;
+		function lastIdx(arr) {
+			for(var i = arr.length - 1; i >= 0; --i) {
+				if(!arr[i].archive)
+					return i;
 			}
 			return null;
 		}
+		
 		
 		function isListFirst(list) {
-			return getLists().indexOf(list) == firstListIdx();
+			var lists = getLists();
+			return lists.indexOf(list) == firstIdx(lists);
 		}
 		
 		function isListLast(list) {
-			return getLists().indexOf(list) == lastListIdx();
+			var lists = getLists();
+			return lists.indexOf(list) == lastIdx(lists);
 		}
 		
 		function isCardFirst(list, card) {
-			return list.cards.indexOf(card) == 0;
+			return list.cards.indexOf(card) == firstIdx(list.cards);
 		}
 		
 		function isCardLast(list, card) {
-			return list.cards.indexOf(card) == (list.cards.length - 1);
+			return list.cards.indexOf(card) == lastIdx(list.cards);
 		}
 		
-		function moveList(list, dir) {
+		function moveObj(arr, obj, dir, updFun) {
 			if(!dir)
 				return;
 			dir = ((dir < -1) ? -1 : ((dir > 1) ? 1 : dir));
-			var lists = getLists();
-			var index = lists.indexOf(list);
+			var index = arr.indexOf(obj);
 			var newIdx = index;
 			for(;;) {
 				newIdx += dir;
-				if(newIdx < 0 || newIdx >= lists.length)
+				if(newIdx < 0 || newIdx >= arr.length)
 					break;
-				if(!lists[newIdx].archive)
+				if(!arr[newIdx].archive)
 					break;
 			}
-			newIdx = ((newIdx < 0) ? 0 : ((newIdx >= lists.length) ? (lists.length - 1) : newIdx));
+			newIdx = ((newIdx < 0) ? 0 : ((newIdx >= arr.length) ? (arr.length - 1) : newIdx));
 			if(newIdx != index) {
-				lists.splice(newIdx, 0, lists.splice(index, 1)[0]);
-				updateListOrds();
+				arr.splice(newIdx, 0, arr.splice(index, 1)[0]);
+				updFun();
 			}
+		}
+		
+		function moveList(list, dir) {
+			return moveObj(getLists(), list, dir, updateListOrds);
 		}
 		
 		function moveCard(list, card, dir) {
-			if(!dir)
-				return;
-			dir = ((dir < -1) ? -1 : ((dir > 1) ? 1 : dir));
-			var cards = list.cards;
-			var index = cards.indexOf(card);
-			var newIdx = index + dir;
-			if((newIdx < 0) || (newIdx >= cards.length))
-				return;
-			cards.splice(index + dir, 0, cards.splice(index, 1)[0]);
-			updateCardOrds(list);
+			return moveObj(list.cards, card, dir, function() { updateCardOrds(list); });
+		}
+		
+		function updateOrds(arr, updFun) {
+			for(var i in arr) {
+				var up = (arr[i].ord != i);
+				arr[i].ord = i;
+				if(up) {
+					updFun(arr[i]);
+				}
+			}
 		}
 		
 		function updateListOrds() {
-			var lists = getLists();
-			for(var li in lists) {
-				var up = (lists[li].ord != li);
-				lists[li].ord = li;
-				if(up) {
-					updateList(lists[li]);
-				}
-			}
+			return updateOrds(getLists(), updateList);
 		}
 		
 		function updateCardOrds(list) {
-			var cards = list.cards;
-			for(var ci in cards) {
-				var up = (cards[ci].ord != ci);
-				cards[ci].ord = ci;
-				if(up) {
-					updateCard(cards[ci]);
-				}
-			}
+			return updateOrds(list.cards, updateCard);
 		}
 
         function removeList(list) {
@@ -213,7 +204,7 @@
             updateList(list);
         }
 
-        function updateCard(card,list) {
+        function updateCard(card) {
             console.log('Update card request for card,id: ' + card.id);
             Card.update(card, onSuccess, onError);
 

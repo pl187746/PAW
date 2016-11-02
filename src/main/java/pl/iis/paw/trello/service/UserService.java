@@ -83,14 +83,14 @@ public class UserService {
     }
 
     public void deleteUser(User user) {
-        userRepository.delete(user);
+        this.deleteUser(user.getId());
     }
 
     public void deleteUser(Long id) {
         User user = Optional
             .ofNullable(userRepository.findOne(id))
             .orElseThrow(() -> new UserNotFoundException(id));
-        this.deleteUser(user);
+        userRepository.delete(user);
     }
 
     private void validateUser(RegisterVM registerVM) {
