@@ -25,18 +25,6 @@ public class TrelloApplication {
 		SpringApplication.run(TrelloApplication.class, args);
 	}
 
-	@Bean
-	public CommandLineRunner initDummyData(UserRepository userRepository,
-										   BoardRepository boardRepository,
-										   CardListRepository cardListRepository,
-										   CardRepository cardRepository,
-										   FavBoardRepository favBoardRepository) {
-		return (args) -> {
-			demoUsers(userRepository);
-			demoBoards(boardRepository, cardListRepository, cardRepository);
-			demoFavBoards(favBoardRepository);
-		};
-	}
 
 	private void demoUsers(UserRepository userRepository) {
 		userRepository.save(new User("admin", "ap", "a@x.com"));
