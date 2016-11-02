@@ -9,10 +9,10 @@ public class RegisterVM {
     public RegisterVM() {
     }
 
-    public RegisterVM(String login, String email, String password) {
+    public RegisterVM(String login, String password, String email) {
         this.login = login;
-        this.email = email;
         this.password = password;
+        this.email = email;
     }
 
     public String getLogin() {
