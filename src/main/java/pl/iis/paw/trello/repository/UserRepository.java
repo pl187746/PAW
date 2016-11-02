@@ -7,6 +7,8 @@ import pl.iis.paw.trello.domain.User;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 
+    User findById(Long id);
+
     User findByLogin(String login);
 
     User findByEmail(String email);
