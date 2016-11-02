@@ -188,5 +188,9 @@ body {
     padding: 20px;
 }
 
-
-
+.diary {
+	background-color: gainsboro;
+	padding: 10px;
+	border-radius: 4px;
+	margin-top: 4px;
+}
