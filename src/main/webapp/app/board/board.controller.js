@@ -98,46 +98,32 @@
 			return list.cards.indexOf(card) == lastIdx(list.cards);
 		}
 		
-		function moveList(list, dir) {
+		function moveObj(arr, obj, dir, updFun) {
 			if(!dir)
 				return;
 			dir = ((dir < -1) ? -1 : ((dir > 1) ? 1 : dir));
-			var lists = getLists();
-			var index = lists.indexOf(list);
+			var index = arr.indexOf(obj);
 			var newIdx = index;
 			for(;;) {
 				newIdx += dir;
-				if(newIdx < 0 || newIdx >= lists.length)
+				if(newIdx < 0 || newIdx >= arr.length)
 					break;
-				if(!lists[newIdx].archive)
+				if(!arr[newIdx].archive)
 					break;
 			}
-			newIdx = ((newIdx < 0) ? 0 : ((newIdx >= lists.length) ? (lists.length - 1) : newIdx));
+			newIdx = ((newIdx < 0) ? 0 : ((newIdx >= arr.length) ? (arr.length - 1) : newIdx));
 			if(newIdx != index) {
-				lists.splice(newIdx, 0, lists.splice(index, 1)[0]);
-				updateListOrds();
+				arr.splice(newIdx, 0, arr.splice(index, 1)[0]);
+				updFun();
 			}
 		}
 		
+		function moveList(list, dir) {
+			return moveObj(getLists(), list, dir, updateListOrds);
+		}
+		
 		function moveCard(list, card, dir) {
-			if(!dir)
-				return;
-			dir = ((dir < -1) ? -1 : ((dir > 1) ? 1 : dir));
-			var cards = list.cards;
-			var index = cards.indexOf(card);
-			var newIdx = index;
-			for(;;) {
-				newIdx += dir;
-				if(newIdx < 0 || newIdx >= cards.length)
-					break;
-				if(!cards[newIdx].archive)
-					break;
-			}
-			newIdx = ((newIdx < 0) ? 0 : ((newIdx >= cards.length) ? (cards.length - 1) : newIdx));
-			if(newIdx != index) {
-				cards.splice(newIdx, 0, cards.splice(index, 1)[0]);
-				updateCardOrds(list);
-			}
+			return moveObj(list.cards, card, dir, function() { updateCardOrds(list); });
 		}
 		
 		function updateListOrds() {
