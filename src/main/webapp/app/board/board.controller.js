@@ -81,6 +81,24 @@
 			return null;
 		}
 		
+		function firstCardIdx(list) {
+			var cards = list.cards;
+			for(var ci = 0; ci < cards.length; ++ci) {
+				if(!cards[ci].archive)
+					return ci;
+			}
+			return null;
+		}
+		
+		function lastCardIdx(list) {
+			var cards = list.cards;
+			for(var ci = cards.length - 1; ci >= 0; --ci) {
+				if(!cards[ci].archive)
+					return ci;
+			}
+			return null;
+		}
+		
 		function isListFirst(list) {
 			return getLists().indexOf(list) == firstListIdx();
 		}
@@ -90,11 +108,11 @@
 		}
 		
 		function isCardFirst(list, card) {
-			return list.cards.indexOf(card) == 0;
+			return list.cards.indexOf(card) == firstCardIdx(list);
 		}
 		
 		function isCardLast(list, card) {
-			return list.cards.indexOf(card) == (list.cards.length - 1);
+			return list.cards.indexOf(card) == lastCardIdx(list);
 		}
 		
 		function moveList(list, dir) {
