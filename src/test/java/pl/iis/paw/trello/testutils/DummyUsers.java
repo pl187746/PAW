@@ -7,14 +7,20 @@ public class DummyUsers {
     private DummyUsers() { }
 
     public static User john() {
-        return new User("john", "secret1", "john@locahost");
+        User user = new User("john", "secret1", "john@localhost");
+        user.setId(1L);
+        return user;
     }
 
     public static User jane() {
-        return new User("jane", "secret2", "jane@locahost");
+        User user = new User("jane", "secret2", "jane@localhost");
+        user.setId(2L);
+        return user;
     }
 
     public static User bill() {
-        return new User("bill", "secret3", "bill@locahost");
+        User user = new User("bill", "secret3", "bill@localhost");
+        user.setId(3L);
+        return user;
     }
 }
