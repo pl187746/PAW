@@ -17,9 +17,11 @@
                     <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                         <span class="hidden-sm">Boards</span>
                         <span class="caret"></span>
+
                     </a>
                     <ul class="dropdown-menu">
-                        <li ng-repeat="board in boards">
+                        <input  type="text" ng-model="filterQuery" placeholder="Search" class="search-field" />
+                        <li ng-repeat="board in boards | filter:{name: filterQuery}" >
                             <a ui-sref="board({id:board.id})" href="">{{board.name}}</a>
                         </li>
                     </ul>

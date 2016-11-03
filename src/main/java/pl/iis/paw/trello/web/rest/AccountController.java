@@ -1,4 +1,4 @@
-package pl.iis.paw.trello.service;
+package pl.iis.paw.trello.web.rest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import pl.iis.paw.trello.domain.User;
+import pl.iis.paw.trello.service.UserService;
 import pl.iis.paw.trello.web.viewmodel.LoginVM;
 import pl.iis.paw.trello.web.viewmodel.RegisterVM;
 

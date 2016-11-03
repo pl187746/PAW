@@ -207,13 +207,6 @@ body {
     background-color: #dddddd;
 }
 
-.diary-btn {
-    width: 150px;
-    height: 50px;
-    margin-left: 10px;
-    margin-top: 200px;
-}
-
 .diary {
     background-color: gainsboro;
     padding: 10px;
@@ -226,4 +219,17 @@ body {
 
 .diary-item {
     border-bottom: #636363 dashed 1px;
+}
+
+.diary-btn {
+    width: 150px;
+    height: 50px;
+    margin-left: 10px;
+    margin-top: 200px;
+}
+
+.search-field {
+    padding: 5px 5px 5px 20px;
+    background-color: #f3f3f3;
+    border: #b5b5b5 solid 1px;
 }

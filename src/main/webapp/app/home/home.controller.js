@@ -26,6 +26,7 @@
 
             function onSuccess(data) {
                 $scope.boards = data;
+
                 console.log('Loaded boards of size: ' + $scope.boards.length);
             }
 
@@ -35,11 +36,15 @@
         }
 
         function addBoard() {
+
             Board.save( {name : 'Empty'}, onSuccess, onError);
 
             function onSuccess(response) {
-                console.log('Added new board');
+
                 $scope.boards.push(response);
+                console.log('Added new board');
+
+
             }
 
             function onError() {

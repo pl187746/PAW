@@ -31,6 +31,8 @@ public class Card implements Serializable {
 	
 	@Column(name = "card_ord")
 	private Long ord;
+
+
 	
 	public Card() { }
 

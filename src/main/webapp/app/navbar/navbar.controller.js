@@ -12,7 +12,7 @@
         $scope.isAuthenticated = isAuthenticated;
 
         $scope.$state = $state;
-        $scope.boards = null;
+        $rootScope.boards = null;
         $rootScope.user = null;
 
         loadBoards();
@@ -23,8 +23,8 @@
             Board.query(onSuccess, onError);
 
             function onSuccess(data) {
-                $scope.boards = data;
-                console.log('Loaded boards of size: ' + $scope.boards.length);
+                $rootScope.boards = data;
+                console.log('Loaded boards of size: ' + $rootScope.boards.length);
             }
 
             function onError() {
