@@ -62,14 +62,4 @@ public class BoardService {
     	deleteBoard(findBoardById(id));
     }
 
-    public List<Board> getSearchedBoards(String name) {
-        List<Board> tmpList = new ArrayList<>();
-        for (Board board: getBoards()) {
-            if(board.getName().equalsIgnoreCase(name))
-                tmpList.add(board);
-        }
-        return tmpList;
-
-    }
-	
 }
