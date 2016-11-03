@@ -214,3 +214,16 @@ body {
     margin-top: 200px;
 }
 
+.diary {
+    background-color: gainsboro;
+    padding: 10px;
+    border-radius: 4px;
+    margin-top: 4px;
+    margin-left: 10px;
+    width: 50%;
+    min-width: 500px;
+}
+
+.diary-item {
+    border-bottom: #636363 dashed 1px;
+}
