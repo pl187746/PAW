@@ -23,7 +23,7 @@ public class Board implements Serializable {
 	
 	@OneToMany(mappedBy = "board", targetEntity = FavBoard.class, cascade = CascadeType.REMOVE)
     private List<FavBoard> likingUsers;
-	
+
 	public Board() { }
 
 	public Board(String name, List<CardList> lists) {
@@ -63,5 +63,6 @@ public class Board implements Serializable {
 	public void setLikingUsers(List<FavBoard> likingUsers) {
 		this.likingUsers = likingUsers;
 	}
+
 
 }

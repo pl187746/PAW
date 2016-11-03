@@ -20,3 +20,5 @@ INSERT INTO USER (user_id,login,password,email) VALUES (NULL, 'bbb','bp','b@x.co
 INSERT INTO USER (user_id,login,password,email) VALUES (NULL, 'ccc','cp','c@x.com');
 INSERT INTO USER (user_id,login,password,email) VALUES (NULL, 'ddd','dp','d@x.com');
 
+
+

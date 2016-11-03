@@ -1,5 +1,6 @@
 package pl.iis.paw.trello.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.slf4j.Logger;
@@ -59,6 +60,16 @@ public class BoardService {
     
     public void deleteBoard(Long id) {
     	deleteBoard(findBoardById(id));
+    }
+
+    public List<Board> getSearchedBoards(String name) {
+        List<Board> tmpList = new ArrayList<>();
+        for (Board board: getBoards()) {
+            if(board.getName().equalsIgnoreCase(name))
+                tmpList.add(board);
+        }
+        return tmpList;
+
     }
 	
 }
