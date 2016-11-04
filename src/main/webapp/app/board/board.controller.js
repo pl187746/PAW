@@ -52,7 +52,7 @@
 					sortByOrd(data.lists[li].cards);
 				}
                 $scope.board = data;
-				sortDiary();
+				sortDiary($scope.board.diary);
                 console.log('Loaded board of of name: ' + $scope.board.name)
             }
 
@@ -350,13 +350,12 @@
 			if($scope.board.diary == null || $scope.board.diary.length == 0) {
 				Record.get({ boardId: $scope.board.id }, onSuccess, onError);
 			} else {
-				var lstRecDate = $scope.board.diary[$scope.board.diary.length - 1].timestamp;
-				Record.get({ boardId: $scope.board.id, dateAfter: lstRecDate }, onSuccess, onError);
+				Record.get({ boardId: $scope.board.id, dateAfter: $scope.board.diary[0].timestamp }, onSuccess, onError);
 			}
 			
 			function onSuccess(response) {
                 console.log("Refreshed diary.");
-                $scope.board.diary = $scope.board.diary.concat(response);
+                $scope.board.diary = sortDiary($scope.board.diary.concat(response));
 				sortDiary();
             }
 
@@ -365,8 +364,9 @@
             }
 		}
 		
-		function sortDiary() {
-			sortByIdDescendingAndRemoveDuplicates($scope.board.diary);
+		function sortDiary(dr) {
+			sortByIdDescendingAndRemoveDuplicates(dr);
+			return dr;
 		}
 		
 		function sortByIdDescendingAndRemoveDuplicates(arr) {
