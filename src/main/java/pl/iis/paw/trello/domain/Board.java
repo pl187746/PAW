@@ -24,8 +24,11 @@ public class Board implements Serializable {
 	@OneToMany(mappedBy = "board", targetEntity = FavBoard.class, cascade = CascadeType.REMOVE)
     private List<FavBoard> likingUsers;
 	
-	@OneToMany(mappedBy = "board", targetEntity = Record.class)
+	@OneToMany(mappedBy = "board", targetEntity = Record.class, cascade = CascadeType.REMOVE)
 	private List<Record> diary;
+	
+	@OneToMany(mappedBy = "board", targetEntity = Label.class, cascade = CascadeType.REMOVE)
+	private List<Label> availableLabels;
 	
 	public Board() { }
 
@@ -73,6 +76,14 @@ public class Board implements Serializable {
 
 	public void setDiary(List<Record> diary) {
 		this.diary = diary;
+	}
+
+	public List<Label> getAvailableLabels() {
+		return availableLabels;
+	}
+
+	public void setAvailableLabels(List<Label> availableLabels) {
+		this.availableLabels = availableLabels;
 	}
 
 }
