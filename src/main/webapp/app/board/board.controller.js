@@ -5,9 +5,9 @@
         .module('trello')
         .controller('BoardController', BoardController);
 
-    BoardController.$inject = ['$rootScope', '$scope', '$stateParams', 'Board', 'Card', 'List', 'User'];
+    BoardController.$inject = ['$rootScope', '$scope', '$stateParams', 'Board', 'Card', 'List', 'User', 'Record'];
 
-    function BoardController ($rootScope, $scope, $stateParams, Board, Card, List, User) {
+    function BoardController ($rootScope, $scope, $stateParams, Board, Card, List, User, Record) {
         // Cards
         $scope.updateCard = updateCard;
         $scope.removeCard = removeCard;
@@ -159,6 +159,7 @@
                 console.log('Deleted list with index ' + list.id);
                 lists.splice(index, 1);
 				updateListOrds();
+				refreshDiary();
             }
 
             function onError() {
@@ -172,6 +173,7 @@
 
             function onSuccess() {
                 console.log('Updated list with index ' + list.id);
+				refreshDiary();
             }
 
             function onError() {
@@ -188,6 +190,7 @@
                 console.log('Added new list to board with id ' + $scope.board.id);
                 lists.push(response);
 				updateListOrds();
+				refreshDiary();
             }
 
             function onError() {
@@ -211,6 +214,7 @@
 
             function onSuccess() {
                 console.log('Updated card with id ' + card.id);
+				refreshDiary();
             }
 
             function onError() {
@@ -229,6 +233,7 @@
 
             function onSuccess() {
                 console.log('Deleted card with index ' + card.id);
+				refreshDiary();
             }
 
             function onError() {
@@ -246,6 +251,7 @@
             function onSuccess(response) {
                 console.log('Added new card to list with index ' + listIndex);
                 cards.push(response);
+				refreshDiary();
             }
 
             function onError() {
@@ -337,6 +343,19 @@
 				case "CARD_UNARCHIVE": msg += "Odarchiwizowano kartę " + rec.params.cardName; break;
 			}
 			return msg;
+		}
+		
+		function refreshDiary() {
+			Record.get({ boardId: $scope.board.id }, onSuccess, onError);
+			
+			function onSuccess(response) {
+                console.log("Refreshed diary.");
+                $scope.board.diary = response;
+            }
+
+            function onError() {
+                console.log('Error while refreshing diary.')
+            }
 		}
 		
     }
