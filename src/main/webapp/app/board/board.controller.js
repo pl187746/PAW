@@ -52,6 +52,7 @@
 					sortByOrd(data.lists[li].cards);
 				}
                 $scope.board = data;
+				sortDiary();
                 console.log('Loaded board of of name: ' + $scope.board.name)
             }
 
@@ -356,11 +357,38 @@
 			function onSuccess(response) {
                 console.log("Refreshed diary.");
                 $scope.board.diary = $scope.board.diary.concat(response);
+				sortDiary();
             }
 
             function onError() {
                 console.log('Error while refreshing diary.')
             }
+		}
+		
+		function sortDiary() {
+			sortByIdDescendingAndRemoveDuplicates($scope.board.diary);
+		}
+		
+		function sortByIdDescendingAndRemoveDuplicates(arr) {
+			sortByIdDescending(arr);
+			removeDuplicatesFromSortedById(arr);
+		}
+		
+		function sortByIdDescending(arr) {
+			arr.sort(function(a, b) { return b.id - a.id; });
+		}
+		
+		function removeDuplicatesFromSortedById(arr) {
+			return removeDuplicatesFromSorted(arr, function(a, b) { return a.id == b.id; });
+		}
+		
+		function removeDuplicatesFromSorted(arr, eq) {
+			for(var i = 1; i < arr.length; ++i) {
+				if(eq(arr[i - 1], arr[i])) {
+					arr.splice(i, 1);
+					--i;
+				}
+			}
 		}
 		
     }
