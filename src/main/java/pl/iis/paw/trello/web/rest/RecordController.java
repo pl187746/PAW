@@ -1,5 +1,6 @@
 package pl.iis.paw.trello.web.rest;
 
+import java.time.Instant;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,8 @@ public class RecordController {
 	}
 	
 	@RequestMapping(value = "/records", params = { "boardId", "dateAfter" }, method = RequestMethod.GET)
-	public ResponseEntity<?> getRecordsOfBoard(@RequestParam("boardId") Long boardId, @RequestParam("dateAfter") Date date) {
+	public ResponseEntity<?> getRecordsOfBoard(@RequestParam("boardId") Long boardId, @RequestParam("dateAfter") String dateAfter) {
+		Date date = Date.from(Instant.parse(dateAfter));
 		return ResponseEntity.ok(recordService.getRecordsOfBoardIdAfterDate(boardId, date));
 	}
 
