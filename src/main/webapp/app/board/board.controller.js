@@ -346,11 +346,16 @@
 		}
 		
 		function refreshDiary() {
-			Record.get({ boardId: $scope.board.id }, onSuccess, onError);
+			if($scope.board.diary == null || $scope.board.diary.length == 0) {
+				Record.get({ boardId: $scope.board.id }, onSuccess, onError);
+			} else {
+				var lstRecDate = $scope.board.diary[$scope.board.diary.length - 1].timestamp;
+				Record.get({ boardId: $scope.board.id, dateAfter: lstRecDate }, onSuccess, onError);
+			}
 			
 			function onSuccess(response) {
                 console.log("Refreshed diary.");
-                $scope.board.diary = response;
+                $scope.board.diary = $scope.board.diary.concat(response);
             }
 
             function onError() {
