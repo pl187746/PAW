@@ -30,6 +30,7 @@
 		$scope.returnArchiveCard = returnArchiveCard;
 
 		$scope.fmtRecord = fmtRecord;
+		$scope.fmtDate = fmtDate;
 
         $scope.board = null;
         $scope.archList = [];
@@ -305,9 +306,19 @@
 			updateCard(card);
 		}
 		
+		function fmtDate(date) {
+			if(!(date instanceof Date)) {
+				date = new Date(date);
+			}
+			function s0(n) {
+				return (n < 10 ? "0" : "") + n;
+			}
+			return s0(date.getHours()) + ":" + s0(date.getMinutes()) + ":" + s0(date.getSeconds()) + " "
+				+ s0(date.getDate()) + "." + s0(date.getMonth() + 1) + "." + date.getFullYear();
+		}
+		
 		function fmtRecord(rec) {
-			var date = new Date(rec.timestamp);
-			var msg = date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds() + " " + date.getDate() + "." + (date.getMonth() + 1) + "." + date.getFullYear() + " ";
+			var msg = "";
 			switch(rec.type) {
 				case "BOARD_CREATE": msg += "Utworzono tablicę pod nazwą " + rec.params.boardName; break;
 				case "BOARD_RENAME": msg += "Zmieniono nazwę tablicy z " + rec.params.oldBoardName + " na " + rec.params.newBoardName; break;

@@ -109,7 +109,7 @@
         <div>
             <button class="btn btn-default diary-btn" type="button" ng-click="showDiary = !showDiary">Diary</button>
             <div ng-show="showDiary" class="diary">
-                <p ng-repeat="rec in board.diary" class="diary-item">{{fmtRecord(rec);}}</p>
+                <p ng-repeat="rec in board.diary" class="diary-item"><b>{{fmtDate(rec.timestamp)}}</b> {{fmtRecord(rec)}}</p>
             </div>
         </div>
     </div>
