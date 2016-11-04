@@ -38,6 +38,26 @@ public class RecordService {
 		return recordRepository.findAll(pageable).getContent();
 	}
 	
+	public List<Record> getRecordsOfBoardId(Long boardId) {
+		Board board = new Board();
+		board.setId(boardId);
+		return getRecordsOfBoard(board);
+	}
+	
+	public List<Record> getRecordsOfBoard(Board board) {
+		return recordRepository.findByBoard(board);
+	}
+	
+	public List<Record> getRecordsOfBoardIdAfterDate(Long boardId, Date date) {
+		Board board = new Board();
+		board.setId(boardId);
+		return getRecordsOfBoardAfterDate(board, date);
+	}
+	
+	public List<Record> getRecordsOfBoardAfterDate(Board board, Date date) {
+		return recordRepository.findByBoardAndTimestampAfter(board, date);
+	}
+	
 	public User currentUser() {
 		User user = new User();
 		user.setId(1L);
