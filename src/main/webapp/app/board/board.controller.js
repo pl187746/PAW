@@ -356,7 +356,6 @@
 			function onSuccess(response) {
                 console.log("Refreshed diary.");
                 $scope.board.diary = sortDiary($scope.board.diary.concat(response));
-				sortDiary();
             }
 
             function onError() {
