@@ -16,6 +16,7 @@
 		$scope.isCardFirst = isCardFirst;
 		$scope.isCardLast = isCardLast;
 		$scope.transferCardToNextList = transferCardToNextList;
+		$scope.hasCardLabel = hasCardLabel;
 
         // Cards List
         $scope.removeList = removeList;
@@ -303,6 +304,14 @@
 			card.ord = toList.cards.length;
 			toList.cards.push(card);
 			updateCard(card);
+		}
+		
+		function hasCardLabel(card, label) {
+			for(var i in card.labels) {
+				if(card.labels[i].id == label.id)
+					return true;
+			}
+			return false;
 		}
 		
 		function fmtRecord(rec) {
