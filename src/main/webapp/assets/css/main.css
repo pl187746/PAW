@@ -256,5 +256,8 @@ body {
 
 .label-item {
 	margin: 4px;
+	padding: 4px;
 	border-radius: 4px;
+	display: inline-block;
+	width: 80%;
 }
