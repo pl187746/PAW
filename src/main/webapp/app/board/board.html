@@ -67,12 +67,22 @@
 							<ul style="list-style-type: none;">
 								<li class="label-item" ng-repeat="availLab in board.availableLabels">
 									<input class="tbl-cell" type="checkbox" ng-checked="hasCardLabel(card, availLab)" ng-click="toggleLabel(card, availLab)">
-									<input ng-show="labelInput" class="label-bar tbl-cell" style="background-color: {{availLab.color}};" type="text" ng-model="availLab.name" value="availLab.name">
-									<span ng-show="!labelInput" class="label-bar tbl-cell" style="background-color: {{availLab.color}};">&nbsp;{{availLab.name}}</span>
-									<input class="tbl-cell" ng-show="labelInput" type="color" ng-model="availLab.color", value="availLab.color">
-									<button ng-show="!labelInput" type="button" class="btn btn-default tbl-cell" ng-click="labelInput = true;"><i class="fa fa-edit" aria-hidden="true"></i></button>
-									<button ng-show="labelInput" type="button" class="btn btn-success tbl-cell" ng-click="updateLabel(availLab); labelInput = false;"><i class="fa fa-check" aria-hidden="true"></i></button>
-									<button ng-show="labelInput" type="button" class="btn btn-danger tbl-cell" ng-click="removeLabel(availLab)"><i class="fa fa-remove" aria-hidden="true"></i></button>
+									<div class="tbl-cell">
+									<input ng-show="labelInput" class="label-bar" style="background-color: {{availLab.color}};" type="text" ng-model="availLab.name" value="availLab.name">
+									<span ng-show="!labelInput" class="label-bar" style="background-color: {{availLab.color}};">&nbsp;{{availLab.name}}</span>
+									</div>
+									<div class="tbl-cell">
+										<input class="tbl-cell" ng-show="labelInput" type="color" ng-model="availLab.color", value="availLab.color">
+									</div>
+									<div class="tbl-cell">
+										<button ng-show="!labelInput" type="button" class="btn btn-default tbl-cell" ng-click="labelInput = true;"><i class="fa fa-edit" aria-hidden="true"></i></button>
+									</div>
+									<div class="tbl-cell">
+										<button ng-show="labelInput" type="button" class="btn btn-success tbl-cell" ng-click="updateLabel(availLab); labelInput = false;"><i class="fa fa-check" aria-hidden="true"></i></button>
+									</div>
+									<div class="tbl-cell">
+										<button ng-show="labelInput" type="button" class="btn btn-danger tbl-cell" ng-click="removeLabel(availLab)"><i class="fa fa-remove" aria-hidden="true"></i></button>
+									</div>
 								</li>
 							</ul>
 							<button class="btn btn-success" ng-click="createLabel();"><i class="fa fa-plus" aria-hidden="true"></i></button>
