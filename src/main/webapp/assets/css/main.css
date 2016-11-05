@@ -228,6 +228,16 @@ body {
     margin-top: 200px;
 }
 
+.card-acm {
+	position: absolute;
+	z-index: 123;
+	left: 25%;
+	width: 100%;
+	background-color: gainsboro;
+	padding: 16px;
+	border-radius: 16px;
+}
+
 .search-field {
     padding: 5px 5px 5px 20px;
     background-color: #f3f3f3;

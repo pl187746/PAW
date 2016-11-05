@@ -307,6 +307,7 @@
 		}
 		
 		function showAdvancedCardMenu(card) {
+			$("#card_acm_" + card.id).show();
 		}
 		
 		function fmtRecord(rec) {
