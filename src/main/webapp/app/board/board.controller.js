@@ -324,6 +324,10 @@
 				case "CARD_CHANGE_LIST": msg += "Przeniesiono kartę " + rec.params.cardName + " z listy " + rec.params.oldListName + " do " + rec.params.newListName; break;
 				case "CARD_ARCHIVE": msg += "Zarchiwizowano kartę " + rec.params.cardName; break;
 				case "CARD_UNARCHIVE": msg += "Odarchiwizowano kartę " + rec.params.cardName; break;
+				case "LABEL_CREATE": msg += "Utworzono nową etykietę " + rec.params.labelName; break;
+				case "LABEL_DELETE": msg += "Usunięto etykietę " + rec.params.labelName; break;
+				case "LABEL_RENAME": msg += "Zmieniono nazwę etykiety " + rec.params.oldLabelName + " na " + rec.params.newLabelName; break;
+				case "LABEL_CHANGE_COLOR": msg += "Zmieniono kolor etykiety " + rec.params.labelName; break;
 			}
 			return msg;
 		}
