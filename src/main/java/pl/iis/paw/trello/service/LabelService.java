@@ -26,9 +26,10 @@ public class LabelService {
 	private RecordService recordService;
 
 	@Autowired
-	public LabelService(LabelRepository labelRepository) {
+	public LabelService(LabelRepository labelRepository, RecordService recordService) {
 		super();
 		this.labelRepository = labelRepository;
+		this.recordService = recordService;
 	}
 	
 	public List<Label> getLabels() {
