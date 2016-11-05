@@ -1,6 +1,7 @@
 package pl.iis.paw.trello.domain;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Optional;
 
 import javax.persistence.Column;
@@ -8,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -33,6 +35,10 @@ public class Label implements Serializable {
 
 	@Column(name = "color")
 	private String color;
+	
+	@ManyToMany(targetEntity = Card.class, mappedBy = "labels")
+	@JsonIgnore
+	private List<Card> labeledCards;
 
 	public Label() { }
 
@@ -86,6 +92,14 @@ public class Label implements Serializable {
 		return Optional.ofNullable(board)
 				.map(Board::getId)
 				.orElse(null);
+	}
+
+	public List<Card> getLabeledCards() {
+		return labeledCards;
+	}
+
+	public void setLabeledCards(List<Card> labeledCards) {
+		this.labeledCards = labeledCards;
 	}
 
 }

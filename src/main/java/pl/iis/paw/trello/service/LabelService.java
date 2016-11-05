@@ -24,12 +24,14 @@ public class LabelService {
 	
 	private LabelRepository labelRepository;
 	private RecordService recordService;
+	private CardService cardService;
 
 	@Autowired
-	public LabelService(LabelRepository labelRepository, RecordService recordService) {
+	public LabelService(LabelRepository labelRepository, RecordService recordService, CardService cardService) {
 		super();
 		this.labelRepository = labelRepository;
 		this.recordService = recordService;
+		this.cardService = cardService;
 	}
 	
 	public List<Label> getLabels() {
@@ -89,6 +91,11 @@ public class LabelService {
 	}
 	
 	public void deleteLabel(Label label) {
+		label.getLabeledCards().forEach(card -> {
+			if(card.getLabels().removeIf(lb -> label.getId().equals(lb.getId()))) {
+				cardService.updateCard(card);
+			}
+		});
 		recordService.record(label.getBoard(), RecordType.LABEL_DELETE, p("labelName", label.getName()), p("labelColor", label.getColor()));
 		labelRepository.delete(label);
 	}
