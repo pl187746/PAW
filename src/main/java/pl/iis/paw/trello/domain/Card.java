@@ -1,6 +1,7 @@
 package pl.iis.paw.trello.domain;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Optional;
 
 import javax.persistence.*;
@@ -31,8 +32,9 @@ public class Card implements Serializable {
 	
 	@Column(name = "card_ord")
 	private Long ord;
-
-
+	
+	@ManyToMany(targetEntity = Label.class)
+	private List<Label> labels;
 	
 	public Card() { }
 
@@ -93,5 +95,13 @@ public class Card implements Serializable {
 
 	public void setArchive(boolean archive) {
 		this.archive = archive;
+	}
+
+	public List<Label> getLabels() {
+		return labels;
+	}
+
+	public void setLabels(List<Label> labels) {
+		this.labels = labels;
 	}
 }

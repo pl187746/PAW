@@ -19,3 +19,11 @@ INSERT INTO USER (user_id,login,password,email) VALUES (NULL, 'admin','ap','a@x.
 INSERT INTO USER (user_id,login,password,email) VALUES (NULL, 'bbb','bp','b@x.com');
 INSERT INTO USER (user_id,login,password,email) VALUES (NULL, 'ccc','cp','c@x.com');
 INSERT INTO USER (user_id,login,password,email) VALUES (NULL, 'ddd','dp','d@x.com');
+
+insert into Label (label_id,board_id,name,color) values (null, 3, '', 'red');
+insert into Label (label_id,board_id,name,color) values (null, 3, '', 'green');
+insert into Label (label_id,board_id,name,color) values (null, 3, '', 'blue');
+insert into Label (label_id,board_id,name,color) values (null, 3, 'A', 'white');
+insert into Label (label_id,board_id,name,color) values (null, 3, 'X', 'white');
+insert into Label (label_id,board_id,name,color) values (null, 1, 'Q', 'yellow');
+insert into Label (label_id,board_id,name,color) values (null, 1, 'W', 'green');
