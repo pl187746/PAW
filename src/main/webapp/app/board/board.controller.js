@@ -402,6 +402,16 @@
 		}
 		
 		function createLabel() {
+            Label.save( {boardId: $scope.board.id, name: '', color: '#FFFFFF'}, onSuccess, onError);
+
+            function onSuccess(response) {
+                console.log('Created new label id=' + response.id);
+                $scope.board.availableLabels.push(response);
+            }
+
+            function onError() {
+                console.log('Error while creating card')
+            }
 		}
 		
 		function fmtRecord(rec) {
