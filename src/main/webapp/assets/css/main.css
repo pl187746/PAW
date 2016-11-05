@@ -262,7 +262,13 @@ body {
 	margin: 4px;
 	padding: 4px;
 	border-radius: 4px;
-	width: 60%;
+	display: inline-block;
+	width: 100%;
+}
+
+.label-bar-cell {
+	display: table-cell;
+	width: 90%;
 }
 
 .tbl-cell {

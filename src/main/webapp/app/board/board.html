@@ -66,10 +66,12 @@
 							<h4>Labels</h4>
 							<ul style="list-style-type: none;">
 								<li class="label-item" ng-repeat="availLab in board.availableLabels">
-									<input class="tbl-cell" type="checkbox" ng-checked="hasCardLabel(card, availLab)" ng-click="toggleLabel(card, availLab)">
 									<div class="tbl-cell">
-									<input ng-show="labelInput" class="label-bar" style="background-color: {{availLab.color}};" type="text" ng-model="availLab.name" value="availLab.name">
-									<span ng-show="!labelInput" class="label-bar" style="background-color: {{availLab.color}};">&nbsp;{{availLab.name}}</span>
+										<input type="checkbox" ng-checked="hasCardLabel(card, availLab)" ng-click="toggleLabel(card, availLab)">
+									</div>
+									<div class="label-bar-cell">
+										<input ng-show="labelInput" class="label-bar" style="background-color: {{availLab.color}};" type="text" ng-model="availLab.name" value="availLab.name">
+										<span ng-show="!labelInput" class="label-bar" style="background-color: {{availLab.color}};">&nbsp;{{availLab.name}}</span>
 									</div>
 									<div class="tbl-cell">
 										<input class="tbl-cell" ng-show="labelInput" type="color" ng-model="availLab.color", value="availLab.color">
