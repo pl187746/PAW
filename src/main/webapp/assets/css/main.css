@@ -233,3 +233,9 @@ body {
     background-color: #f3f3f3;
     border: #b5b5b5 solid 1px;
 }
+
+.label-mark {
+	display: inline-block;
+	width: 1.5em;
+	border-radius: 0.75em;
+}
