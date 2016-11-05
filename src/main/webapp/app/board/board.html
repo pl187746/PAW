@@ -49,7 +49,7 @@
                                 class="btn btn-success card-button-manage"><i class="fa fa-check" aria-hidden="true"></i></button>
                         <button ng-show="cardInput" ng-click="archiveCard(card,list); cardInput = false"
                                 class="btn btn-default card-button-manage"><i class="fa fa-archive" aria-hidden="true"></i></button>
-						<button ng-show="cardInput" ng-click="showAdvancedCardMenu(card); cardInput = false"
+						<button ng-show="cardInput" ng-click="cardMenu = true; cardInput = false"
                                 class="btn btn-default card-button-manage"><i class="fa fa-asterisk" aria-hidden="true"></i></button>
 						<button ng-show="cardInput && !isCardLast(list, card)"
                                 ng-click="moveCard(list, card, 1); cardInput = false"
@@ -59,8 +59,9 @@
                                 class="btn list-button-manage"><i class="fa fa-arrow-right" aria-hidden="true"></i></button>
                     </span>
 					
-					<div id="card_acm_{{card.id}}" class="card-acm" style="display: none">
+					<div class="card-menu" ng-show="cardMenu">
 						<p>Hello</p>
+						<button ng-click="cardMenu = false" class="btn btn-info"><i class="fa fa-close" aria-hidden="true"></i></button>
 					</div>
                 </div>
 

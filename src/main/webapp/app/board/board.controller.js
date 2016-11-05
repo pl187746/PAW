@@ -16,7 +16,6 @@
 		$scope.isCardFirst = isCardFirst;
 		$scope.isCardLast = isCardLast;
 		$scope.transferCardToNextList = transferCardToNextList;
-		$scope.showAdvancedCardMenu = showAdvancedCardMenu;
 
         // Cards List
         $scope.removeList = removeList;
@@ -304,10 +303,6 @@
 			card.ord = toList.cards.length;
 			toList.cards.push(card);
 			updateCard(card);
-		}
-		
-		function showAdvancedCardMenu(card) {
-			$("#card_acm_" + card.id).show();
 		}
 		
 		function fmtRecord(rec) {

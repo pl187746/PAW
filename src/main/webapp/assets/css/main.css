@@ -228,7 +228,7 @@ body {
     margin-top: 200px;
 }
 
-.card-acm {
+.card-menu {
 	position: absolute;
 	z-index: 123;
 	left: 25%;
@@ -236,6 +236,9 @@ body {
 	background-color: gainsboro;
 	padding: 16px;
 	border-radius: 16px;
+}
+
+.menu-close-btn {
 }
 
 .search-field {
