@@ -5,9 +5,9 @@
         .module('trello')
         .controller('BoardController', BoardController);
 
-    BoardController.$inject = ['$rootScope', '$scope', '$stateParams', 'Board', 'Card', 'List', 'User'];
+    BoardController.$inject = ['$rootScope', '$scope', '$stateParams', 'Board', 'Card', 'List', 'User', 'Label'];
 
-    function BoardController ($rootScope, $scope, $stateParams, Board, Card, List, User) {
+    function BoardController ($rootScope, $scope, $stateParams, Board, Card, List, User, Label) {
         // Cards
         $scope.updateCard = updateCard;
         $scope.removeCard = removeCard;
@@ -359,6 +359,16 @@
 		}
 		
 		function updateLabel(label) {
+			console.log('Update label request for label.id: ' + label.id);
+            Label.update(label, onSuccess, onError);
+
+            function onSuccess() {
+                console.log('Updated label with id ' + label.id);
+            }
+
+            function onError() {
+                console.log('Error while updating label with id ' + label.id);
+            }
 		}
 		
 		function removeLabel(label) {
@@ -379,6 +389,16 @@
 					remFrom(list.cards[ci].labels);
 				}
 			}
+			
+			Label.delete({id: label.id}, onSuccess, onError);
+
+            function onSuccess() {
+                console.log('Deleted label with id ' + label.id);
+            }
+
+            function onError() {
+                console.log('Error while removing label with id ' + label.id);
+            }
 		}
 		
 		function createLabel() {
