@@ -82,6 +82,8 @@ public class CardService {
     		existingCard.setArchive(card.isArchive());
     	}
     	
+    	Optional.ofNullable(card.getLabels()).ifPresent(existingCard::setLabels);
+    	
     	return cardRepository.save(existingCard);
     }
     
