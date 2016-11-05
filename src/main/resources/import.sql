@@ -27,3 +27,9 @@ insert into Label (label_id,board_id,name,color) values (null, 3, 'A', 'white');
 insert into Label (label_id,board_id,name,color) values (null, 3, 'X', 'white');
 insert into Label (label_id,board_id,name,color) values (null, 1, 'Q', 'yellow');
 insert into Label (label_id,board_id,name,color) values (null, 1, 'W', 'green');
+
+insert into CARD_LABELS (CARD_CARD_ID,LABELS_LABEL_ID) values (1,7);
+insert into CARD_LABELS (CARD_CARD_ID,LABELS_LABEL_ID) values (2,6);
+insert into CARD_LABELS (CARD_CARD_ID,LABELS_LABEL_ID) values (2,7);
+insert into CARD_LABELS (CARD_CARD_ID,LABELS_LABEL_ID) values (4,7);
+insert into CARD_LABELS (CARD_CARD_ID,LABELS_LABEL_ID) values (4,6);
