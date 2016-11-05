@@ -62,6 +62,13 @@
 					
 					<div class="card-menu" ng-show="cardMenu">
 						<button ng-click="cardMenu = false" class="btn btn-info menu-close-btn"><i class="fa fa-close" aria-hidden="true"></i></button>
+						<div>
+							<h4>Labels</h4>
+							<ul>
+								<li ng-repeat="availLab in board.availableLabels" class="label-item"
+									style="background-color: {{availLab.color}};">{{availLab.name}}</li>
+							</ul>
+						</div>
 					</div>
                 </div>
 

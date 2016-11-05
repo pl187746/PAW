@@ -253,3 +253,8 @@ body {
 	width: 1.5em;
 	border-radius: 0.75em;
 }
+
+.label-item {
+	margin: 4px;
+	border-radius: 4px;
+}
