@@ -372,6 +372,7 @@
 
             function onSuccess() {
                 console.log('Updated label with id ' + label.id);
+				refreshDiary();
             }
 
             function onError() {
@@ -402,6 +403,7 @@
 
             function onSuccess() {
                 console.log('Deleted label with id ' + label.id);
+				refreshDiary();
             }
 
             function onError() {
@@ -415,6 +417,7 @@
             function onSuccess(response) {
                 console.log('Created new label id=' + response.id);
                 $scope.board.availableLabels.push(response);
+				refreshDiary();
             }
 
             function onError() {
