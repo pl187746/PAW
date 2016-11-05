@@ -255,12 +255,16 @@ body {
 }
 
 .label-item {
+	display: table;
 }
 
 .label-bar {
 	margin: 4px;
 	padding: 4px;
 	border-radius: 4px;
-	display: inline-block;
 	width: 60%;
+}
+
+.tbl-cell {
+	display: table-cell;
 }
