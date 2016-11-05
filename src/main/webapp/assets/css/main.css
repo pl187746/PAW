@@ -228,8 +228,49 @@ body {
     margin-top: 200px;
 }
 
+.card-menu {
+	position: absolute;
+	z-index: 123;
+	left: 25%;
+	width: 150%;
+	background-color: gainsboro;
+	padding: 16px;
+	border-radius: 16px;
+}
+
+.menu-close-btn {
+	float: right;
+}
+
 .search-field {
     padding: 5px 5px 5px 20px;
     background-color: #f3f3f3;
     border: #b5b5b5 solid 1px;
+}
+
+.label-mark {
+	display: inline-block;
+	width: 1.5em;
+	border-radius: 0.75em;
+}
+
+.label-item {
+	display: table;
+}
+
+.label-bar {
+	margin: 4px;
+	padding: 4px;
+	border-radius: 4px;
+	display: inline-block;
+	width: 100%;
+}
+
+.label-bar-cell {
+	display: table-cell;
+	width: 90%;
+}
+
+.tbl-cell {
+	display: table-cell;
 }

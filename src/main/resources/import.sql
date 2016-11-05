@@ -31,3 +31,9 @@ insert into Label (label_id,board_id,name,color) values (null, 1, '', '#FFFFFF')
 insert into Label (label_id,board_id,name,color) values (null, 1, 'r', '#FF0000');
 insert into Label (label_id,board_id,name,color) values (null, 1, 'g', '#00FF00');
 insert into Label (label_id,board_id,name,color) values (null, 1, 'b', '#0000FF');
+
+insert into CARD_LABELS (LABELED_CARDS_CARD_ID,LABELS_LABEL_ID) values (1,7);
+insert into CARD_LABELS (LABELED_CARDS_CARD_ID,LABELS_LABEL_ID) values (2,6);
+insert into CARD_LABELS (LABELED_CARDS_CARD_ID,LABELS_LABEL_ID) values (2,7);
+insert into CARD_LABELS (LABELED_CARDS_CARD_ID,LABELS_LABEL_ID) values (4,7);
+insert into CARD_LABELS (LABELED_CARDS_CARD_ID,LABELS_LABEL_ID) values (4,6);

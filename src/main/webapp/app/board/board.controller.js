@@ -5,9 +5,9 @@
         .module('trello')
         .controller('BoardController', BoardController);
 
-    BoardController.$inject = ['$rootScope', '$scope', '$stateParams', 'Board', 'Card', 'List', 'User', 'Record'];
+    BoardController.$inject = ['$rootScope', '$scope', '$stateParams', 'Board', 'Card', 'List', 'User', 'Label', 'Record'];
 
-    function BoardController ($rootScope, $scope, $stateParams, Board, Card, List, User, Record) {
+    function BoardController ($rootScope, $scope, $stateParams, Board, Card, List, User, Label, Record) {
         // Cards
         $scope.updateCard = updateCard;
         $scope.removeCard = removeCard;
@@ -16,6 +16,13 @@
 		$scope.isCardFirst = isCardFirst;
 		$scope.isCardLast = isCardLast;
 		$scope.transferCardToNextList = transferCardToNextList;
+		$scope.hasCardLabel = hasCardLabel;
+		$scope.toggleLabel = toggleLabel;
+		
+		// Labels
+		$scope.updateLabel = updateLabel;
+		$scope.removeLabel = removeLabel;
+		$scope.createLabel = createLabel;
 
         // Cards List
         $scope.removeList = removeList;
@@ -50,6 +57,22 @@
 				sortByOrd(data.lists);
 				for(var li in data.lists) {
 					sortByOrd(data.lists[li].cards);
+				}
+				for(var li in data.lists) {
+					for(var ci in data.lists[li].cards) {
+						var lbs = data.lists[li].cards[ci].labels;
+						if(lbs == null) {
+							data.lists[li].cards[ci] = [];
+						} else {
+							for(var i in lbs) {
+								for(var j in data.availableLabels) {
+									if(lbs[i].id == data.availableLabels[j].id) {
+										lbs[i] = data.availableLabels[j];
+									}
+								}
+							}
+						}
+					}
 				}
                 $scope.board = data;
 				sortDiary($scope.board.diary);
@@ -311,6 +334,92 @@
 			card.ord = toList.cards.length;
 			toList.cards.push(card);
 			updateCard(card);
+		}
+		
+		function hasCardLabel(card, label) {
+			if(card.labels == null)
+				return false;
+			for(var i in card.labels) {
+				if(card.labels[i].id == label.id)
+					return true;
+			}
+			return false;
+		}
+		
+		function toggleLabel(card, label) {
+			if(card.labels != null) {
+				function remLab() {
+					for(var i in card.labels) {
+						if(card.labels[i].id == label.id) {
+							card.labels.splice(i, 1);
+							return true;
+						}
+					}
+					return false;
+				}
+				if(!remLab()) {
+					card.labels.push(label);
+				}
+			} else {
+				card.labels = [ label ];
+			}
+			updateCard(card);
+		}
+		
+		function updateLabel(label) {
+			console.log('Update label request for label.id: ' + label.id);
+            Label.update(label, onSuccess, onError);
+
+            function onSuccess() {
+                console.log('Updated label with id ' + label.id);
+            }
+
+            function onError() {
+                console.log('Error while updating label with id ' + label.id);
+            }
+		}
+		
+		function removeLabel(label) {
+			function remFrom(arr) {
+				if(arr == null)
+					return;
+				for(var i = 0; i < arr.length; ++i) {
+					if(arr[i].id == label.id) {
+						arr.splice(i, 1);
+						--i;
+					}
+				}
+			}
+			remFrom($scope.board.availableLabels);
+			for(var li in $scope.board.lists) {
+				var list = $scope.board.lists[li];
+				for(var ci in list.cards) {
+					remFrom(list.cards[ci].labels);
+				}
+			}
+			
+			Label.delete({id: label.id}, onSuccess, onError);
+
+            function onSuccess() {
+                console.log('Deleted label with id ' + label.id);
+            }
+
+            function onError() {
+                console.log('Error while removing label with id ' + label.id);
+            }
+		}
+		
+		function createLabel() {
+            Label.save( {boardId: $scope.board.id, name: '', color: '#FFFFFF'}, onSuccess, onError);
+
+            function onSuccess(response) {
+                console.log('Created new label id=' + response.id);
+                $scope.board.availableLabels.push(response);
+            }
+
+            function onError() {
+                console.log('Error while creating card')
+            }
 		}
 		
 		function fmtDate(date) {
