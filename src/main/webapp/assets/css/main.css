@@ -228,6 +228,20 @@ body {
     margin-top: 200px;
 }
 
+.card-menu {
+	position: absolute;
+	z-index: 123;
+	left: 25%;
+	width: 100%;
+	background-color: gainsboro;
+	padding: 16px;
+	border-radius: 16px;
+}
+
+.menu-close-btn {
+	float: right;
+}
+
 .search-field {
     padding: 5px 5px 5px 20px;
     background-color: #f3f3f3;
