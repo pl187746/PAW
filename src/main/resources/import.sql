@@ -20,17 +20,17 @@ INSERT INTO USER (user_id,login,password,email) VALUES (NULL, 'bbb','bp','b@x.co
 INSERT INTO USER (user_id,login,password,email) VALUES (NULL, 'ccc','cp','c@x.com');
 INSERT INTO USER (user_id,login,password,email) VALUES (NULL, 'ddd','dp','d@x.com');
 
-insert into Label (label_id,board_id,name,color) values (null, 3, '', '#FF0000');
-insert into Label (label_id,board_id,name,color) values (null, 3, '', '#00FF00');
-insert into Label (label_id,board_id,name,color) values (null, 3, '', '#0000FF');
-insert into Label (label_id,board_id,name,color) values (null, 3, 'A', '#FFFFFF');
-insert into Label (label_id,board_id,name,color) values (null, 3, 'X', '#FFFFFF');
-insert into Label (label_id,board_id,name,color) values (null, 1, 'Q', '#FFFF00');
-insert into Label (label_id,board_id,name,color) values (null, 1, 'W', '#00FF00');
-insert into Label (label_id,board_id,name,color) values (null, 1, '', '#FFFFFF');
-insert into Label (label_id,board_id,name,color) values (null, 1, 'r', '#FF0000');
-insert into Label (label_id,board_id,name,color) values (null, 1, 'g', '#00FF00');
-insert into Label (label_id,board_id,name,color) values (null, 1, 'b', '#0000FF');
+insert into Label (label_id,board_id,name,color) values (null, 3, '', '#ff0000');
+insert into Label (label_id,board_id,name,color) values (null, 3, '', '#00ff00');
+insert into Label (label_id,board_id,name,color) values (null, 3, '', '#0000ff');
+insert into Label (label_id,board_id,name,color) values (null, 3, 'A', '#ffffff');
+insert into Label (label_id,board_id,name,color) values (null, 3, 'X', '#ffffff');
+insert into Label (label_id,board_id,name,color) values (null, 1, 'Q', '#ffff00');
+insert into Label (label_id,board_id,name,color) values (null, 1, 'W', '#00ff00');
+insert into Label (label_id,board_id,name,color) values (null, 1, '', '#ffffff');
+insert into Label (label_id,board_id,name,color) values (null, 1, 'r', '#ff0000');
+insert into Label (label_id,board_id,name,color) values (null, 1, 'g', '#00ff00');
+insert into Label (label_id,board_id,name,color) values (null, 1, 'b', '#0000ff');
 
 insert into CARD_LABELS (LABELED_CARDS_CARD_ID,LABELS_LABEL_ID) values (1,7);
 insert into CARD_LABELS (LABELED_CARDS_CARD_ID,LABELS_LABEL_ID) values (2,6);
