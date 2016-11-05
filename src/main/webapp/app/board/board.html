@@ -68,6 +68,8 @@
 								<li ng-repeat="availLab in board.availableLabels">
 									<input type="checkbox" ng-checked="hasCardLabel(card, availLab)" ng-click="toggleLabel(card, availLab)">
 									<span class="label-item" style="background-color: {{availLab.color}};">&nbsp;{{availLab.name}}</span>
+									<button type="button" class="btn btn-default"><i class="fa fa-edit" aria-hidden="true"></i></button>
+									<button type="button" class="btn btn-danger"><i class="fa fa-remove" aria-hidden="true"></i></button>
 								</li>
 							</ul>
 						</div>

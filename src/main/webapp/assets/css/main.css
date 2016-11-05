@@ -232,7 +232,7 @@ body {
 	position: absolute;
 	z-index: 123;
 	left: 25%;
-	width: 100%;
+	width: 150%;
 	background-color: gainsboro;
 	padding: 16px;
 	border-radius: 16px;
@@ -259,5 +259,5 @@ body {
 	padding: 4px;
 	border-radius: 4px;
 	display: inline-block;
-	width: 80%;
+	width: 60%;
 }
