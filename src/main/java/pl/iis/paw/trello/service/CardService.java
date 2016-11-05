@@ -4,6 +4,8 @@ import static pl.iis.paw.trello.service.RecordService.P.p;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import pl.iis.paw.trello.domain.Card;
 import pl.iis.paw.trello.domain.CardList;
+import pl.iis.paw.trello.domain.Label;
 import pl.iis.paw.trello.domain.RecordType;
 import pl.iis.paw.trello.exception.CardNotFoundException;
 import pl.iis.paw.trello.repository.CardRepository;
@@ -25,12 +28,14 @@ public class CardService {
     private CardRepository cardRepository;
     private RecordService recordService;
     private CardListService cardListService;
+    private LabelService labelService;
 
     @Autowired
-    public CardService(CardRepository cardRepository, RecordService recordService, CardListService cardListService) {
+    public CardService(CardRepository cardRepository, RecordService recordService, CardListService cardListService, LabelService labelService) {
         this.cardRepository = cardRepository;
         this.recordService = recordService;
         this.cardListService = cardListService;
+        this.labelService = labelService;
     }
     
     public List<Card> getCards() {
@@ -61,11 +66,11 @@ public class CardService {
     	Card existingCard = findCardById(id);
     	
     	Optional.ofNullable(card.getName())
-		.filter(n -> !n.equals(existingCard.getName()))
-		.ifPresent(n -> {
-			recordService.record(existingCard.getCardList().getBoard(), RecordType.CARD_RENAME, p("oldCardName", existingCard.getName()), p("newCardName", n));
-			existingCard.setName(n);
-		});
+			.filter(n -> !n.equals(existingCard.getName()))
+			.ifPresent(n -> {
+				recordService.record(existingCard.getCardList().getBoard(), RecordType.CARD_RENAME, p("oldCardName", existingCard.getName()), p("newCardName", n));
+				existingCard.setName(n);
+			});
 
     	Optional.ofNullable(card.getOrd()).ifPresent(existingCard::setOrd);
     	
@@ -82,7 +87,22 @@ public class CardService {
     		existingCard.setArchive(card.isArchive());
     	}
     	
-    	Optional.ofNullable(card.getLabels()).ifPresent(existingCard::setLabels);
+    	Optional.ofNullable(card.getLabels())
+    		.map(lbs -> lbs.stream()
+    			.map(Label::getId)
+    			.map(labelService::getLabelById)
+    			.collect(Collectors.toList()))
+    		.ifPresent(lbs -> {
+    			Set<Long> oldLbIdSet = existingCard.getLabels().stream().map(Label::getId).collect(Collectors.toSet());    			
+    			Set<Long> newLbIdSet = lbs.stream().map(Label::getId).collect(Collectors.toSet());
+    			existingCard.getLabels().stream()
+    				.filter(o -> !newLbIdSet.contains(o.getId()))
+    				.forEach(o -> recordService.record(existingCard.getCardList().getBoard(), RecordType.CARD_REMOVE_LABEL, p("cardName", existingCard.getName()), p("labelName", o.getName()), p("labelColor", o.getColor())));
+    			lbs.stream()
+    				.filter(n -> !oldLbIdSet.contains(n.getId()))
+    				.forEach(n -> recordService.record(existingCard.getCardList().getBoard(), RecordType.CARD_ADD_LABEL, p("cardName", existingCard.getName()), p("labelName", n.getName()), p("labelColor", n.getColor())));
+    			existingCard.setLabels(lbs);
+    		});
     	
     	return cardRepository.save(existingCard);
     }
