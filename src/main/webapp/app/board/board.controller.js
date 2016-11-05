@@ -308,6 +308,8 @@
 		}
 		
 		function hasCardLabel(card, label) {
+			if(card.labels == null)
+				return false;
 			for(var i in card.labels) {
 				if(card.labels[i].id == label.id)
 					return true;
@@ -316,14 +318,22 @@
 		}
 		
 		function toggleLabel(card, label) {
-			for(var i in card.labels) {
-				if(card.labels[i].id == label.id) {
-					card.labels.splice(i, 1);
-					updateCard(card);
-					return;
+			if(card.labels != null) {
+				function remLab() {
+					for(var i in card.labels) {
+						if(card.labels[i].id == label.id) {
+							card.labels.splice(i, 1);
+							return true;
+						}
+					}
+					return false;
 				}
+				if(!remLab()) {
+					card.labels.push(label);
+				}
+			} else {
+				card.labels = [ label ];
 			}
-			card.labels.push(label);
 			updateCard(card);
 		}
 		
