@@ -57,6 +57,22 @@
 				for(var li in data.lists) {
 					sortByOrd(data.lists[li].cards);
 				}
+				for(var li in data.lists) {
+					for(var ci in data.lists[li].cards) {
+						var lbs = data.lists[li].cards[ci].labels;
+						if(lbs == null) {
+							data.lists[li].cards[ci] = [];
+						} else {
+							for(var i in lbs) {
+								for(var j in data.availableLabels) {
+									if(lbs[i].id == data.availableLabels[j].id) {
+										lbs[i] = data.availableLabels[j];
+									}
+								}
+							}
+						}
+					}
+				}
                 $scope.board = data;
                 console.log('Loaded board of of name: ' + $scope.board.name)
             }
@@ -343,21 +359,6 @@
 		}
 		
 		function updateLabel(label) {
-			function updIn(arr) {
-				if(arr == null)
-					return;
-				for(var i = 0; i < arr.length; ++i) {
-					if(arr[i].id == label.id) {
-						arr[i] = label;
-					}
-				}
-			}
-			for(var li in $scope.board.lists) {
-				var list = $scope.board.lists[li];
-				for(var ci in list.cards) {
-					updIn(list.cards[ci].labels);
-				}
-			}
 		}
 		
 		function removeLabel(label) {
