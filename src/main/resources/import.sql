@@ -20,10 +20,14 @@ INSERT INTO USER (user_id,login,password,email) VALUES (NULL, 'bbb','bp','b@x.co
 INSERT INTO USER (user_id,login,password,email) VALUES (NULL, 'ccc','cp','c@x.com');
 INSERT INTO USER (user_id,login,password,email) VALUES (NULL, 'ddd','dp','d@x.com');
 
-insert into Label (label_id,board_id,name,color) values (null, 3, '', 'red');
-insert into Label (label_id,board_id,name,color) values (null, 3, '', 'green');
-insert into Label (label_id,board_id,name,color) values (null, 3, '', 'blue');
-insert into Label (label_id,board_id,name,color) values (null, 3, 'A', 'white');
-insert into Label (label_id,board_id,name,color) values (null, 3, 'X', 'white');
-insert into Label (label_id,board_id,name,color) values (null, 1, 'Q', 'yellow');
-insert into Label (label_id,board_id,name,color) values (null, 1, 'W', 'green');
+insert into Label (label_id,board_id,name,color) values (null, 3, '', '#FF0000');
+insert into Label (label_id,board_id,name,color) values (null, 3, '', '#00FF00');
+insert into Label (label_id,board_id,name,color) values (null, 3, '', '#0000FF');
+insert into Label (label_id,board_id,name,color) values (null, 3, 'A', '#FFFFFF');
+insert into Label (label_id,board_id,name,color) values (null, 3, 'X', '#FFFFFF');
+insert into Label (label_id,board_id,name,color) values (null, 1, 'Q', '#FFFF00');
+insert into Label (label_id,board_id,name,color) values (null, 1, 'W', '#00FF00');
+insert into Label (label_id,board_id,name,color) values (null, 1, '', '#FFFFFF');
+insert into Label (label_id,board_id,name,color) values (null, 1, 'r', '#FF0000');
+insert into Label (label_id,board_id,name,color) values (null, 1, 'g', '#00FF00');
+insert into Label (label_id,board_id,name,color) values (null, 1, 'b', '#0000FF');
