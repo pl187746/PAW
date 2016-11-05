@@ -34,7 +34,7 @@
 
             <div class="card-list-body">
                 <div ng-repeat="card in list.cards" class="list-group" ng-show="card.archive == false">
-					<span ng-repeat="label in card.labels" class="label-mark" style="background-color: {{label.color}}">&nbsp;</span>
+					<span ng-repeat="label in card.labels" class="label-mark" style="background-color: {{label.color}}" title="{{label.name}}">&nbsp;</span>
                     <a ng-show="!cardInput" ng-click="cardInput = true" href="" class="card">{{card.name}}</a>
                     <input ng-show="cardInput" type="text" ng-model="card.name" value="card.name" class="card card-editable">
 					
