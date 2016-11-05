@@ -18,6 +18,11 @@
 		$scope.transferCardToNextList = transferCardToNextList;
 		$scope.hasCardLabel = hasCardLabel;
 		$scope.toggleLabel = toggleLabel;
+		
+		// Labels
+		$scope.updateLabel = updateLabel;
+		$scope.removeLabel = removeLabel;
+		$scope.createLabel = createLabel;
 
         // Cards List
         $scope.removeList = removeList;
@@ -335,6 +340,32 @@
 				card.labels = [ label ];
 			}
 			updateCard(card);
+		}
+		
+		function updateLabel(label) {
+		}
+		
+		function removeLabel(label) {
+			function remFrom(arr) {
+				if(arr == null)
+					return;
+				for(var i = 0; i < arr.length; ++i) {
+					if(arr[i].id == label.id) {
+						arr.splice(i, 1);
+						--i;
+					}
+				}
+			}
+			remFrom($scope.board.availableLabels);
+			for(var li in $scope.board.lists) {
+				var list = $scope.board.lists[li];
+				for(var ci in list.cards) {
+					remFrom(list.cards[ci].labels);
+				}
+			}
+		}
+		
+		function createLabel() {
 		}
 		
 		function fmtRecord(rec) {
