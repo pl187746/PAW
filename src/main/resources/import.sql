@@ -15,10 +15,18 @@ INSERT INTO CARD (card_id,name,list_id,archive) VALUES (NULL, 'Karta 1/3/3',3,FA
 INSERT INTO CARD (card_id,name,list_id,archive) VALUES (NULL, 'Karta 1/3/4',3,FALSE );
 INSERT INTO CARD (card_id,name,list_id,archive) VALUES (NULL, 'Karta 2/1/1',4,FALSE );
 
-INSERT INTO USER (user_id,login,password,email) VALUES (NULL, 'admin','ap','a@x.com');
-INSERT INTO USER (user_id,login,password,email) VALUES (NULL, 'bbb','bp','b@x.com');
+INSERT INTO AUTHORITY(name) VALUES('ROLE_USER');
+INSERT INTO AUTHORITY(name) VALUES('ROLE_ADMIN');
+INSERT INTO AUTHORITY(name) VALUES('ROLE_ANONYMOUS');
+
+INSERT INTO USER (user_id,login,password,email) VALUES (NULL, 'admin','$2a$10$gSAhZrxMllrbgj/kkK9UceBPpChGWJA7SYIb1Mqo.n5aNLq1/oRrC','a@x.com');
+INSERT INTO USER (user_id,login,password,email) VALUES (NULL, 'user','$2a$10$VEjxo0jq2YG9Rbk2HmX9S.k1uZBGYUHdUcid3g/vfiEl7lwWgOH/K','b@x.com');
 INSERT INTO USER (user_id,login,password,email) VALUES (NULL, 'ccc','cp','c@x.com');
 INSERT INTO USER (user_id,login,password,email) VALUES (NULL, 'ddd','dp','d@x.com');
+
+INSERT INTO USER_AUTHORITY(user_id, authority_name) VALUES(1, 'ROLE_ADMIN')
+INSERT INTO USER_AUTHORITY(user_id, authority_name) VALUES(1, 'ROLE_USER')
+
 
 insert into Label (label_id,board_id,name,color) values (null, 3, '', 'red');
 insert into Label (label_id,board_id,name,color) values (null, 3, '', 'green');

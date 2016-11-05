@@ -5,15 +5,20 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import pl.iis.paw.trello.domain.Authority;
 import pl.iis.paw.trello.domain.User;
 import pl.iis.paw.trello.exception.UserAlreadyExistsException;
 import pl.iis.paw.trello.exception.UserAlreadyExistsException.Field;
 import pl.iis.paw.trello.exception.UserNotFoundException;
+import pl.iis.paw.trello.repository.AuthorityRepository;
 import pl.iis.paw.trello.repository.UserRepository;
+import pl.iis.paw.trello.security.AuthoritiesConstants;
 import pl.iis.paw.trello.web.viewmodel.RegisterVM;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class UserService {
@@ -21,10 +26,12 @@ public class UserService {
     private final static Logger log = LoggerFactory.getLogger(UserService.class);
 
     private UserRepository userRepository;
+    private AuthorityRepository authorityRepository;
 
     @Autowired
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, AuthorityRepository authorityRepository) {
         this.userRepository = userRepository;
+        this.authorityRepository = authorityRepository;
     }
 
     public List<User> getUsers() {
@@ -56,10 +63,15 @@ public class UserService {
     public User registerUser(RegisterVM registerVM) {
         validateUser(registerVM);
 
+        Authority authority = authorityRepository.findOne(AuthoritiesConstants.USER);
+        Set<Authority> authorities = new HashSet<>();
+        authorities.add(authority);
+
         User user = new User();
         user.setLogin(registerVM.getLogin());
         user.setPassword(registerVM.getPassword());
         user.setEmail(registerVM.getEmail());
+        user.setAuthorities(authorities);
 
         return userRepository.save(user);
     }
