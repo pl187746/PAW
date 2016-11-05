@@ -67,8 +67,8 @@
 							<ul style="list-style-type: none;">
 								<li ng-repeat="availLab in board.availableLabels">
 									<input type="checkbox" ng-checked="hasCardLabel(card, availLab)" ng-click="toggleLabel(card, availLab)">
-									<input ng-show="labelInput" class="label-item" style="background-color: {{availLab.color}};" type="text" ng-model="availLab.name" value="availLab.name">
-									<span ng-show="!labelInput" class="label-item" style="background-color: {{availLab.color}};">&nbsp;{{availLab.name}}</span>
+									<input ng-show="labelInput" class="label-bar" style="background-color: {{availLab.color}};" type="text" ng-model="availLab.name" value="availLab.name">
+									<span ng-show="!labelInput" class="label-bar" style="background-color: {{availLab.color}};">&nbsp;{{availLab.name}}</span>
 									<input ng-show="labelInput" type="color" ng-model="availLab.color", value="availLab.color">
 									<button ng-show="!labelInput" type="button" class="btn btn-default" ng-click="labelInput = true;"><i class="fa fa-edit" aria-hidden="true"></i></button>
 									<button ng-show="labelInput" type="button" class="btn btn-success" ng-click="updateLabel(availLab); labelInput = false;"><i class="fa fa-check" aria-hidden="true"></i></button>
