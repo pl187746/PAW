@@ -13,7 +13,6 @@ public class Authority {
     @NotNull
     @Size(min = 0, max = 40)
     @Id
-    @Column(name = "authority")
     private String name;
 
     public Authority() {

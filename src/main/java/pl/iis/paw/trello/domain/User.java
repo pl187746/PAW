@@ -2,10 +2,13 @@ package pl.iis.paw.trello.domain;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.validator.constraints.Email;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 import javax.persistence.*;
 
@@ -27,6 +30,14 @@ public class User {
     @Email
     @Column(name = "email")
     private String email;
+
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    @ManyToMany
+    @JoinTable(
+        name = "user_authority",
+        joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "user_id")},
+        inverseJoinColumns = {@JoinColumn(name = "authority_name", referencedColumnName = "name")})
+    private Set<Authority> authorities = new HashSet<>();
     
     @OneToMany(mappedBy = "user", targetEntity = FavBoard.class, cascade = CascadeType.REMOVE)
     private List<FavBoard> favoriteBoards;
@@ -78,6 +89,14 @@ public class User {
 	public void setFavoriteBoards(List<FavBoard> favoriteBoards) {
 		this.favoriteBoards = favoriteBoards;
 	}
+
+    public Set<Authority> getAuthorities() {
+        return authorities;
+    }
+
+    public void setAuthorities(Set<Authority> authorities) {
+        this.authorities = authorities;
+    }
 
     @Override
     public boolean equals(Object o) {
