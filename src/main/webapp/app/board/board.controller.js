@@ -324,6 +324,8 @@
 				case "CARD_CHANGE_LIST": msg += "Przeniesiono kartę " + rec.params.cardName + " z listy " + rec.params.oldListName + " do " + rec.params.newListName; break;
 				case "CARD_ARCHIVE": msg += "Zarchiwizowano kartę " + rec.params.cardName; break;
 				case "CARD_UNARCHIVE": msg += "Odarchiwizowano kartę " + rec.params.cardName; break;
+				case "CARD_ADD_LABEL": msg += "Dodano do karty " + rec.params.cardName + " etykietę " + rec.params.labelName; break;
+				case "CARD_REMOVE_LABEL": msg += "Usunięto z karty " + rec.params.cardName + " etykietę " + rec.params.labelName; break;
 				case "LABEL_CREATE": msg += "Utworzono nową etykietę " + rec.params.labelName; break;
 				case "LABEL_DELETE": msg += "Usunięto etykietę " + rec.params.labelName; break;
 				case "LABEL_RENAME": msg += "Zmieniono nazwę etykiety " + rec.params.oldLabelName + " na " + rec.params.newLabelName; break;
