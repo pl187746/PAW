@@ -343,6 +343,21 @@
 		}
 		
 		function updateLabel(label) {
+			function updIn(arr) {
+				if(arr == null)
+					return;
+				for(var i = 0; i < arr.length; ++i) {
+					if(arr[i].id == label.id) {
+						arr[i] = label;
+					}
+				}
+			}
+			for(var li in $scope.board.lists) {
+				var list = $scope.board.lists[li];
+				for(var ci in list.cards) {
+					updIn(list.cards[ci].labels);
+				}
+			}
 		}
 		
 		function removeLabel(label) {
