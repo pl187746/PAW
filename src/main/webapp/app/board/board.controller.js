@@ -374,19 +374,24 @@
 		function removeLabel(label) {
 			function remFrom(arr) {
 				if(arr == null)
-					return;
+					return false;
+				var up = false;
 				for(var i = 0; i < arr.length; ++i) {
 					if(arr[i].id == label.id) {
 						arr.splice(i, 1);
 						--i;
+						up = true;
 					}
 				}
+				return up;
 			}
 			remFrom($scope.board.availableLabels);
 			for(var li in $scope.board.lists) {
 				var list = $scope.board.lists[li];
 				for(var ci in list.cards) {
-					remFrom(list.cards[ci].labels);
+					if(remFrom(list.cards[ci].labels)) {
+						updateCard(list.cards[ci]);
+					}
 				}
 			}
 			
