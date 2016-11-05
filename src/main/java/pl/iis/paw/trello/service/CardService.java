@@ -19,6 +19,7 @@ import pl.iis.paw.trello.domain.Label;
 import pl.iis.paw.trello.domain.RecordType;
 import pl.iis.paw.trello.exception.CardNotFoundException;
 import pl.iis.paw.trello.repository.CardRepository;
+import pl.iis.paw.trello.repository.LabelRepository;
 
 @Service
 public class CardService {
@@ -28,14 +29,14 @@ public class CardService {
     private CardRepository cardRepository;
     private RecordService recordService;
     private CardListService cardListService;
-    private LabelService labelService;
+    private LabelRepository labelRepository;
 
     @Autowired
-    public CardService(CardRepository cardRepository, RecordService recordService, CardListService cardListService, LabelService labelService) {
+    public CardService(CardRepository cardRepository, RecordService recordService, CardListService cardListService, LabelRepository labelRepository) {
         this.cardRepository = cardRepository;
         this.recordService = recordService;
         this.cardListService = cardListService;
-        this.labelService = labelService;
+        this.labelRepository = labelRepository;
     }
     
     public List<Card> getCards() {
@@ -89,8 +90,8 @@ public class CardService {
     	
     	Optional.ofNullable(card.getLabels())
     		.map(lbs -> lbs.stream()
-    			.map(Label::getId)
-    			.map(labelService::getLabelById)
+    			.map(lb -> labelRepository.findOne(lb.getId()))
+    			.filter(li -> li != null)
     			.collect(Collectors.toList()))
     		.ifPresent(lbs -> {
     			Set<Long> oldLbIdSet = existingCard.getLabels().stream().map(Label::getId).collect(Collectors.toSet());    			
