@@ -17,6 +17,7 @@
 		$scope.isCardLast = isCardLast;
 		$scope.transferCardToNextList = transferCardToNextList;
 		$scope.hasCardLabel = hasCardLabel;
+		$scope.toggleLabel = toggleLabel;
 
         // Cards List
         $scope.removeList = removeList;
@@ -312,6 +313,18 @@
 					return true;
 			}
 			return false;
+		}
+		
+		function toggleLabel(card, label) {
+			for(var i in card.labels) {
+				if(card.labels[i].id == label.id) {
+					card.labels.splice(i, 1);
+					updateCard(card);
+					return;
+				}
+			}
+			card.labels.push(label);
+			updateCard(card);
 		}
 		
 		function fmtRecord(rec) {

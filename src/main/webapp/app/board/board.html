@@ -66,7 +66,7 @@
 							<h4>Labels</h4>
 							<ul style="list-style-type: none;">
 								<li ng-repeat="availLab in board.availableLabels">
-									<input type="checkbox" ng-checked="hasCardLabel(card, availLab)">
+									<input type="checkbox" ng-checked="hasCardLabel(card, availLab)" ng-click="toggleLabel(card, availLab)">
 									<span class="label-item" style="background-color: {{availLab.color}};">&nbsp;{{availLab.name}}</span>
 								</li>
 							</ul>
