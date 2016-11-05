@@ -52,12 +52,12 @@ public class LabelController {
     }
 
 	@RequestMapping(value = "/labels", method = RequestMethod.PUT)
-    public ResponseEntity<?> updateCardList(@RequestBody Label label) {
+    public ResponseEntity<?> updateLabel(@RequestBody Label label) {
         return ResponseEntity.ok(labelService.updateLabel(label));
     }
 
     @RequestMapping(value = "/labels/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity<?> deleteCardList(@PathVariable Long id) {
+    public ResponseEntity<?> deleteLabel(@PathVariable Long id) {
         labelService.deleteLabel(id);
         return ResponseEntity.ok().build();
     }
