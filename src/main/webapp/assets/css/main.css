@@ -229,17 +229,17 @@ body {
 }
 
 .card-menu {
-	position: absolute;
-	z-index: 123;
-	left: 25%;
-	width: 150%;
-	background-color: gainsboro;
-	padding: 16px;
-	border-radius: 16px;
+    position: absolute;
+    z-index: 123;
+    left: 25%;
+    width: 150%;
+    background-color: gainsboro;
+    padding: 16px;
+    border-radius: 16px;
 }
 
 .menu-close-btn {
-	float: right;
+    float: right;
 }
 
 .search-field {
@@ -249,28 +249,33 @@ body {
 }
 
 .label-mark {
-	display: inline-block;
-	width: 1.5em;
-	border-radius: 0.75em;
+    display: inline-block;
+    border-radius: 0.75em;
+    float: left;
+    height: 8px;
+    margin: 0 3px 3px 0;
+    padding: 0;
+    width: 42px;
+    line-height: 75pt;
 }
 
 .label-item {
-	display: table;
+    display: table;
 }
 
 .label-bar {
-	margin: 4px;
-	padding: 4px;
-	border-radius: 4px;
-	display: inline-block;
-	width: 100%;
+    margin: 4px;
+    padding: 4px;
+    border-radius: 4px;
+    display: inline-block;
+    width: 100%;
 }
 
 .label-bar-cell {
-	display: table-cell;
-	width: 90%;
+    display: table-cell;
+    width: 90%;
 }
 
 .tbl-cell {
-	display: table-cell;
+    display: table-cell;
 }
