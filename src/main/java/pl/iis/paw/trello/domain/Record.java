@@ -111,16 +111,16 @@ public class Record implements Serializable {
 		this.params = params;
 	}
 	
-	@JsonProperty(value = "userId")
-	public void setUserId(Long userId) {
+	@JsonProperty(value = "user")
+	public void setUserLogin(String userLogin) {
 		this.user = new User();
-		this.user.setId(userId);
+		this.user.setLogin(userLogin);
 	}
 	
-	@JsonProperty(value = "userId")
-	public Long getUserId() {
+	@JsonProperty(value = "user")
+	public String getUserLogin() {
 		return Optional.ofNullable(user)
-				.map(User::getId)
+				.map(User::getLogin)
 				.orElse(null);
 	}
 	

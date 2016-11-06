@@ -5,50 +5,52 @@
         .module('trello')
         .factory('LoginService', LoginService);
 
-    LoginService.$inject = ['$rootScope', '$http'];
+    LoginService.$inject = ['$rootScope', '$q', '$http', 'Subject'];
 
-    function LoginService ($rootScope, $http) {
+    function LoginService ($rootScope, $q, $http, Subject) {
         var service = {
+            getToken: getToken,
+            hasValidToken: hasValidToken,
             login: login,
             logout: logout,
-            isAuthenticated: isAuthenticated,
-            register: register,
-            loadUser: loadUser,
-			saveUser: saveUser
+            isAuthenticated: isAuthenticated
         };
 
         return service;
 
-        function login(credentials) {
-            function onSuccess(response) {
-                console.log(response);
-                $rootScope.user = response.data;
-                var userJSON = JSON.stringify(response.data);
+        function getToken () {
+            var token = localStorage.getItem('authenticationToken');
+            return token;
+        }
 
-                if (credentials.rememberMe) {
-                    localStorage.setItem('user', userJSON);
-                } else {
-                    sessionStorage.setItem('user', userJSON);
+        function hasValidToken () {
+            var token = this.getToken();
+            return !!token;
+        }
+
+        function login (credentials) {
+            var deferred = $q.defer();
+
+            var data = 'login=' + encodeURIComponent(credentials.login) +
+                '&password=' + encodeURIComponent(credentials.password) +
+                '&remember-me=' + credentials.rememberMe + '&submit=Login';
+
+            return $http.post('/authentication', data, {
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
                 }
-
-                console.log('Logged in: ' + $rootScope.user.login);
-            }
-
-            return $http({
-                url: '/login',
-                method: "POST",
-                data: credentials}).then(onSuccess);
+            }).success(function (response) {
+                Subject.identity(true).then(function(account) {
+                    deferred.resolve(data);
+                });
+            });
         }
 
-        function logout() {
-            console.log('User ' + $rootScope.user.login + ' logged out');
-            $rootScope.user = null;
-            sessionStorage.removeItem('user');
-            localStorage.removeItem('user');
-        }
-
-        function isAuthenticated() {
-            return $rootScope.user != null;
+        function logout () {
+            $http.post('/logout').success(function (response) {
+                localStorage.removeItem('authenticationToken');
+                return response;
+            });
         }
 
         function register(credentials) {
@@ -59,17 +61,8 @@
             })
         }
 
-        function loadUser() {
-            var userAsJSON = sessionStorage.user || localStorage.user;
-            $rootScope.user = angular.fromJson(userAsJSON);
+        function isAuthenticated() {
+            return Subject.isAuthenticated();
         }
-		
-		function saveUser() {
-			var userJSON = JSON.stringify($rootScope.user);
-			if(!!sessionStorage.user)
-				sessionStorage.setItem('user', userJSON);
-			else if(!!localStorage.user)
-				localStorage.setItem('user', userJSON);
-		}
     }
 })();

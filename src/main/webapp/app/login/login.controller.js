@@ -28,16 +28,16 @@
                 .then(function () {
                     $scope.authenticationError = false;
                     $scope.authenticationSuccess = true;
-                    console.log($state.current.name);
+                    $rootScope.$broadcast('authenticationSuccess');
                     if ($state.current.name === 'register' || $state.current.name === 'login') {
                         $state.go('home');
                     }
-            })
-                .catch(function (response) {
-                if (response.status >= 400) {
-                    $scope.authenticationError = true;
-                }
-            });
+                })
+                .catch(function () {
+                    if (response.status >= 400) {
+                        $scope.authenticationError = true
+                    }}
+                );
         }
     }
 })();
