@@ -37,8 +37,7 @@ public class AccountController {
 
     @RequestMapping(value = "/account", method = RequestMethod.GET)
     public ResponseEntity<?> getAccount() {
-        User currentUser = userService.findUserByLogin(SecurityUtils.getCurrentUserLogin());
-        currentUser.getAuthorities().size();
+        User currentUser = userService.getCurrentUser();
         return new ResponseEntity<>(currentUser, HttpStatus.OK);
     }
 }

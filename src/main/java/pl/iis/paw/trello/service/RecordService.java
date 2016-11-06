@@ -25,9 +25,12 @@ public class RecordService {
 	
 	private RecordRepository recordRepository;
 
+	private UserService userService;
+
 	@Autowired
-	public RecordService(RecordRepository recordRepository) {
+	public RecordService(RecordRepository recordRepository, UserService userService) {
 		this.recordRepository = recordRepository;
+		this.userService = userService;
 	}
 	
 	public List<Record> getRecords() {
@@ -57,11 +60,9 @@ public class RecordService {
 	public List<Record> getRecordsOfBoardAfterDate(Board board, Date date) {
 		return recordRepository.findByBoardAndTimestampAfter(board, date);
 	}
-	
+
 	public User currentUser() {
-		User user = new User();
-		user.setId(1L);
-		return user;
+		return userService.getCurrentUser();
 	}
 	
 	public void record(Board board, RecordType type, Map<String, String> params) {

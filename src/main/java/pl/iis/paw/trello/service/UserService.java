@@ -13,6 +13,7 @@ import pl.iis.paw.trello.exception.UserNotFoundException;
 import pl.iis.paw.trello.repository.AuthorityRepository;
 import pl.iis.paw.trello.repository.UserRepository;
 import pl.iis.paw.trello.security.AuthoritiesConstants;
+import pl.iis.paw.trello.security.SecurityUtils;
 import pl.iis.paw.trello.web.viewmodel.RegisterVM;
 
 import java.util.HashSet;
@@ -121,5 +122,11 @@ public class UserService {
         if (loginExists || emailExists) {
             throw new UserAlreadyExistsException(registerVM.getLogin(), field);
         }
+    }
+
+    public User getCurrentUser() {
+        User currentUser = findUserByLogin(SecurityUtils.getCurrentUserLogin());
+        currentUser.getAuthorities().size(); // eager
+        return currentUser;
     }
 }
