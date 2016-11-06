@@ -5,19 +5,34 @@
         .module('trello')
         .controller('NavbarController', NavbarController);
 
-    NavbarController.$inject = ['$rootScope', '$scope', '$state', 'Board', 'LoginService'];
+    NavbarController.$inject = ['$rootScope', '$scope', '$state', 'Board', 'LoginService', 'Subject'];
 
-    function NavbarController ($rootScope, $scope, $state, Board, LoginService) {
+    function NavbarController ($rootScope, $scope, $state, Board, LoginService, Subject) {
         $scope.logout = logout;
         $scope.isAuthenticated = isAuthenticated;
 
         $scope.$state = $state;
         $rootScope.boards = null;
-        $rootScope.user = null;
 
+        $scope.user = null;
+        $scope.isAuthenticated = null;
+
+        $scope.$on('authenticationSuccess', function() {
+            getAccount();
+        });
+
+        getAccount();
         loadBoards();
 
-        loadLoggedUser();
+        function getAccount() {
+            Subject.identity().then(function(account) {
+                if (account !== null) {
+                    console.log('Loaded user: ' + account.login);
+                }
+                $scope.user = account;
+                $scope.isAuthenticated = Subject.isAuthenticated;
+            });
+        }
 
         function loadBoards() {
             Board.query(onSuccess, onError);
@@ -32,12 +47,9 @@
             }
         }
 
-        function loadLoggedUser() {
-            LoginService.loadUser();
-        }
-
         function logout() {
             LoginService.logout();
+            Subject.authenticate(null);
         }
 
         function isAuthenticated() {

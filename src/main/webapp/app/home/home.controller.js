@@ -26,7 +26,6 @@
 
             function onSuccess(data) {
                 $scope.boards = data;
-
                 console.log('Loaded boards of size: ' + $scope.boards.length);
             }
 
@@ -36,15 +35,11 @@
         }
 
         function addBoard() {
-
             Board.save( {name : 'Empty'}, onSuccess, onError);
 
             function onSuccess(response) {
-
                 $scope.boards.push(response);
                 console.log('Added new board');
-
-
             }
 
             function onError() {
@@ -129,13 +124,11 @@
 						break;
 					}
 				}
-				LoginService.saveUser();
             }
 
             function onError() {
                 console.log('Error while unliking user.id=' + user.id + ' board.id=' + boardId);
             }
 		}
-		
     }
 })();

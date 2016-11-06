@@ -20,6 +20,7 @@ import pl.iis.paw.trello.security.AjaxAuthenticationSuccessHandler;
 import pl.iis.paw.trello.security.AjaxLogoutSuccessHandler;
 import pl.iis.paw.trello.security.Http401UnauthorizedEntryPoint;
 
+
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
@@ -51,7 +52,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         try {
             auth
                 .userDetailsService(userDetailsService)
-                    .passwordEncoder(passwordEncoder());
+                .passwordEncoder(passwordEncoder());
         } catch (Exception e) {
             throw new BeanInitializationException("Security configuration failed", e);
         }
@@ -69,34 +70,33 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
             .csrf()
-        .and()
-            .exceptionHandling()
-                .authenticationEntryPoint(http401UnauthorizedEntryPoint)
-        .and()
-            .formLogin()
-                .loginProcessingUrl("/login")
-                .successHandler(ajaxAuthenticationSuccessHandler)
-                .failureHandler(ajaxAuthenticationFailureHandler)
-                .usernameParameter("login")
-                .passwordParameter("password")
-            .permitAll()
-        .and()
-            .logout()
-                .logoutUrl("/logout")
-                .logoutSuccessHandler(ajaxLogoutSuccessHandler)
-                .permitAll()
-        .and()
+            .disable()
             .headers()
             .frameOptions()
             .disable()
         .and()
+            .exceptionHandling()
+            .authenticationEntryPoint(http401UnauthorizedEntryPoint)
+        .and()
+            .formLogin()
+            .loginProcessingUrl("/authentication")
+            .successHandler(ajaxAuthenticationSuccessHandler)
+            .failureHandler(ajaxAuthenticationFailureHandler)
+            .usernameParameter("login")
+            .passwordParameter("password")
+            .permitAll()
+        .and()
+            .logout()
+            .logoutUrl("/logout")
+            .logoutSuccessHandler(ajaxLogoutSuccessHandler)
+            .permitAll()
+        .and()
             .authorizeRequests()
-                .antMatchers("/register").permitAll()
-                .antMatchers("/login").permitAll()
-                .antMatchers("/board/**").permitAll()
-                .antMatchers("/cards/**").permitAll()
-                .antMatchers("/list/**").permitAll()
-                .antMatchers("/**").authenticated();
+            .antMatchers("/").permitAll()
+            .antMatchers("/register").permitAll()
+            .antMatchers("/login").permitAll()
+            .antMatchers("/account").permitAll()
+            .antMatchers("/**").authenticated();
     }
 
     @Bean

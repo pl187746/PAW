@@ -32,7 +32,7 @@ public class User {
     private String email;
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
         name = "user_authority",
         joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "user_id")},

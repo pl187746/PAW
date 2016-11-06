@@ -3,6 +3,7 @@ package pl.iis.paw.trello.security;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -22,15 +23,15 @@ public class UserDetailsService implements org.springframework.security.core.use
     private UserRepository userRepository;
     
     @Override
-    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        log.debug("Authenticating {}", s);
-        String lowerCaseLogin = s.toLowerCase();
+    public UserDetails loadUserByUsername(final String login) throws UsernameNotFoundException {
+        log.info("Authenticating {}", login);
+        String lowerCaseLogin = login.toLowerCase();
         User user = userRepository.findByLogin(lowerCaseLogin);
         if (user == null) {
             throw new UsernameNotFoundException("User " + lowerCaseLogin + " was not found");
         }
 
-        List<SimpleGrantedAuthority> grantedAuthorities = user.getAuthorities().stream()
+        List<GrantedAuthority> grantedAuthorities = user.getAuthorities().stream()
             .map(authority -> new SimpleGrantedAuthority(authority.getName()))
             .collect(Collectors.toList());
         return new org.springframework.security.core.userdetails.User(lowerCaseLogin, user.getPassword(), grantedAuthorities);

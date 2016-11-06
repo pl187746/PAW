@@ -26,7 +26,7 @@ INSERT INTO USER (user_id,login,password,email) VALUES (NULL, 'ddd','dp','d@x.co
 
 INSERT INTO USER_AUTHORITY(user_id, authority_name) VALUES(1, 'ROLE_ADMIN')
 INSERT INTO USER_AUTHORITY(user_id, authority_name) VALUES(1, 'ROLE_USER')
-
+INSERT INTO USER_AUTHORITY(user_id, authority_name) VALUES(2, 'ROLE_USER')
 
 insert into Label (label_id,board_id,name,color) values (null, 3, '', 'red');
 insert into Label (label_id,board_id,name,color) values (null, 3, '', 'green');
