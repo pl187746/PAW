@@ -13,7 +13,8 @@
             hasValidToken: hasValidToken,
             login: login,
             logout: logout,
-            isAuthenticated: isAuthenticated
+            isAuthenticated: isAuthenticated,
+            register: register
         };
 
         return service;

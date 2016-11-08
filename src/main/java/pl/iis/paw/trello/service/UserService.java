@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.iis.paw.trello.domain.Authority;
 import pl.iis.paw.trello.domain.User;
@@ -27,12 +28,16 @@ public class UserService {
     private final static Logger log = LoggerFactory.getLogger(UserService.class);
 
     private UserRepository userRepository;
+
     private AuthorityRepository authorityRepository;
 
+    private PasswordEncoder passwordEncoder;
+
     @Autowired
-    public UserService(UserRepository userRepository, AuthorityRepository authorityRepository) {
+    public UserService(UserRepository userRepository, AuthorityRepository authorityRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.authorityRepository = authorityRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public List<User> getUsers() {
@@ -67,10 +72,11 @@ public class UserService {
         Authority authority = authorityRepository.findOne(AuthoritiesConstants.USER);
         Set<Authority> authorities = new HashSet<>();
         authorities.add(authority);
+        String hashedPassword = passwordEncoder.encode(registerVM.getPassword());
 
         User user = new User();
         user.setLogin(registerVM.getLogin());
-        user.setPassword(registerVM.getPassword());
+        user.setPassword(hashedPassword);
         user.setEmail(registerVM.getEmail());
         user.setAuthorities(authorities);
 
