@@ -26,7 +26,7 @@ public class Board implements Serializable {
 	@OneToMany(mappedBy = "board", targetEntity = FavBoard.class, cascade = CascadeType.REMOVE)
     private List<FavBoard> likingUsers;
 
-	@ManyToMany(targetEntity = User.class, mappedBy = "associatedBoards")
+	@ManyToMany(targetEntity = User.class)
 	private List<User> members;
 
 	@OneToMany(mappedBy = "board", targetEntity = Record.class, cascade = CascadeType.REMOVE)

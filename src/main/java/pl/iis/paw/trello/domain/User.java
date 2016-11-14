@@ -42,7 +42,7 @@ public class User {
     @OneToMany(mappedBy = "user", targetEntity = FavBoard.class, cascade = CascadeType.REMOVE)
     private List<FavBoard> favoriteBoards;
 
-    @ManyToMany(targetEntity = Board.class)
+    @ManyToMany(targetEntity = Board.class, mappedBy = "members")
     @JsonIgnore
     private List<Board> associatedBoards;
 
