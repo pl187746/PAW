@@ -162,6 +162,15 @@
                 <span>Members</span>
                 <span class="caret"></span>
             </button>
+			<ul class="dropdown-menu">
+				<li ng-repeat="member in board.members">
+					<span>member.login</span>
+					<button type="button" class="btn btn-danger" ng-click="removeMember(member)"><i class="fa fa-remove" aria-hidden="true"></i></button>
+				</li>
+				<li>
+					<button type="button" class="btn btn-success" ng-click=""><i class="fa fa-plus" aria-hidden="true"></i></button>
+				</li>
+			</ul>
 		</div>
 
         <div class="clearfix"></div>

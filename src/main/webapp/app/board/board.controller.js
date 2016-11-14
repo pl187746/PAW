@@ -36,6 +36,10 @@
 		$scope.archiveCard = archiveCard;
 		$scope.returnArchiveCard = returnArchiveCard;
 
+		//Members
+		$scope.addMember = addMember;
+		$scope.removeMember = removeMember;
+
 		$scope.fmtRecord = fmtRecord;
 		$scope.fmtDate = fmtDate;
 
@@ -507,7 +511,26 @@
 				}
 			}
 		}
-		
+
+		function addMember() {
+		}
+
+		function removeMember(member) {
+			var idx = $scope.board.members.indexOf(member);
+			$scope.board.members.splice(idx, 1);
+
+			Board.update($scope.board, onSuccess, onError);
+
+			function onSuccess() {
+				console.log('Updated board');
+				refreshDiary();
+			}
+
+			function onError() {
+				console.log('Error while updating board');
+			}
+		}
+
     }
 })();
 
