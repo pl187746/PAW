@@ -164,7 +164,7 @@
             </button>
 			<ul class="dropdown-menu">
 				<li ng-repeat="member in board.members">
-					<span>member.login</span>
+					<span>{{member.login}}</span>
 					<button type="button" class="btn btn-danger" ng-click="removeMember(member)"><i class="fa fa-remove" aria-hidden="true"></i></button>
 				</li>
 				<li>
