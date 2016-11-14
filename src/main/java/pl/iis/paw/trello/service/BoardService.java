@@ -64,6 +64,9 @@ public class BoardService {
     			existingBoard.setName(n);
     		});
     	
+    	Optional.ofNullable(board.getMembers())
+    		.ifPresent(existingBoard::setMembers);
+    	
     	return boardRepository.save(existingBoard);
     }
     
