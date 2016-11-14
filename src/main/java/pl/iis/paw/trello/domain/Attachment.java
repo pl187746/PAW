@@ -3,10 +3,7 @@ package pl.iis.paw.trello.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
@@ -20,7 +17,8 @@ public class Attachment {
     @Column(name = "file_name")
     private String fileName;
 
-    @Column(name = "card")
+    @ManyToOne
+    @JoinColumn(name = "card_id", referencedColumnName = "card_id")
     @JsonIgnore
     private Card card;
 

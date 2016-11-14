@@ -35,6 +35,9 @@ public class Card implements Serializable {
 	
 	@ManyToMany(targetEntity = Label.class)
 	private List<Label> labels;
+
+	@OneToMany(mappedBy = "card", targetEntity = Attachment.class, cascade = CascadeType.REMOVE)
+	private List<Attachment> attachments;
 	
 	public Card() { }
 
@@ -103,5 +106,13 @@ public class Card implements Serializable {
 
 	public void setLabels(List<Label> labels) {
 		this.labels = labels;
+	}
+
+	public List<Attachment> getAttachments() {
+		return attachments;
+	}
+
+	public void setAttachments(List<Attachment> attachments) {
+		this.attachments = attachments;
 	}
 }
