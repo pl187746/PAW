@@ -5,9 +5,9 @@
         .module('trello')
         .controller('BoardController', BoardController);
 
-    BoardController.$inject = ['$rootScope', '$scope', '$stateParams', 'Board', 'Card', 'List', 'User', 'Label', 'Record'];
+    BoardController.$inject = ['$rootScope', '$scope', '$stateParams', 'Board', 'Card', 'List', 'User', 'Label', 'Record', 'Comment'];
 
-    function BoardController ($rootScope, $scope, $stateParams, Board, Card, List, User, Label, Record) {
+    function BoardController ($rootScope, $scope, $stateParams, Board, Card, List, User, Label, Record, Comment) {
         // Cards
         $scope.updateCard = updateCard;
         $scope.removeCard = removeCard;
@@ -352,16 +352,17 @@
         }
 
         function toggleLabel(card, label) {
-            if(card.labels != null) {
-                function remLab() {
-                    for(var i in card.labels) {
-                        if(card.labels[i].id == label.id) {
-                            card.labels.splice(i, 1);
-                            return true;
-                        }
+            function remLab() {
+                for(var i in card.labels) {
+                    if(card.labels[i].id == label.id) {
+                        card.labels.splice(i, 1);
+                        return true;
                     }
-                    return false;
                 }
+                return false;
+            }
+
+            if(card.labels != null) {
                 if(!remLab()) {
                     card.labels.push(label);
                 }
@@ -538,8 +539,8 @@
             return getList(listIndex).cards[cardIndex];
         }
 
-        function getComments(listIndex,cardIndex) {
-            return getCard(listIndex,cardIndex).comments;
+        function getComments(listIndex, cardIndex) {
+            return getCard(listIndex, cardIndex).comments;
         }
     }
 })();
