@@ -21,5 +21,28 @@
                 }
             }
         })
+        .state('board.card', {
+            parent: 'board',
+            url: '/cards/{cardId}',
+            data: {
+                authorities: ['ROLE_USER']
+            },
+            onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
+                $uibModal.open({
+                    templateUrl: 'app/board/card-window.html',
+                    controller: 'CardWindowController',
+                    resolve: {
+                        entity: ['Card', function(Card) {
+                            console.log($stateParams);
+                            return Card.get({id : $stateParams.cardId});
+                        }]
+                    }
+                }).result.then(function() {
+                    $state.go('^');
+                }, function() {
+                    $state.go('^');
+                });
+            }]
+        });
     }
 })();

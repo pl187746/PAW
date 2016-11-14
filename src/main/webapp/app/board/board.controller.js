@@ -50,28 +50,28 @@
         loadBoard($stateParams.id);
 
         function sortByOrd(arr) {
-            arr.sort(function(a, b) {
+            arr.sort(function (a, b) {
                 return (a.ord == null) ? ((b.ord == null) ? (a.id - b.id) : 1) : ((b.ord == null) ? -1 : ((a.ord != b.ord) ? (a.ord - b.ord) : (a.id - b.id)));
             });
         }
 
         function loadBoard(id) {
-            Board.get({"id" : id}, onSuccess, onError);
+            Board.get({"id": id}, onSuccess, onError);
 
             function onSuccess(data) {
                 sortByOrd(data.lists);
-                for(var li in data.lists) {
+                for (var li in data.lists) {
                     sortByOrd(data.lists[li].cards);
                 }
-                for(var li in data.lists) {
-                    for(var ci in data.lists[li].cards) {
+                for (var li in data.lists) {
+                    for (var ci in data.lists[li].cards) {
                         var lbs = data.lists[li].cards[ci].labels;
-                        if(lbs == null) {
+                        if (lbs == null) {
                             data.lists[li].cards[ci] = [];
                         } else {
-                            for(var i in lbs) {
-                                for(var j in data.availableLabels) {
-                                    if(lbs[i].id == data.availableLabels[j].id) {
+                            for (var i in lbs) {
+                                for (var j in data.availableLabels) {
+                                    if (lbs[i].id == data.availableLabels[j].id) {
                                         lbs[i] = data.availableLabels[j];
                                     }
                                 }
@@ -96,16 +96,16 @@
         }
 
         function firstIdx(arr) {
-            for(var i = 0; i < arr.length; ++i) {
-                if(!arr[i].archive)
+            for (var i = 0; i < arr.length; ++i) {
+                if (!arr[i].archive)
                     return i;
             }
             return null;
         }
 
         function lastIdx(arr) {
-            for(var i = arr.length - 1; i >= 0; --i) {
-                if(!arr[i].archive)
+            for (var i = arr.length - 1; i >= 0; --i) {
+                if (!arr[i].archive)
                     return i;
             }
             return null;
@@ -131,20 +131,20 @@
         }
 
         function moveObj(arr, obj, dir, updFun) {
-            if(!dir)
+            if (!dir)
                 return;
             dir = ((dir < -1) ? -1 : ((dir > 1) ? 1 : dir));
             var index = arr.indexOf(obj);
             var newIdx = index;
-            for(;;) {
+            for (; ;) {
                 newIdx += dir;
-                if(newIdx < 0 || newIdx >= arr.length)
+                if (newIdx < 0 || newIdx >= arr.length)
                     break;
-                if(!arr[newIdx].archive)
+                if (!arr[newIdx].archive)
                     break;
             }
             newIdx = ((newIdx < 0) ? 0 : ((newIdx >= arr.length) ? (arr.length - 1) : newIdx));
-            if(newIdx != index) {
+            if (newIdx != index) {
                 arr.splice(newIdx, 0, arr.splice(index, 1)[0]);
                 updFun();
             }
@@ -155,14 +155,16 @@
         }
 
         function moveCard(list, card, dir) {
-            return moveObj(list.cards, card, dir, function() { updateCardOrds(list); });
+            return moveObj(list.cards, card, dir, function () {
+                updateCardOrds(list);
+            });
         }
 
         function updateOrds(arr, updFun) {
-            for(var i in arr) {
+            for (var i in arr) {
                 var up = (arr[i].ord != i);
                 arr[i].ord = i;
-                if(up) {
+                if (up) {
                     updFun(arr[i]);
                 }
             }
@@ -213,7 +215,7 @@
         function addList() {
             var lists = getLists();
 
-            List.save( {boardId : $scope.board.id, name : '', ord : lists.length }, onSuccess, onError);
+            List.save({boardId: $scope.board.id, name: '', ord: lists.length}, onSuccess, onError);
 
             function onSuccess(response) {
                 console.log('Added new list to board with id ' + $scope.board.id);
@@ -227,12 +229,12 @@
             }
         }
 
-        function archiveList(list){
+        function archiveList(list) {
             list.archive = true;
             updateList(list);
         }
 
-        function returnArchiveList(list){
+        function returnArchiveList(list) {
             list.archive = false;
             updateList(list);
         }
@@ -251,7 +253,7 @@
             }
         }
 
-        function removeCard(card,list) {
+        function removeCard(card, list) {
             var listIndex = getLists().indexOf(list);
             var cards = getCards(listIndex);
             var cardIndex = cards.indexOf(card);
@@ -275,7 +277,7 @@
             var cards = getCards(listIndex);
             var listId = getList(listIndex).id;
 
-            Card.save( {listId : listId, name : ''}, onSuccess, onError);
+            Card.save({listId: listId, name: ''}, onSuccess, onError);
 
             function onSuccess(response) {
                 console.log('Added new card to list with index ' + listIndex);
@@ -288,14 +290,14 @@
             }
         }
 
-        function archiveCard(card,list){
+        function archiveCard(card, list) {
             card.archive = true;
-            updateCard(card,list);
+            updateCard(card, list);
         }
 
-        function returnArchiveCard(card,list){
+        function returnArchiveCard(card, list) {
             card.archive = false;
-            updateCard(card,list);
+            updateCard(card, list);
         }
 
         function getCards(listIndex) {
@@ -312,21 +314,21 @@
         }
 
         function transferCardToNextList(card, list, dir) {
-            if(!dir)
+            if (!dir)
                 return;
             dir = ((dir < -1) ? -1 : ((dir > 1) ? 1 : dir));
             var lists = getLists();
             var idxList = lists.indexOf(list);
             var newIdxList = idxList;
-            for(;;) {
+            for (; ;) {
                 newIdxList += dir;
-                if(newIdxList < 0 || newIdxList >= lists.length)
+                if (newIdxList < 0 || newIdxList >= lists.length)
                     break;
-                if(!lists[newIdxList].archive)
+                if (!lists[newIdxList].archive)
                     break;
             }
             newIdxList = ((newIdxList < 0) ? 0 : ((newIdxList >= lists.length) ? (lists.length - 1) : newIdxList));
-            if(newIdxList != idxList) {
+            if (newIdxList != idxList) {
                 transferCardBetweenLists(card, list, lists[newIdxList]);
             }
         }
@@ -342,10 +344,10 @@
         }
 
         function hasCardLabel(card, label) {
-            if(card.labels == null)
+            if (card.labels == null)
                 return false;
-            for(var i in card.labels) {
-                if(card.labels[i].id == label.id)
+            for (var i in card.labels) {
+                if (card.labels[i].id == label.id)
                     return true;
             }
             return false;
@@ -353,8 +355,8 @@
 
         function toggleLabel(card, label) {
             function remLab() {
-                for(var i in card.labels) {
-                    if(card.labels[i].id == label.id) {
+                for (var i in card.labels) {
+                    if (card.labels[i].id == label.id) {
                         card.labels.splice(i, 1);
                         return true;
                     }
@@ -362,12 +364,12 @@
                 return false;
             }
 
-            if(card.labels != null) {
-                if(!remLab()) {
+            if (card.labels != null) {
+                if (!remLab()) {
                     card.labels.push(label);
                 }
             } else {
-                card.labels = [ label ];
+                card.labels = [label];
             }
             updateCard(card);
         }
@@ -388,19 +390,20 @@
 
         function removeLabel(label) {
             function remFrom(arr) {
-                if(arr == null)
+                if (arr == null)
                     return;
-                for(var i = 0; i < arr.length; ++i) {
-                    if(arr[i].id == label.id) {
+                for (var i = 0; i < arr.length; ++i) {
+                    if (arr[i].id == label.id) {
                         arr.splice(i, 1);
                         --i;
                     }
                 }
             }
+
             remFrom($scope.board.availableLabels);
-            for(var li in $scope.board.lists) {
+            for (var li in $scope.board.lists) {
                 var list = $scope.board.lists[li];
-                for(var ci in list.cards) {
+                for (var ci in list.cards) {
                     remFrom(list.cards[ci].labels);
                 }
             }
@@ -418,7 +421,7 @@
         }
 
         function createLabel() {
-            Label.save( {boardId: $scope.board.id, name: '', color: '#FFFFFF'}, onSuccess, onError);
+            Label.save({boardId: $scope.board.id, name: '', color: '#FFFFFF'}, onSuccess, onError);
 
             function onSuccess(response) {
                 console.log('Created new label id=' + response.id);
@@ -432,49 +435,92 @@
         }
 
         function fmtDate(date) {
-            if(!(date instanceof Date)) {
+            if (!(date instanceof Date)) {
                 date = new Date(date);
             }
             function s0(n) {
                 return (n < 10 ? "0" : "") + n;
             }
+
             return s0(date.getHours()) + ":" + s0(date.getMinutes()) + ":" + s0(date.getSeconds()) + " "
                 + s0(date.getDate()) + "." + s0(date.getMonth() + 1) + "." + date.getFullYear();
         }
 
         function fmtRecord(rec) {
             var msg = "";
-            switch(rec.type) {
-                case "BOARD_CREATE": msg += "Utworzono tablicę pod nazwą " + rec.params.boardName; break;
-                case "BOARD_RENAME": msg += "Zmieniono nazwę tablicy z " + rec.params.oldBoardName + " na " + rec.params.newBoardName; break;
-                case "BOARD_LIKE": msg += "Poluniono tablicę"; break;
-                case "BOARD_UNLIKE": msg += "Odlubiono tablicę"; break;
-                case "LIST_CREATE": msg += "Utworzono listę " + rec.params.listName; break;
-                case "LIST_DELETE": msg += "Usunięto listę " + rec.params.listName; break;
-                case "LIST_RENAME": msg += "Zmieniono nazwę listy " + rec.params.oldListName + " na " + rec.params.newListName; break;
-                case "LIST_ARCHIVE": msg += "Zarchiwizowano listę " + rec.params.listName; break;
-                case "LIST_UNARCHIVE": msg += "Odarchiwizowano listę " + rec.params.listName; break;
-                case "CARD_CREATE": msg += "Utworzono kartę " + rec.params.cardName + " w liście " + rec.params.listName; break;
-                case "CARD_DELETE": msg += "Usunięto kartę " + rec.params.cardName; break;
-                case "CARD_RENAME": msg += "Zmieniono nazwę karty " + rec.params.oldCardName + " na " + rec.params.newCardName; break;
-                case "CARD_CHANGE_LIST": msg += "Przeniesiono kartę " + rec.params.cardName + " z listy " + rec.params.oldListName + " do " + rec.params.newListName; break;
-                case "CARD_ARCHIVE": msg += "Zarchiwizowano kartę " + rec.params.cardName; break;
-                case "CARD_UNARCHIVE": msg += "Odarchiwizowano kartę " + rec.params.cardName; break;
-                case "CARD_ADD_LABEL": msg += "Dodano do karty " + rec.params.cardName + " etykietę " + rec.params.labelName; break;
-                case "CARD_REMOVE_LABEL": msg += "Usunięto z karty " + rec.params.cardName + " etykietę " + rec.params.labelName; break;
-                case "LABEL_CREATE": msg += "Utworzono nową etykietę " + rec.params.labelName; break;
-                case "LABEL_DELETE": msg += "Usunięto etykietę " + rec.params.labelName; break;
-                case "LABEL_RENAME": msg += "Zmieniono nazwę etykiety " + rec.params.oldLabelName + " na " + rec.params.newLabelName; break;
-                case "LABEL_CHANGE_COLOR": msg += "Zmieniono kolor etykiety " + rec.params.labelName; break;
+            switch (rec.type) {
+                case "BOARD_CREATE":
+                    msg += "Utworzono tablicę pod nazwą " + rec.params.boardName;
+                    break;
+                case "BOARD_RENAME":
+                    msg += "Zmieniono nazwę tablicy z " + rec.params.oldBoardName + " na " + rec.params.newBoardName;
+                    break;
+                case "BOARD_LIKE":
+                    msg += "Poluniono tablicę";
+                    break;
+                case "BOARD_UNLIKE":
+                    msg += "Odlubiono tablicę";
+                    break;
+                case "LIST_CREATE":
+                    msg += "Utworzono listę " + rec.params.listName;
+                    break;
+                case "LIST_DELETE":
+                    msg += "Usunięto listę " + rec.params.listName;
+                    break;
+                case "LIST_RENAME":
+                    msg += "Zmieniono nazwę listy " + rec.params.oldListName + " na " + rec.params.newListName;
+                    break;
+                case "LIST_ARCHIVE":
+                    msg += "Zarchiwizowano listę " + rec.params.listName;
+                    break;
+                case "LIST_UNARCHIVE":
+                    msg += "Odarchiwizowano listę " + rec.params.listName;
+                    break;
+                case "CARD_CREATE":
+                    msg += "Utworzono kartę " + rec.params.cardName + " w liście " + rec.params.listName;
+                    break;
+                case "CARD_DELETE":
+                    msg += "Usunięto kartę " + rec.params.cardName;
+                    break;
+                case "CARD_RENAME":
+                    msg += "Zmieniono nazwę karty " + rec.params.oldCardName + " na " + rec.params.newCardName;
+                    break;
+                case "CARD_CHANGE_LIST":
+                    msg += "Przeniesiono kartę " + rec.params.cardName + " z listy " + rec.params.oldListName + " do " + rec.params.newListName;
+                    break;
+                case "CARD_ARCHIVE":
+                    msg += "Zarchiwizowano kartę " + rec.params.cardName;
+                    break;
+                case "CARD_UNARCHIVE":
+                    msg += "Odarchiwizowano kartę " + rec.params.cardName;
+                    break;
+                case "CARD_ADD_LABEL":
+                    msg += "Dodano do karty " + rec.params.cardName + " etykietę " + rec.params.labelName;
+                    break;
+                case "CARD_REMOVE_LABEL":
+                    msg += "Usunięto z karty " + rec.params.cardName + " etykietę " + rec.params.labelName;
+                    break;
+                case "LABEL_CREATE":
+                    msg += "Utworzono nową etykietę " + rec.params.labelName;
+                    break;
+                case "LABEL_DELETE":
+                    msg += "Usunięto etykietę " + rec.params.labelName;
+                    break;
+                case "LABEL_RENAME":
+                    msg += "Zmieniono nazwę etykiety " + rec.params.oldLabelName + " na " + rec.params.newLabelName;
+                    break;
+                case "LABEL_CHANGE_COLOR":
+                    msg += "Zmieniono kolor etykiety " + rec.params.labelName;
+                    break;
             }
             return msg;
         }
 
         function refreshDiary() {
-            if($scope.board.diary == null || $scope.board.diary.length == 0) {
-                Record.get({ boardId: $scope.board.id }, onSuccess, onError);
+            if ($scope.board.diary == null || $scope.board.diary.length == 0) {
+                Record.get({boardId: $scope.board.id}, onSuccess, onError);
             } else {
-                Record.get({ boardId: $scope.board.id, dateAfter: $scope.board.diary[0].timestamp }, onSuccess, onError);
+                Record.get({boardId: $scope.board.id, dateAfter: $scope.board.diary[0].timestamp}, onSuccess, onError);
             }
 
             function onSuccess(response) {
@@ -498,30 +544,34 @@
         }
 
         function sortByIdDescending(arr) {
-            arr.sort(function(a, b) { return b.id - a.id; });
+            arr.sort(function (a, b) {
+                return b.id - a.id;
+            });
         }
 
         function removeDuplicatesFromSortedById(arr) {
-            return removeDuplicatesFromSorted(arr, function(a, b) { return a.id == b.id; });
+            return removeDuplicatesFromSorted(arr, function (a, b) {
+                return a.id == b.id;
+            });
         }
 
         function removeDuplicatesFromSorted(arr, eq) {
-            for(var i = 1; i < arr.length; ++i) {
-                if(eq(arr[i - 1], arr[i])) {
+            for (var i = 1; i < arr.length; ++i) {
+                if (eq(arr[i - 1], arr[i])) {
                     arr.splice(i, 1);
                     --i;
                 }
             }
         }
 
-        function addComment(content,card,list) {
+        function addComment(content, card, list) {
             var listIndex = getLists().indexOf(list);
             var cardIndex = getCards(listIndex).indexOf(card);
-            var comments = getComments(listIndex,cardIndex);
+            var comments = getComments(listIndex, cardIndex);
 
 
-            if(content != null && content !== ""){
-                Comment.save( {cardId : card.id, content : content}, onSuccess,onError);
+            if (content != null && content !== "") {
+                Comment.save({cardId: card.id, content: content}, onSuccess, onError);
             }
 
 
