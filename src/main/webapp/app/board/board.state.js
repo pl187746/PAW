@@ -33,7 +33,6 @@
                     controller: 'CardWindowController',
                     resolve: {
                         entity: ['Card', function(Card) {
-                            console.log($stateParams);
                             return Card.get({id : $stateParams.cardId});
                         }]
                     }

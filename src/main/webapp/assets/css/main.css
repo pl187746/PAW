@@ -279,3 +279,18 @@ body {
 .tbl-cell {
     display: table-cell;
 }
+
+.card-window-nav-button {
+    width: 90%;
+    margin: 5px auto;
+}
+
+.card-window-close-button {
+    width: 100px;
+    margin: 30px auto 10px auto;
+}
+
+.card-window-footer {
+    text-align: center;
+    padding: 10px auto 20px auto;
+}
