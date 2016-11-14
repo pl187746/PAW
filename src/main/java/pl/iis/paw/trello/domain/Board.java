@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Board implements Serializable {
 	
@@ -14,22 +16,25 @@ public class Board implements Serializable {
     @Id
     @Column(name = "board_id")
     private Long id;
-	
+
 	@Column(name = "name")
 	private String name;
-	
+
 	@OneToMany(mappedBy = "board", targetEntity = CardList.class, cascade = CascadeType.ALL)
 	private List<CardList> lists;
-	
+
 	@OneToMany(mappedBy = "board", targetEntity = FavBoard.class, cascade = CascadeType.REMOVE)
     private List<FavBoard> likingUsers;
-	
+
+	@ManyToMany(targetEntity = User.class, mappedBy = "associatedBoards")
+	private List<User> members;
+
 	@OneToMany(mappedBy = "board", targetEntity = Record.class, cascade = CascadeType.REMOVE)
 	private List<Record> diary;
-	
+
 	@OneToMany(mappedBy = "board", targetEntity = Label.class, cascade = CascadeType.REMOVE)
 	private List<Label> availableLabels;
-	
+
 	public Board() { }
 
 	public Board(String name, List<CardList> lists) {
@@ -68,6 +73,14 @@ public class Board implements Serializable {
 
 	public void setLikingUsers(List<FavBoard> likingUsers) {
 		this.likingUsers = likingUsers;
+	}
+
+	public List<User> getMembers() {
+		return members;
+	}
+
+	public void setMembers(List<User> members) {
+		this.members = members;
 	}
 
 	public List<Record> getDiary() {

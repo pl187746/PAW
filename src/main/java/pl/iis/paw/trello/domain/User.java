@@ -42,6 +42,10 @@ public class User {
     @OneToMany(mappedBy = "user", targetEntity = FavBoard.class, cascade = CascadeType.REMOVE)
     private List<FavBoard> favoriteBoards;
 
+    @ManyToMany(targetEntity = Board.class)
+    @JsonIgnore
+    private List<Board> associatedBoards;
+
     public User() { } // JPA
 
     public User(String login, String password, String email) {
@@ -98,7 +102,15 @@ public class User {
         this.authorities = authorities;
     }
 
-    @Override
+    public List<Board> getAssociatedBoards() {
+		return associatedBoards;
+	}
+
+	public void setAssociatedBoards(List<Board> associatedBoards) {
+		this.associatedBoards = associatedBoards;
+	}
+
+	@Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
