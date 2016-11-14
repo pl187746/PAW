@@ -5,9 +5,10 @@
         .module('trello')
         .controller('BoardController', BoardController);
 
-    BoardController.$inject = ['$rootScope', '$scope', '$stateParams', 'Board', 'Card', 'List', 'User', 'Label', 'Record'];
+    BoardController.$inject = ['$rootScope', '$scope', '$stateParams', 'Board', 'Card', 'List', 'Comment', 'User', 'Label', 'Record'];
 
-    function BoardController ($rootScope, $scope, $stateParams, Board, Card, List, User, Label, Record) {
+    function BoardController ($rootScope, $scope, $stateParams, Board, Card, List, Comment, User, Label, Record) {
+
         // Cards
         $scope.updateCard = updateCard;
         $scope.removeCard = removeCard;
@@ -18,7 +19,7 @@
 		$scope.transferCardToNextList = transferCardToNextList;
 		$scope.hasCardLabel = hasCardLabel;
 		$scope.toggleLabel = toggleLabel;
-		
+
 		// Labels
 		$scope.updateLabel = updateLabel;
 		$scope.removeLabel = removeLabel;
@@ -35,6 +36,9 @@
 		$scope.isListLast = isListLast;
 		$scope.archiveCard = archiveCard;
 		$scope.returnArchiveCard = returnArchiveCard;
+		$scope.getComments = getComments;
+		$scope.addComment = addComment;
+		$scope.getCard = getCard;
 
 		$scope.fmtRecord = fmtRecord;
 		$scope.fmtDate = fmtDate;
@@ -293,10 +297,35 @@
 			updateCard(card,list);
 		}
 
+		function addComment(content,card,list) {
+			var listIndex = getLists().indexOf(list);
+			var cardIndex = getCards(listIndex).indexOf(card);
+			var comments = getComments(listIndex,cardIndex);
+
+
+			if(content != null && content !== ""){
+				Comment.save( {cardId : card.id, content : content}, onSuccess,onError);
+			}
+
+
+			function onSuccess(response) {
+				console.log('Added new comment to card with id ' + card.id);
+				comments.push(response);
+			}
+
+			function onError() {
+				console.log('Error while adding comment')
+			}
+		}
+
         function getCards(listIndex) {
             var list = getList(listIndex);
             return list.cards;
         }
+
+        function getCard(listIndex, cardIndex) {
+			return getList(listIndex).cards[cardIndex];
+		}
 
         function getList(listIndex) {
             return $scope.board.lists[listIndex];
@@ -305,6 +334,10 @@
         function getLists() {
             return $scope.board.lists;
         }
+
+        function getComments(listIndex,cardIndex) {
+			return getCard(listIndex,cardIndex).comments;
+		}
 		
 		function transferCardToNextList(card, list, dir) {
 			if(!dir)
@@ -463,7 +496,7 @@
 			}
 			return msg;
 		}
-		
+
 		function refreshDiary() {
 			if($scope.board.diary == null || $scope.board.diary.length == 0) {
 				Record.get({ boardId: $scope.board.id }, onSuccess, onError);
@@ -507,7 +540,7 @@
 				}
 			}
 		}
-		
+
     }
 })();
 

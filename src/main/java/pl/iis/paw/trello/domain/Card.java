@@ -18,24 +18,27 @@ public class Card implements Serializable {
     @Id
     @Column(name = "card_id")
     private Long id;
-	
+
 	@Column(name = "name")
 	private String name;
 
 	@Column(name = "archive")
 	private boolean archive;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "list_id", referencedColumnName = "list_id")
 	@JsonIgnore
 	private CardList cardList;
-	
+
 	@Column(name = "card_ord")
 	private Long ord;
-	
+
 	@ManyToMany(targetEntity = Label.class)
 	private List<Label> labels;
-	
+
+	@OneToMany(mappedBy = "card", targetEntity = Comment.class)
+	private List<Comment> comments;
+
 	public Card() { }
 
 	public Card(String name, CardList cardList) {
@@ -73,7 +76,7 @@ public class Card implements Serializable {
 		this.cardList = new CardList();
 		this.cardList.setId(listId);
 	}
-	
+
 	@JsonProperty(value = "listId")
 	public Long getListId() {
 		return Optional.ofNullable(cardList)
@@ -104,4 +107,13 @@ public class Card implements Serializable {
 	public void setLabels(List<Label> labels) {
 		this.labels = labels;
 	}
+
+	public List<Comment> getComments() {
+		return comments;
+	}
+
+	public void setComments(List<Comment> comments) {
+		this.comments = comments;
+	}
+
 }

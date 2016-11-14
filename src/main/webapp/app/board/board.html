@@ -64,6 +64,12 @@
 						<button ng-show="cardInput && !isListLast(list)"
                                 ng-click="transferCardToNextList(card, list, 1); cardInput = false"
                                 class="btn list-button-manage"><i class="fa fa-arrow-right" aria-hidden="true"></i></button>
+                                <a href="" ng-show="cardInput" ng-click="commentInput = !commentInput"><span class="badge">{{card.comments.length}}</span></a>
+                        <div ng-show="commentInput">
+                            <p ng-repeat="comment in card.comments">{{comment.content}}</p>
+                            <input ng-model="commentToCard">
+                            <a ng-click="addComment(commentToCard,card,list)">Add comment...</a>
+                        </div>
                     </span>
 
                     <div class="card-menu" ng-show="cardMenu">
