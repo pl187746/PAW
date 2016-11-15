@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('trello', ['ngResource', 'ui.router'])
+        .module('trello', ['ngResource', 'ui.router', 'ui.bootstrap'])
         .run(run);
 
     run.$inject = ['stateHandler'];
