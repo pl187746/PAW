@@ -15,7 +15,11 @@
 
                 <ul class="card-window-body-content">
                     <li ng-repeat="comment in card.comments | orderBy:'id':true" class="list-group-item">
-                        <strong>{{comment.author}}</strong> : {{comment.content}}
+                        <span ng-show="!commentEdit"><strong>{{comment.author}}</strong> : {{comment.content}}</span>
+                        <button class="btn btn-default btn-xs" ng-click="commentEdit = true" ng-show="(comment.author == user.login) && !commentEdit"><i class="fa fa-edit"></i> </button>
+                        <input ng-show="commentEdit" type="text" ng-model="comment.content" value="comment.content" class="list list-editable">
+                        <button class="btn btn-default btn-xs" ng-click="updateComment(comment);commentEdit = false" ng-show="commentEdit"><i class="fa fa-check"></i> </button>
+                        <button class="btn btn-danger btn-xs" ng-click="removeComment(comment,card)" ng-show="!commentEdit"><i class="fa fa-remove"></i></button>
                     </li>
                 </ul>
             </div>
