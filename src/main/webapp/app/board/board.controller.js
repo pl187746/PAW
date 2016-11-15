@@ -39,6 +39,8 @@
 		//Members
 		$scope.addMember = addMember;
 		$scope.removeMember = removeMember;
+		$scope.isUserAMember = isUserAMember;
+		$scope.isUserNotAMember = isUserNotAMember;
 
         // Comments
         $scope.getComments = getComments;
@@ -609,6 +611,19 @@
 			function onError() {
 				console.log('Error while updating board');
 			}
+		}
+
+		function isUserAMember(user) {
+			for(var mi in $scope.board.members) {
+				if($scope.board.members[mi].id === user.id) {
+					return true;
+				}
+			}
+			return false;
+		}
+		
+		function isUserNotAMember(user) {
+			return ! isUserAMember(user);
 		}
 
         function addComment(content, card, list) {

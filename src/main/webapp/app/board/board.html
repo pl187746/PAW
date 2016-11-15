@@ -170,7 +170,7 @@
 					<button type="button" class="btn btn-danger" ng-click="removeMember(member)"><i class="fa fa-remove" aria-hidden="true"></i></button>
 				</li>
 				<hr>
-				<li ng-repeat="user in users">
+				<li ng-repeat="user in users | filter:isUserNotAMember">
 					<span>{{user.login}}</span>
 					<button type="button" class="btn btn-success" ng-click="addMember(user)"><i class="fa fa-plus" aria-hidden="true"></i></button>
 				</li>
