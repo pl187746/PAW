@@ -170,7 +170,14 @@
 					<button type="button" class="btn btn-danger" ng-click="removeMember(member)"><i class="fa fa-remove" aria-hidden="true"></i></button>
 				</li>
 				<li>
-					<button type="button" class="btn btn-success" ng-click=""><i class="fa fa-plus" aria-hidden="true"></i></button>
+					<button ng-show="!addingMember" type="button" class="btn btn-success" ng-click="addingMember = true"><i class="fa fa-plus" aria-hidden="true"></i></button>
+					<div ng-show="addingMember">
+						<ul>
+							<li ng-repeat="user in users">
+								<span>{{user.login}}</span>
+							</li>
+						</ul>
+					</div>
 				</li>
 			</ul>
 		</div>

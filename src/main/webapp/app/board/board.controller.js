@@ -18,7 +18,7 @@
 		$scope.transferCardToNextList = transferCardToNextList;
 		$scope.hasCardLabel = hasCardLabel;
 		$scope.toggleLabel = toggleLabel;
-		
+
 		// Labels
 		$scope.updateLabel = updateLabel;
 		$scope.removeLabel = removeLabel;
@@ -48,11 +48,14 @@
 		$scope.fmtRecord = fmtRecord;
 		$scope.fmtDate = fmtDate;
 
+		$scope.users = null;
         $scope.board = null;
         $scope.archList = [];
 
         loadBoard($stateParams.id);
-		
+
+		loadUsers();
+
 		function sortByOrd(arr) {
 			arr.sort(function(a, b) {
 				return (a.ord == null) ? ((b.ord == null) ? (a.id - b.id) : 1) : ((b.ord == null) ? -1 : ((a.ord != b.ord) ? (a.ord - b.ord) : (a.id - b.id)));
@@ -98,7 +101,18 @@
                 }
             }
         }
-		
+
+		function loadUsers() {
+			User.query(onSuccess, onError);
+
+			function onSuccess(data) {
+				$scope.users = data;
+			}
+
+			function onError() {
+			}
+		}
+
 		function firstIdx(arr) {
 			for(var i = 0; i < arr.length; ++i) {
 				if(!arr[i].archive)
@@ -106,7 +120,7 @@
 			}
 			return null;
 		}
-		
+
 		function lastIdx(arr) {
 			for(var i = arr.length - 1; i >= 0; --i) {
 				if(!arr[i].archive)
@@ -114,26 +128,25 @@
 			}
 			return null;
 		}
-		
-		
+
 		function isListFirst(list) {
 			var lists = getLists();
 			return lists.indexOf(list) == firstIdx(lists);
 		}
-		
+
 		function isListLast(list) {
 			var lists = getLists();
 			return lists.indexOf(list) == lastIdx(lists);
 		}
-		
+
 		function isCardFirst(list, card) {
 			return list.cards.indexOf(card) == firstIdx(list.cards);
 		}
-		
+
 		function isCardLast(list, card) {
 			return list.cards.indexOf(card) == lastIdx(list.cards);
 		}
-		
+
 		function moveObj(arr, obj, dir, updFun) {
 			if(!dir)
 				return;
@@ -153,17 +166,17 @@
 				updFun();
 			}
 		}
-		
+
 		function moveList(list, dir) {
 			return moveObj(getLists(), list, dir, updateListOrds);
 		}
-		
+
 		function moveCard(list, card, dir) {
             return moveObj(list.cards, card, dir, function () {
                 updateCardOrds(list);
             });
 		}
-		
+
 		function updateOrds(arr, updFun) {
 			for(var i in arr) {
 				var up = (arr[i].ord != i);
@@ -173,11 +186,11 @@
 				}
 			}
 		}
-		
+
 		function updateListOrds() {
 			return updateOrds(getLists(), updateList);
 		}
-		
+
 		function updateCardOrds(list) {
 			return updateOrds(list.cards, updateCard);
 		}
@@ -186,7 +199,6 @@
             var lists = getLists();
             var index = lists.indexOf(list);
             console.log('Delete list request for listIndex: ' + index);
-
 
             List.delete({id: list.id}, onSuccess, onError);
 
