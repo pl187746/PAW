@@ -2,10 +2,22 @@ package pl.iis.paw.trello.domain;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Optional;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.UniqueConstraint;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
 public class Board implements Serializable {
@@ -33,6 +45,10 @@ public class Board implements Serializable {
 		uniqueConstraints = { @UniqueConstraint(columnNames = { "board_id", "user_id" }) }
 	)
 	private List<User> members;
+
+	@ManyToOne(targetEntity = Team.class, optional = true)
+	@JsonIgnore
+	private Team team;
 
 	@OneToMany(mappedBy = "board", targetEntity = Record.class, cascade = CascadeType.REMOVE)
 	private List<Record> diary;
@@ -102,6 +118,27 @@ public class Board implements Serializable {
 
 	public void setAvailableLabels(List<Label> availableLabels) {
 		this.availableLabels = availableLabels;
+	}
+
+	public Team getTeam() {
+		return team;
+	}
+
+	public void setTeam(Team team) {
+		this.team = team;
+	}
+
+	@JsonProperty("teamId")
+	public Long getTeamId() {
+		return Optional.ofNullable(team)
+				.map(Team::getId)
+				.orElse(null);
+	}
+
+	@JsonProperty("teamId")
+	public void setTeamId(Long teamId) {
+		this.team = new Team();
+		this.team.setId(teamId);
 	}
 
 }

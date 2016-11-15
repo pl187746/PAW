@@ -1,6 +1,6 @@
-INSERT INTO Board VALUES (NULL,'Tabliczka 1');
-INSERT INTO Board VALUES (NULL,'Tablica 2');
-INSERT INTO Board VALUES (NULL,'Taboret 3');
+INSERT INTO Board (name) VALUES ('Tabliczka 1');
+INSERT INTO Board (name) VALUES ('Tablica 2');
+INSERT INTO Board (name) VALUES ('Taboret 3');
 
 INSERT INTO CARD_LIST (list_id,name,board_id,archive) VALUES (NULL, 'Lista 1/1', 1,FALSE );
 INSERT INTO CARD_LIST (list_id,name,board_id,archive) VALUES (NULL, 'Lista 1/2', 1,FALSE );
