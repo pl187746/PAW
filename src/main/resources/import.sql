@@ -48,3 +48,6 @@ insert into CARD_LABELS (LABELED_CARDS_CARD_ID,LABELS_LABEL_ID) values (4,6);
 
 insert into BOARD_MEMBERS (board_id, user_id) values (1, 1);
 insert into BOARD_MEMBERS (board_id, user_id) values (1, 2);
+
+insert into TEAM (name) values ('Żółwie nindża');
+insert into TEAM (name) values ('Czterej pancerni');
