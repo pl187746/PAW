@@ -13,10 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import pl.iis.paw.trello.domain.Card;
-import pl.iis.paw.trello.domain.CardList;
-import pl.iis.paw.trello.domain.Label;
-import pl.iis.paw.trello.domain.RecordType;
+import pl.iis.paw.trello.domain.*;
 import pl.iis.paw.trello.exception.CardNotFoundException;
 import pl.iis.paw.trello.repository.CardRepository;
 import pl.iis.paw.trello.repository.LabelRepository;
@@ -27,9 +24,9 @@ public class CardService {
 	private final static Logger log = LoggerFactory.getLogger(CardService.class);
 
     private CardRepository cardRepository;
-    private RecordService recordService;
-    private CardListService cardListService;
-    private LabelRepository labelRepository;
+	private LabelRepository labelRepository;
+	private RecordService recordService;
+	private CardListService cardListService;
 
     @Autowired
     public CardService(CardRepository cardRepository, RecordService recordService, CardListService cardListService, LabelRepository labelRepository) {
@@ -118,5 +115,9 @@ public class CardService {
     }
 
 
-	
+	public void addAttachment(Long cardId, String fileName) {
+		Card card = findCardById(cardId);
+		card.getAttachments().add(new Attachment(card, fileName));
+		// TODO attachment repo
+	}
 }

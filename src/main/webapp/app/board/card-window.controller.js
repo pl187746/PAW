@@ -57,10 +57,11 @@ function CardWindowController ($scope, $uibModalInstance, entity, Comment, Uploa
     function upload(file) {
         console.log('upload avatar');
         Upload.upload({
-            url: '/card/' + $scope.card.id + '/upload_attachment',
+            url: '/cards/' + $scope.card.id + '/upload_attachment',
             data: {cardId: $scope.card.id, file: file}
         }).then(function (resp) {
             console.log('Success ' + resp.config.data.file.name + 'uploaded. Response: ' + resp.data);
+            $scope.attachments.push(resp.data);
         }, function (resp) {
             console.log('Error status: ' + resp.status);
         }, function (evt) {

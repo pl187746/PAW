@@ -10,16 +10,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import org.springframework.web.multipart.MultipartFile;
 import pl.iis.paw.trello.domain.Card;
 import pl.iis.paw.trello.domain.CardList;
 import pl.iis.paw.trello.service.CardListService;
 import pl.iis.paw.trello.service.CardService;
+import pl.iis.paw.trello.service.StorageService;
 
 @RestController
 public class CardController {
@@ -29,11 +27,14 @@ public class CardController {
 	private CardService cardService;
 
     private CardListService cardListService;
+
+    private StorageService storageService;
 	
 	@Autowired
-    public CardController(CardService cardService, CardListService cardListService) {
+    public CardController(CardService cardService, CardListService cardListService, StorageService storageService) {
         this.cardService = cardService;
         this.cardListService = cardListService;
+        this.storageService = storageService;
     }
 	
 	@RequestMapping(value = "/cards", method = RequestMethod.GET)
@@ -71,4 +72,16 @@ public class CardController {
         return ResponseEntity.ok().build();
     }
 
+    @RequestMapping(value = "/cards/{cardId}/upload_attachment", method = RequestMethod.POST)
+    public ResponseEntity<?> uploadAttachment(@PathVariable Long cardId, @RequestParam("file") MultipartFile file) {
+        try {
+            storageService.store(file);
+            cardService.addAttachment(cardId, file.getName());
+        } catch (Exception e) {
+            log.error("Attachment could not be added {}", e);
+            return ResponseEntity.unprocessableEntity().build();
+        }
+
+        return ResponseEntity.ok(file.getName());
+    }
 }

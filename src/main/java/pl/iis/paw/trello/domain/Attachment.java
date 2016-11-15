@@ -24,7 +24,7 @@ public class Attachment {
 
     public Attachment() { }
 
-    public Attachment(String fileName, Card card) {
+    public Attachment(Card card, String fileName) {
         this.fileName = fileName;
         this.card = card;
     }
