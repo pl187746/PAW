@@ -580,7 +580,19 @@
 			}
 		}
 
-		function addMember() {
+		function addMember(member) {
+			$scope.board.members.push(member);
+
+			Board.update($scope.board, onSuccess, onError);
+
+			function onSuccess() {
+				console.log('Updated board');
+				refreshDiary();
+			}
+
+			function onError() {
+				console.log('Error while updating board');
+			}
 		}
 
 		function removeMember(member) {
