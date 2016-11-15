@@ -34,7 +34,7 @@ public class Team implements Serializable {
 	)
 	private List<User> users;
 
-	@OneToMany(targetEntity = Board.class)
+	@OneToMany(targetEntity = Board.class, mappedBy = "team")
 	private List<Board> boards;
 
 	public Team() { }

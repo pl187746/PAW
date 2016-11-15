@@ -47,6 +47,7 @@ public class Board implements Serializable {
 	private List<User> members;
 
 	@ManyToOne(targetEntity = Team.class, optional = true)
+	@JoinColumn(name = "team_id", referencedColumnName = "team_id")
 	@JsonIgnore
 	private Team team;
 
