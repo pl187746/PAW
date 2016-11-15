@@ -40,7 +40,6 @@ public class CommentController {
 
     @RequestMapping(value = "/comments",method = RequestMethod.POST)
     public ResponseEntity<?> createComment(@Valid @RequestBody Comment comment) throws URISyntaxException {
-
         Card card = cardService.findCardById(comment.getCard().getId());
         comment.setCard(card);
 

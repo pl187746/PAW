@@ -31,6 +31,8 @@
                 $uibModal.open({
                     templateUrl: 'app/board/card-window.html',
                     controller: 'CardWindowController',
+                    size: 'lg',
+                    backdrop: 'static',
                     resolve: {
                         entity: ['Card', function(Card) {
                             return Card.get({id : $stateParams.cardId});
