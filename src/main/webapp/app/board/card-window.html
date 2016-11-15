@@ -22,6 +22,19 @@
             <div ng-switch-when="ATTACHMENTS">
                 <div class="card-window-body-info">
                     <h3>Attachments</h3>
+
+                    <form class="top-margin-10" name="form" role="form" ng-submit="upload(file)">
+                        <div class="form-group">
+                            <p>File: <i ng-show="file.$ngfName != null">{{file.$ngfName}}</i><i ng-show="file.$ngfName == null">...</i></p>
+                        </div>
+
+                        <div>
+                            <button class="btn btn-default" name="file" ngf-select ng-model="file" ngf-max-size="20MB">
+                                Select file
+                            </button>
+                            <button class="btn btn-info" ng-disabled="form.$invalid" type="submit">Upload</button>
+                        </div>
+                    </form>
                 </div>
 
                 <ul class="card-window-body-content">

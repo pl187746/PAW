@@ -4,17 +4,23 @@ angular
     .module('trello')
     .controller('CardWindowController', CardWindowController);
 
-CardWindowController.$inject = ['$scope', '$uibModalInstance', 'entity', 'Comment'];
+CardWindowController.$inject = ['$scope', '$uibModalInstance', 'entity', 'Comment', 'Upload'];
 
-function CardWindowController ($scope, $uibModalInstance, entity, Comment) {
+function CardWindowController ($scope, $uibModalInstance, entity, Comment, Upload) {
     const VIEWS = {
         COMMENTS: 'COMMENTS',
         ATTACHMENTS: 'ATTACHMENTS'
     };
 
+    // Window
     $scope.close = close;
     $scope.changeView = changeView;
+
+    // Comments
     $scope.addComment = addComment;
+
+    // Attachments
+    $scope.upload = upload;
 
     $scope.VIEWS = VIEWS;
     $scope.card = entity;
@@ -48,4 +54,18 @@ function CardWindowController ($scope, $uibModalInstance, entity, Comment) {
         }
     }
 
+    function upload(file) {
+        console.log('upload avatar');
+        Upload.upload({
+            url: '/card/' + $scope.card.id + '/upload_attachment',
+            data: {cardId: $scope.card.id, file: file}
+        }).then(function (resp) {
+            console.log('Success ' + resp.config.data.file.name + 'uploaded. Response: ' + resp.data);
+        }, function (resp) {
+            console.log('Error status: ' + resp.status);
+        }, function (evt) {
+            var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
+            console.log('progress: ' + progressPercentage + '% ' + evt.config.data.file.name);
+        });
+    }
 }
