@@ -51,3 +51,9 @@ insert into BOARD_MEMBERS (board_id, user_id) values (1, 2);
 
 insert into TEAM (name) values ('Żółwie nindża');
 insert into TEAM (name) values ('Czterej pancerni');
+
+insert into TEAM_USERS (TEAM_ID, USER_ID) values (1, 1);
+insert into TEAM_USERS (TEAM_ID, USER_ID) values (1, 3);
+insert into TEAM_USERS (TEAM_ID, USER_ID) values (2, 1);
+insert into TEAM_USERS (TEAM_ID, USER_ID) values (2, 2);
+insert into TEAM_USERS (TEAM_ID, USER_ID) values (2, 4);
