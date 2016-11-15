@@ -15,7 +15,7 @@
 
                 <ul class="card-window-body-content">
                     <li ng-repeat="comment in card.comments | orderBy:'id':true" class="list-group-item">
-                        {{comment.content}}
+                        <strong>{{comment.author}}</strong> : {{comment.content}}
                     </li>
                 </ul>
             </div>

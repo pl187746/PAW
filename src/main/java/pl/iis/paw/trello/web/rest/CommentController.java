@@ -23,7 +23,7 @@ public class CommentController {
     private CardService cardService;
 
     @Autowired
-    public CommentController(CommentService commentService,CardService cardService) {
+    public CommentController(CommentService commentService, CardService cardService) {
         this.commentService = commentService;
         this.cardService = cardService;
     }
@@ -45,7 +45,7 @@ public class CommentController {
 
         return ResponseEntity
                 .created(new URI("/comments/" + comment.getId()))
-                .body(commentService.addComment(comment));
+                .body(commentService.addComment(comment.getCard().getId(), comment.getContent()));
     }
 
     @RequestMapping(value = "/comments",method = RequestMethod.PUT)

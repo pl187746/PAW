@@ -5,7 +5,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import pl.iis.paw.trello.domain.Card;
 import pl.iis.paw.trello.domain.Comment;
+import pl.iis.paw.trello.domain.User;
 import pl.iis.paw.trello.exception.CommentNotFoundException;
 import pl.iis.paw.trello.repository.CommentRepository;
 
@@ -22,9 +24,14 @@ public class CommentService {
 
     private CommentRepository commentRepository;
 
+    private UserService userService;
+    private CardService cardService;
+
     @Autowired
-    public CommentService(CommentRepository commentRepository) {
+    public CommentService(CommentRepository commentRepository, UserService userService, CardService cardService) {
         this.commentRepository = commentRepository;
+        this.userService = userService;
+        this.cardService = cardService;
     }
 
     public List<Comment> getComments() {
@@ -39,6 +46,18 @@ public class CommentService {
         return Optional
                 .ofNullable(commentRepository.findOne(commentId))
                 .orElseThrow(() -> new CommentNotFoundException(commentId));
+    }
+
+    public Comment addComment(Long cardId, String content) {
+        User currentUser = userService.getCurrentUser();
+        Card card = cardService.findCardById(cardId);
+
+        Comment comment = new Comment();
+        comment.setAuthor(currentUser);
+        comment.setContent(content);
+        comment.setCard(card);
+
+        return commentRepository.save(comment);
     }
 
     public Comment addComment(Comment comment) {

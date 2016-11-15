@@ -24,18 +24,16 @@ public class Comment implements Serializable {
     private String content;
 
     @ManyToOne(targetEntity = Card.class)
-    @JoinColumn(name = "card_id",referencedColumnName = "card_id")
+    @JoinColumn(name = "card_id", referencedColumnName = "card_id")
     @JsonIgnore
     private Card card;
 
-    public Comment() {
-    }
+    @OneToOne
+    @JoinColumn(name = "author_id", referencedColumnName = "user_id")
+    @JsonIgnore
+    private User author;
 
-    public Comment(String content, Card card) {
-        super();
-        this.content = content;
-        this.card = card;
-    }
+    public Comment() { }
 
     public Long getId() {
         return id;
@@ -61,6 +59,14 @@ public class Comment implements Serializable {
         this.card = card;
     }
 
+    public void setAuthor(User author) {
+        this.author = author;
+    }
+
+    public User getAuthor() {
+        return author;
+    }
+
     @JsonProperty(value = "cardId")
     public void setCardId(Long cardId) {
         this.card = new Card();
@@ -72,5 +78,10 @@ public class Comment implements Serializable {
         return Optional.ofNullable(card)
                 .map(Card::getId)
                 .orElse(null);
+    }
+
+    @JsonProperty(value = "author", access = JsonProperty.Access.READ_ONLY)
+    public String getAuthorLogin() {
+        return author.getLogin();
     }
 }
