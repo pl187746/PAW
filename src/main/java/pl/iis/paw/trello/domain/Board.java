@@ -27,6 +27,11 @@ public class Board implements Serializable {
     private List<FavBoard> likingUsers;
 
 	@ManyToMany(targetEntity = User.class)
+	@JoinTable(
+		joinColumns = { @JoinColumn(name = "board_id", referencedColumnName = "board_id") },
+		inverseJoinColumns = { @JoinColumn(name = "user_id", referencedColumnName = "user_id") },
+		uniqueConstraints = { @UniqueConstraint(columnNames = { "board_id", "user_id" }) }
+	)
 	private List<User> members;
 
 	@OneToMany(mappedBy = "board", targetEntity = Record.class, cascade = CascadeType.REMOVE)
