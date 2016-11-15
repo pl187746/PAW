@@ -1,0 +1,53 @@
+<div class="card-window">
+    <div class="card-window-header">
+        <h3 class="modal-title">{{card.name}}</h3>
+    </div>
+
+    <div class="card-window-body">
+        <div class="col-xs-8" ng-switch="view">
+            <div ng-switch-when="COMMENTS">
+                <div class="card-window-body-info">
+                    <h3>Comments</h3>
+
+                    <textarea ng-model="commentContent"></textarea>
+                    <button ng-click="addComment(commentContent)" class="btn btn-success">Add Comment</button>
+                </div>
+
+                <ul class="card-window-body-content">
+                    <li ng-repeat="comment in card.comments | orderBy:'id':true" class="list-group-item">
+                        <span ng-show="!commentEdit"><strong>{{comment.author}}</strong> : {{comment.content}}</span>
+                        <button class="btn btn-default btn-xs" ng-click="commentEdit = true" ng-show="(comment.author == user.login) && !commentEdit"><i class="fa fa-edit"></i> </button>
+                        <input ng-show="commentEdit" type="text" ng-model="comment.content" value="comment.content" class="list list-editable">
+                        <button class="btn btn-default btn-xs" ng-click="updateComment(comment);commentEdit = false" ng-show="commentEdit"><i class="fa fa-check"></i> </button>
+                        <button class="btn btn-danger btn-xs" ng-click="removeComment(comment,card)" ng-show="!commentEdit"><i class="fa fa-remove"></i></button>
+                    </li>
+                </ul>
+            </div>
+            <div ng-switch-when="ATTACHMENTS">
+                <div class="card-window-body-info">
+                    <h3>Attachments</h3>
+                </div>
+
+                <ul class="card-window-body-content">
+                    <li class="list-group-item" ng-repeat="attachment in ['somefile.zip', 'anotherfile.rar', 'aaaa.png']">
+                        <button class="btn btn-success btn-xs"><i class="fa fa-download"></i></button>
+                        <button class="btn btn-danger btn-xs"><i class="fa fa-remove"></i></button>
+                        <span style="margin-left: 20px;">{{attachment}}</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="col-xs-4 text-center">
+            <button class="btn btn-default card-window-nav-button" ng-click="changeView(VIEWS.ATTACHMENTS)">Attachments</button>
+            <button class="btn btn-default card-window-nav-button" ng-click="changeView(VIEWS.COMMENTS)">Comments</button>
+        </div>
+    </div>
+
+    <div class="clearfix"></div>
+    <div class="card-window-footer">
+        <button type="button" class="btn btn-info card-window-close-button" data-dismiss="modal" ng-click="close()">
+            <span class="fa fa-ban-circle"></span>&nbsp;<span>Close</span>
+        </button>
+    </div>
+</div>

@@ -5,9 +5,9 @@
         .module('trello')
         .controller('BoardController', BoardController);
 
-    BoardController.$inject = ['$rootScope', '$scope', '$stateParams', 'Board', 'Card', 'List', 'User', 'Label', 'Record'];
+    BoardController.$inject = ['$rootScope', '$scope', '$stateParams', 'Board', 'Card', 'List', 'User', 'Label', 'Record', 'Comment'];
 
-    function BoardController ($rootScope, $scope, $stateParams, Board, Card, List, User, Label, Record) {
+    function BoardController ($rootScope, $scope, $stateParams, Board, Card, List, User, Label, Record, Comment) {
         // Cards
         $scope.updateCard = updateCard;
         $scope.removeCard = removeCard;
@@ -39,6 +39,11 @@
 		//Members
 		$scope.addMember = addMember;
 		$scope.removeMember = removeMember;
+
+        // Comments
+        $scope.getComments = getComments;
+        $scope.addComment = addComment;
+        $scope.getCard = getCard;
 
 		$scope.fmtRecord = fmtRecord;
 		$scope.fmtDate = fmtDate;
@@ -154,7 +159,9 @@
 		}
 		
 		function moveCard(list, card, dir) {
-			return moveObj(list.cards, card, dir, function() { updateCardOrds(list); });
+            return moveObj(list.cards, card, dir, function () {
+                updateCardOrds(list);
+            });
 		}
 		
 		function updateOrds(arr, updFun) {
@@ -351,7 +358,6 @@
 		}
 		
 		function toggleLabel(card, label) {
-			if(card.labels != null) {
 				function remLab() {
 					for(var i in card.labels) {
 						if(card.labels[i].id == label.id) {
@@ -361,6 +367,8 @@
 					}
 					return false;
 				}
+
+            if (card.labels != null) {
 				if(!remLab()) {
 					card.labels.push(label);
 				}
@@ -395,6 +403,7 @@
 					}
 				}
 			}
+
 			remFrom($scope.board.availableLabels);
 			for(var li in $scope.board.lists) {
 				var list = $scope.board.lists[li];
@@ -436,6 +445,7 @@
 			function s0(n) {
 				return (n < 10 ? "0" : "") + n;
 			}
+
 			return s0(date.getHours()) + ":" + s0(date.getMinutes()) + ":" + s0(date.getSeconds()) + " "
 				+ s0(date.getDate()) + "." + s0(date.getMonth() + 1) + "." + date.getFullYear();
 		}
@@ -443,27 +453,69 @@
 		function fmtRecord(rec) {
 			var msg = "";
 			switch(rec.type) {
-				case "BOARD_CREATE": msg += "Utworzono tablicę pod nazwą " + rec.params.boardName; break;
-				case "BOARD_RENAME": msg += "Zmieniono nazwę tablicy z " + rec.params.oldBoardName + " na " + rec.params.newBoardName; break;
-				case "BOARD_LIKE": msg += "Poluniono tablicę"; break;
-				case "BOARD_UNLIKE": msg += "Odlubiono tablicę"; break;
-				case "LIST_CREATE": msg += "Utworzono listę " + rec.params.listName; break;
-				case "LIST_DELETE": msg += "Usunięto listę " + rec.params.listName; break;
-				case "LIST_RENAME": msg += "Zmieniono nazwę listy " + rec.params.oldListName + " na " + rec.params.newListName; break;
-				case "LIST_ARCHIVE": msg += "Zarchiwizowano listę " + rec.params.listName; break;
-				case "LIST_UNARCHIVE": msg += "Odarchiwizowano listę " + rec.params.listName; break;
-				case "CARD_CREATE": msg += "Utworzono kartę " + rec.params.cardName + " w liście " + rec.params.listName; break;
-				case "CARD_DELETE": msg += "Usunięto kartę " + rec.params.cardName; break;
-				case "CARD_RENAME": msg += "Zmieniono nazwę karty " + rec.params.oldCardName + " na " + rec.params.newCardName; break;
-				case "CARD_CHANGE_LIST": msg += "Przeniesiono kartę " + rec.params.cardName + " z listy " + rec.params.oldListName + " do " + rec.params.newListName; break;
-				case "CARD_ARCHIVE": msg += "Zarchiwizowano kartę " + rec.params.cardName; break;
-				case "CARD_UNARCHIVE": msg += "Odarchiwizowano kartę " + rec.params.cardName; break;
-				case "CARD_ADD_LABEL": msg += "Dodano do karty " + rec.params.cardName + " etykietę " + rec.params.labelName; break;
-				case "CARD_REMOVE_LABEL": msg += "Usunięto z karty " + rec.params.cardName + " etykietę " + rec.params.labelName; break;
-				case "LABEL_CREATE": msg += "Utworzono nową etykietę " + rec.params.labelName; break;
-				case "LABEL_DELETE": msg += "Usunięto etykietę " + rec.params.labelName; break;
-				case "LABEL_RENAME": msg += "Zmieniono nazwę etykiety " + rec.params.oldLabelName + " na " + rec.params.newLabelName; break;
-				case "LABEL_CHANGE_COLOR": msg += "Zmieniono kolor etykiety " + rec.params.labelName; break;
+                case "BOARD_CREATE":
+                    msg += "Utworzono tablicę pod nazwą " + rec.params.boardName;
+                    break;
+                case "BOARD_RENAME":
+                    msg += "Zmieniono nazwę tablicy z " + rec.params.oldBoardName + " na " + rec.params.newBoardName;
+                    break;
+                case "BOARD_LIKE":
+                    msg += "Poluniono tablicę";
+                    break;
+                case "BOARD_UNLIKE":
+                    msg += "Odlubiono tablicę";
+                    break;
+                case "LIST_CREATE":
+                    msg += "Utworzono listę " + rec.params.listName;
+                    break;
+                case "LIST_DELETE":
+                    msg += "Usunięto listę " + rec.params.listName;
+                    break;
+                case "LIST_RENAME":
+                    msg += "Zmieniono nazwę listy " + rec.params.oldListName + " na " + rec.params.newListName;
+                    break;
+                case "LIST_ARCHIVE":
+                    msg += "Zarchiwizowano listę " + rec.params.listName;
+                    break;
+                case "LIST_UNARCHIVE":
+                    msg += "Odarchiwizowano listę " + rec.params.listName;
+                    break;
+                case "CARD_CREATE":
+                    msg += "Utworzono kartę " + rec.params.cardName + " w liście " + rec.params.listName;
+                    break;
+                case "CARD_DELETE":
+                    msg += "Usunięto kartę " + rec.params.cardName;
+                    break;
+                case "CARD_RENAME":
+                    msg += "Zmieniono nazwę karty " + rec.params.oldCardName + " na " + rec.params.newCardName;
+                    break;
+                case "CARD_CHANGE_LIST":
+                    msg += "Przeniesiono kartę " + rec.params.cardName + " z listy " + rec.params.oldListName + " do " + rec.params.newListName;
+                    break;
+                case "CARD_ARCHIVE":
+                    msg += "Zarchiwizowano kartę " + rec.params.cardName;
+                    break;
+                case "CARD_UNARCHIVE":
+                    msg += "Odarchiwizowano kartę " + rec.params.cardName;
+                    break;
+                case "CARD_ADD_LABEL":
+                    msg += "Dodano do karty " + rec.params.cardName + " etykietę " + rec.params.labelName;
+                    break;
+                case "CARD_REMOVE_LABEL":
+                    msg += "Usunięto z karty " + rec.params.cardName + " etykietę " + rec.params.labelName;
+                    break;
+                case "LABEL_CREATE":
+                    msg += "Utworzono nową etykietę " + rec.params.labelName;
+                    break;
+                case "LABEL_DELETE":
+                    msg += "Usunięto etykietę " + rec.params.labelName;
+                    break;
+                case "LABEL_RENAME":
+                    msg += "Zmieniono nazwę etykiety " + rec.params.oldLabelName + " na " + rec.params.newLabelName;
+                    break;
+                case "LABEL_CHANGE_COLOR":
+                    msg += "Zmieniono kolor etykiety " + rec.params.labelName;
+                    break;
 			}
 			return msg;
 		}
@@ -496,11 +548,15 @@
 		}
 		
 		function sortByIdDescending(arr) {
-			arr.sort(function(a, b) { return b.id - a.id; });
+            arr.sort(function (a, b) {
+                return b.id - a.id;
+            });
 		}
 		
 		function removeDuplicatesFromSortedById(arr) {
-			return removeDuplicatesFromSorted(arr, function(a, b) { return a.id == b.id; });
+            return removeDuplicatesFromSorted(arr, function (a, b) {
+                return a.id == b.id;
+            });
 		}
 		
 		function removeDuplicatesFromSorted(arr, eq) {
@@ -530,6 +586,35 @@
 				console.log('Error while updating board');
 			}
 		}
+
+        function addComment(content, card, list) {
+            var listIndex = getLists().indexOf(list);
+            var cardIndex = getCards(listIndex).indexOf(card);
+            var comments = getComments(listIndex, cardIndex);
+
+
+            if (content != null && content !== "") {
+                Comment.save({cardId: card.id, content: content}, onSuccess, onError);
+            }
+
+
+            function onSuccess(response) {
+                console.log('Added new comment to card with id ' + card.id);
+                comments.push(response);
+            }
+
+            function onError() {
+                console.log('Error while adding comment')
+            }
+        }
+
+        function getCard(listIndex, cardIndex) {
+            return getList(listIndex).cards[cardIndex];
+        }
+
+        function getComments(listIndex, cardIndex) {
+            return getCard(listIndex, cardIndex).comments;
+        }
 
     }
 })();
