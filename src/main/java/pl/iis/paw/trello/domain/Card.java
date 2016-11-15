@@ -39,7 +39,7 @@ public class Card implements Serializable {
     @OneToMany(mappedBy = "card", targetEntity = Comment.class)
     private List<Comment> comments;
 
-    @OneToMany(mappedBy = "card", targetEntity = Attachment.class, cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "card", targetEntity = Attachment.class, cascade = CascadeType.ALL)
     private List<Attachment> attachments;
 
     public Card() { }

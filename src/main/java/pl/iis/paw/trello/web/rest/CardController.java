@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import org.springframework.web.multipart.MultipartFile;
+import pl.iis.paw.trello.domain.Attachment;
 import pl.iis.paw.trello.domain.Card;
 import pl.iis.paw.trello.domain.CardList;
 import pl.iis.paw.trello.service.CardListService;
@@ -76,12 +77,11 @@ public class CardController {
     public ResponseEntity<?> uploadAttachment(@PathVariable Long cardId, @RequestParam("file") MultipartFile file) {
         try {
             storageService.store(file);
-            cardService.addAttachment(cardId, file.getName());
+            Attachment attachment = cardService.addAttachment(cardId, file.getOriginalFilename());
+            return ResponseEntity.ok(attachment);
         } catch (Exception e) {
             log.error("Attachment could not be added {}", e);
             return ResponseEntity.unprocessableEntity().build();
         }
-
-        return ResponseEntity.ok(file.getName());
     }
 }

@@ -24,7 +24,7 @@ public class CardService {
 	private final static Logger log = LoggerFactory.getLogger(CardService.class);
 
     private CardRepository cardRepository;
-	private LabelRepository labelRepository;
+	private LabelRepository labelRepository;;
 	private RecordService recordService;
 	private CardListService cardListService;
 
@@ -34,7 +34,7 @@ public class CardService {
         this.recordService = recordService;
         this.cardListService = cardListService;
         this.labelRepository = labelRepository;
-    }
+	}
     
     public List<Card> getCards() {
     	return cardRepository.findAll();
@@ -114,10 +114,11 @@ public class CardService {
     	deleteCard(findCardById(id));
     }
 
-
-	public void addAttachment(Long cardId, String fileName) {
+	public Attachment addAttachment(Long cardId, String fileName) {
 		Card card = findCardById(cardId);
-		card.getAttachments().add(new Attachment(card, fileName));
-		// TODO attachment repo
+		Attachment attachment = new Attachment(card, fileName);
+		card.getAttachments().add(attachment);
+		cardRepository.save(card);
+		return attachment;
 	}
 }

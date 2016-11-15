@@ -5,7 +5,8 @@
 
     <div class="card-window-body">
         <div class="col-xs-8" ng-switch="view">
-            <div ng-switch-when="COMMENTS">
+            <!--Comments-->
+            <div ng-if="view === VIEWS.COMMENTS">
                 <div class="card-window-body-info">
                     <h3>Comments</h3>
 
@@ -19,29 +20,34 @@
                     </li>
                 </ul>
             </div>
-            <div ng-switch-when="ATTACHMENTS">
+
+            <!--Attachments-->
+            <div ng-if="view === VIEWS.ATTACHMENTS">
                 <div class="card-window-body-info">
                     <h3>Attachments</h3>
 
-                    <form class="top-margin-10" name="form" role="form" ng-submit="upload(file)">
-                        <div class="form-group">
-                            <p>File: <i ng-show="file.$ngfName != null">{{file.$ngfName}}</i><i ng-show="file.$ngfName == null">...</i></p>
+                    <form name="form" ng-submit="submit(file)">
+                        <div class="input-group">
+                            <label class="input-group-btn">
+                                <span class="btn btn-primary">
+                                    Browse&hellip; <input type="file" ngf-select style="display: none;" ng-model="$parent.file">
+                                </span>
+                            </label>
+
+                            <input type="text" class="form-control" readonly>
                         </div>
 
-                        <div>
-                            <button class="btn btn-default" name="file" ngf-select ng-model="file" ngf-max-size="20MB">
-                                Select file
-                            </button>
-                            <button class="btn btn-info" ng-disabled="form.$invalid" type="submit">Upload</button>
-                        </div>
+                        <button style="margin-top: 20px;" class="btn btn-info" type="submit">
+                            <i class="fa fa-send"></i>  Upload
+                        </button>
                     </form>
                 </div>
 
                 <ul class="card-window-body-content">
-                    <li class="list-group-item" ng-repeat="attachment in ['somefile.zip', 'anotherfile.rar', 'aaaa.png']">
+                    <li class="list-group-item" ng-repeat="attachment in card.attachments">
                         <button class="btn btn-success btn-xs"><i class="fa fa-download"></i></button>
                         <button class="btn btn-danger btn-xs"><i class="fa fa-remove"></i></button>
-                        <span style="margin-left: 20px;">{{attachment}}</span>
+                        <span style="margin-left: 20px;">{{attachment.fileName}}</span>
                     </li>
                 </ul>
             </div>
