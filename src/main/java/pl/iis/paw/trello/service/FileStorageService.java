@@ -10,8 +10,10 @@ import pl.iis.paw.trello.config.StorageProperties;
 import pl.iis.paw.trello.exception.StorageException;
 import pl.iis.paw.trello.exception.StorageFileNotFoundException;
 
+import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -29,12 +31,28 @@ public class FileStorageService implements StorageService {
 
     @Override
     public void store(MultipartFile file) {
+
+    }
+
+    @PostConstruct
+    public void createDirectory() throws IOException {
+        try {
+            Files.createDirectory(rootLocation);
+        } catch (FileAlreadyExistsException e) { }
+    }
+
+    @Override
+    public void store(MultipartFile file, String subDirectory) {
         try {
             if (file.isEmpty()) {
                 throw new StorageException("Failed to store empty file " + file.getOriginalFilename());
             }
-            String destinationPath = file.getOriginalFilename();
-            Files.copy(file.getInputStream(), this.rootLocation.resolve(destinationPath));
+
+            try {
+                Files.createDirectory(Paths.get(rootLocation + "/" + subDirectory));
+            } catch (FileAlreadyExistsException e) { }
+
+            Files.copy(file.getInputStream(), this.rootLocation.resolve(subDirectory + "/" + file.getOriginalFilename()));
         } catch (IOException e) {
             throw new StorageException("Failed to store file " + file.getOriginalFilename(), e);
         }

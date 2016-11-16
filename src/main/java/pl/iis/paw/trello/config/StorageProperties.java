@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class StorageProperties {
 
-    @Value("${storage.attachments.location}")
+    @Value("${storage.location}")
     private String location;
 
     public StorageProperties() { }

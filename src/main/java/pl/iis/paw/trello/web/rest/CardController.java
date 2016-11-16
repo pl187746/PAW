@@ -76,7 +76,7 @@ public class CardController {
     @RequestMapping(value = "/cards/{cardId}/upload_attachment", method = RequestMethod.POST)
     public ResponseEntity<?> uploadAttachment(@PathVariable Long cardId, @RequestParam("file") MultipartFile file) {
         try {
-            storageService.store(file);
+            storageService.store(file, String.valueOf(cardId));
             Attachment attachment = cardService.addAttachment(cardId, file.getOriginalFilename());
             return ResponseEntity.ok(attachment);
         } catch (Exception e) {
