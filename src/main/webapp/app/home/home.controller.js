@@ -15,6 +15,9 @@
         $scope.addBoard = addBoard;
         $scope.updateBoard = updateBoard;
         $scope.removeBoard = removeBoard;
+		$scope.addTeam = addTeam;
+        $scope.updateTeam = updateTeam;
+        $scope.removeTeam = removeTeam;
 		$scope.isAuthenticated = isAuthenticated;
 		$scope.isUserLikingBoard = isUserLikingBoard;
 		$scope.likeBoard = likeBoard;
