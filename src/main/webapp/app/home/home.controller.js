@@ -37,11 +37,18 @@
             }
         }
 
-        function addBoard() {
-            Board.save( {name : 'Empty'}, onSuccess, onError);
+        function addBoard(team) {
+			var board = { name: 'Empty' };
+			if(team !== null) {
+				board.teamId = team.id;
+			}
+            Board.save(board, onSuccess, onError);
 
             function onSuccess(response) {
                 $scope.boards.push(response);
+				if(team !== null) {
+					team.boards.push(response);
+				}
                 console.log('Added new board');
             }
 
