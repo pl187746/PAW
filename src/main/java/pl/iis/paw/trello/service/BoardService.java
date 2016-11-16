@@ -67,6 +67,9 @@ public class BoardService {
     	Optional.ofNullable(board.getMembers())
     		.ifPresent(existingBoard::setMembers);
     	
+    	Optional.ofNullable(board.getTeam())
+    		.ifPresent(team -> existingBoard.setTeam((team.getId() != null) ? team : null));
+    	
     	return boardRepository.save(existingBoard);
     }
     
