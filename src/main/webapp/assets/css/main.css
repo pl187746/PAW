@@ -295,11 +295,11 @@ body {
 }
 
 .card-window-body-info {
-    height: 150px;
+    height: 200px;
 }
 
 .card-window-body-content {
-    height: 350px;
+    height: 300px;
     overflow: scroll;
     overflow-x: hidden;
 }

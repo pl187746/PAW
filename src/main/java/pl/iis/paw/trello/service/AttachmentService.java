@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.iis.paw.trello.domain.Attachment;
 import pl.iis.paw.trello.domain.Card;
+import pl.iis.paw.trello.domain.User;
 import pl.iis.paw.trello.exception.AttachmentNotFoundException;
 import pl.iis.paw.trello.repository.AttachmentRepository;
 
@@ -14,11 +15,13 @@ public class AttachmentService {
 
     private AttachmentRepository attachmentRepository;
     private CardService cardService;
+    private UserService userService;
 
     @Autowired
-    public AttachmentService(AttachmentRepository attachmentRepository, CardService cardService) {
+    public AttachmentService(AttachmentRepository attachmentRepository, CardService cardService, UserService userService) {
         this.attachmentRepository = attachmentRepository;
         this.cardService = cardService;
+        this.userService = userService;
     }
 
     public Attachment findAttachmentById(Long attachmentId) {
@@ -29,7 +32,8 @@ public class AttachmentService {
 
     public Attachment addAttachmentToCard(Long cardId, String fileName) {
         Card card = cardService.findCardById(cardId);
-        Attachment attachment = new Attachment(card, fileName);
+        User user = userService.getCurrentUser();
+        Attachment attachment = new Attachment(fileName, card, user);
         attachmentRepository.save(attachment);
         return attachment;
     }

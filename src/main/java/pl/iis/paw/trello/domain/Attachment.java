@@ -22,11 +22,17 @@ public class Attachment {
     @JsonIgnore
     private Card card;
 
+    @ManyToOne
+    @JoinColumn(name = "author_id", referencedColumnName = "user_id")
+    @JsonIgnore
+    private User author;
+
     public Attachment() { }
 
-    public Attachment(Card card, String fileName) {
+    public Attachment(String fileName, Card card, User author) {
         this.fileName = fileName;
         this.card = card;
+        this.author = author;
     }
 
     public Long getId() {
@@ -53,9 +59,22 @@ public class Attachment {
         this.card = card;
     }
 
+    public User getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(User author) {
+        this.author = author;
+    }
+
     @JsonProperty(value = "cardId", access = JsonProperty.Access.READ_ONLY)
     public Long getCardId() {
         return card.getId();
+    }
+
+    @JsonProperty(value = "author", access = JsonProperty.Access.READ_ONLY)
+    public String getAuthorLogin() {
+        return author.getLogin();
     }
 
     @Override

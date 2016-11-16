@@ -45,9 +45,17 @@
 
                 <ul class="card-window-body-content">
                     <li class="list-group-item" ng-repeat="attachment in card.attachments">
-                        <button class="btn btn-success btn-xs"><i class="fa fa-download"></i></button>
-                        <button ng-click="removeAttachment(attachment.id)" class="btn btn-danger btn-xs"><i class="fa fa-remove"></i></button>
-                        <span style="margin-left: 20px;">{{attachment.fileName}}</span>
+                        <span class="col-xs-2">
+                            <button class="btn btn-success btn-xs"><i class="fa fa-download"></i></button>
+                            <button ng-click="removeAttachment(attachment.id)" class="btn btn-danger btn-xs"><i class="fa fa-remove"></i></button>
+                        </span>
+                        <span class="col-xs-8" style="padding-left: 20px;">
+                             {{attachment.fileName | limitTo: 40}}{{attachment.fileName.length > 40 ? '...' : ''}}
+                        </span>
+                        <span class="col-xs-2">
+                            {{attachment.author | limitTo: 10}}{{attachment.author.length > 10 ? '...' : ''}}
+                        </span>
+                        <div class="clearfix"></div>
                     </li>
                 </ul>
             </div>
