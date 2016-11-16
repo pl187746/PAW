@@ -58,7 +58,7 @@
 
         }
 
-        function removeBoard(board) {
+        function removeBoard(board, team) {
             console.log('Remove board request for board with id' + board.id);
 
 			var boardIndex = $scope.boards.indexOf(board);
@@ -68,6 +68,10 @@
             function onSuccess() {
                 console.log('Removed board with id' + boardId);
                 $scope.boards.splice(boardIndex, 1);
+				if(team !== null) {
+					var tbidx = team.boards.indexOf(board);
+					team.boards.splice(tbidx, 1);
+				}
             }
 
             function onError() {
