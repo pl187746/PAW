@@ -23,6 +23,7 @@
 		$scope.removeTeamMember = removeTeamMember;
 		$scope.isUserATeamMember = isUserATeamMember;
 		$scope.isUserNotATeamMember = isUserNotATeamMember;
+		$scope.usersThatArentMembersOf = usersThatArentMembersOf;
 		$scope.isAuthenticated = isAuthenticated;
 		$scope.isUserLikingBoard = isUserLikingBoard;
 		$scope.likeBoard = likeBoard;
@@ -234,6 +235,10 @@
 
 		function isUserNotATeamMember(team, user) {
 			return ! isUserATeamMember(team, user);
+		}
+
+		function usersThatArentMembersOf(team) {
+			return $scope.users != null ? $scope.users.filter(function(u) { return isUserNotATeamMember(team, u) }) : [];
 		}
 
 		function getUser() {
