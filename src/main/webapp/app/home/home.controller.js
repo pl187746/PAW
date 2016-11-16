@@ -51,7 +51,11 @@
             function onSuccess(response) {
                 $scope.boards.push(response);
 				if(team !== null) {
-					team.boards.push(response);
+					if(team.boards != null) {
+						team.boards.push(response);
+					} else {
+						team.boards = [ response ];
+					}
 				}
                 console.log('Added new board');
             }
@@ -73,7 +77,7 @@
             function onSuccess() {
                 console.log('Removed board with id' + boardId);
                 $scope.boards.splice(boardIndex, 1);
-				if(team !== null) {
+				if(team != null && team.boards != null) {
 					var tbidx = team.boards.indexOf(board);
 					team.boards.splice(tbidx, 1);
 				}
@@ -175,7 +179,7 @@
 			for(var i in $scope.boards) {
 				var board = $scope.boards[i];
 				var team = getBoardTeam(board);
-				if(team != null) {
+				if(team != null && team.boards != null) {
 					for(var j in team.boards) {
 						if(team.boards[j].id === board.id) {
 							team.boards[j] = board;
