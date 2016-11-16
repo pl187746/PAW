@@ -79,8 +79,8 @@ public class CardController {
         return ResponseEntity.ok().build();
     }
 
-    @RequestMapping(value = "/cards/{cardId}/upload_attachment", method = RequestMethod.POST)
-    public ResponseEntity<?> uploadAttachment(@PathVariable Long cardId, @RequestParam("file") MultipartFile file) {
+    @RequestMapping(value = "/cards/attachments", method = RequestMethod.POST)
+    public ResponseEntity<?> uploadAttachment(@RequestParam Long cardId, @RequestParam("file") MultipartFile file) {
         try {
             storageService.store(file, String.valueOf(cardId));
             Attachment attachment = attachmentService.addAttachmentToCard(cardId, file.getOriginalFilename());
@@ -91,7 +91,7 @@ public class CardController {
         }
     }
 
-    @RequestMapping(value = "/cards/delete_attachment/{attachmentId}", method = RequestMethod.POST)
+    @RequestMapping(value = "/cards/attachments/{attachmentId}", method = RequestMethod.DELETE)
     public ResponseEntity<?> deleteAttachment(@PathVariable Long attachmentId) {
         Attachment removedAttachment = attachmentService.removeAttachmentFromCard(attachmentId);
         storageService.delete(removedAttachment.getFileName(), String.valueOf(removedAttachment.getCard().getId()));

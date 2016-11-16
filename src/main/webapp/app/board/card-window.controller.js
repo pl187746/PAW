@@ -65,9 +65,8 @@ function CardWindowController ($scope, $http, $uibModalInstance, entity, Comment
     }
 
     function upload(file) {
-        console.log('upload avatar');
         Upload.upload({
-            url: '/cards/' + $scope.card.id + '/upload_attachment',
+            url: '/cards/attachments',
             data: {cardId: $scope.card.id, file: file}
         }).then(function (resp) {
             console.log('Success ' + resp.config.data.file.name + ' uploaded');
@@ -81,7 +80,7 @@ function CardWindowController ($scope, $http, $uibModalInstance, entity, Comment
     }
 
     function removeAttachment(attachmentId) {
-        $http.post('/cards/delete_attachment/' + attachmentId)
+        $http.delete('/cards/attachments/' + attachmentId)
             .then(function (response) {
                 removeAttachmentFromList(attachmentId);
             })
