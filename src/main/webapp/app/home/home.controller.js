@@ -24,6 +24,8 @@
 		$scope.isUserATeamMember = isUserATeamMember;
 		$scope.isUserNotATeamMember = isUserNotATeamMember;
 		$scope.usersThatArentMembersOf = usersThatArentMembersOf;
+		$scope.isBoardTeamed = isBoardTeamed;
+		$scope.isBoardNotTeamed = isBoardNotTeamed;
 		$scope.isAuthenticated = isAuthenticated;
 		$scope.isUserLikingBoard = isUserLikingBoard;
 		$scope.likeBoard = likeBoard;
@@ -239,6 +241,14 @@
 
 		function usersThatArentMembersOf(team) {
 			return $scope.users != null ? $scope.users.filter(function(u) { return isUserNotATeamMember(team, u) }) : [];
+		}
+
+		function isBoardTeamed(board) {
+			return board.teamId != null;
+		}
+
+		function isBoardNotTeamed(board) {
+			return ! isBoardTeamed(board);
 		}
 
 		function getUser() {
