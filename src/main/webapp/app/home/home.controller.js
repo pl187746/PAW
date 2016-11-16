@@ -5,9 +5,9 @@
         .module('trello')
         .controller('HomeController', HomeController);
 
-    HomeController.$inject = ['$rootScope', '$scope', '$state', 'Board', 'FavBoard', 'LoginService'];
+    HomeController.$inject = ['$scope', '$state', 'Board', 'FavBoard', 'LoginService'];
 
-    function HomeController ($rootScope, $scope, $state, Board, FavBoard, LoginService) {
+    function HomeController ($scope, $state, Board, FavBoard, LoginService) {
         $scope.$state = $state;
         $scope.boards = null;
 
@@ -104,7 +104,6 @@
 			function onSuccess(data) {
                 console.log('User id=' + user.id + ' liked board id=' + boardId);
 				user.favoriteBoards.push(data);
-				LoginService.saveUser();
             }
 
             function onError() {
