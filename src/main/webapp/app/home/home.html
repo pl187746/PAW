@@ -1,7 +1,7 @@
 <div class="well container text-center center-block">
     <h2>Boards</h2>
     <div class="center-block text-center col-md-12">
-        <div ng-repeat="board in boards" ng-init="boardIndex = $index" class="col-md-3 board-sign">
+        <div ng-repeat="board in boards" class="col-md-3 board-sign">
             <div class="board-sign">
                 <a ng-show="!boardInput" ng-click="boardInput = true" href="" class="board-input">
                     <h5 class="board-sign-title">{{board.name}}</h5>
@@ -11,7 +11,7 @@
                 <span class="center-block text-center">
                     <button ng-show="boardInput" ng-click="updateBoard(board); boardInput = false"
                             class="btn btn-success board-button-manage"><i class="fa fa-check" aria-hidden="true"></i></button>
-                    <button ng-show="boardInput" ng-click="removeBoard(board, boardIndex); boardInput = false"
+                    <button ng-show="boardInput" ng-click="removeBoard(board); boardInput = false"
                             class="btn btn-danger board-button-manage"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
                 </span>
 
@@ -43,7 +43,7 @@
 	</div>
     <h2>Boards</h2>
     <div class="center-block text-center col-md-12">
-        <div ng-repeat="board in team.boards" ng-init="boardIndex = $index" class="col-md-3 board-sign">
+        <div ng-repeat="board in team.boards" class="col-md-3 board-sign">
             <div class="board-sign">
                 <a ng-show="!boardInput" ng-click="boardInput = true" href="" class="board-input">
                     <h5 class="board-sign-title">{{board.name}}</h5>
@@ -53,7 +53,7 @@
                 <span class="center-block text-center">
                     <button ng-show="boardInput" ng-click="updateBoard(board); boardInput = false"
                             class="btn btn-success board-button-manage"><i class="fa fa-check" aria-hidden="true"></i></button>
-                    <button ng-show="boardInput" ng-click="removeBoard(board, boardIndex); boardInput = false"
+                    <button ng-show="boardInput" ng-click="removeBoard(board); boardInput = false"
                             class="btn btn-danger board-button-manage"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
                 </span>
 

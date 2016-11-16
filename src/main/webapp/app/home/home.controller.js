@@ -58,9 +58,10 @@
 
         }
 
-        function removeBoard(board, boardIndex) {
+        function removeBoard(board) {
             console.log('Remove board request for board with id' + board.id);
 
+			var boardIndex = $scope.boards.indexOf(board);
             var boardId = board.id;
             Board.delete({id : board.id}, onSuccess, onError);
 
