@@ -7,6 +7,7 @@ import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,12 +25,17 @@ public class TeamController {
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
     private TeamService teamService;
-	
+
+    @Autowired
+    public TeamController(TeamService teamService) {
+    	this.teamService = teamService;
+    }
+
 	@RequestMapping(value = "/teams", method = RequestMethod.GET)
     public ResponseEntity<?> getTeams(Pageable pageable) {
         return ResponseEntity.ok(teamService.getTeams(pageable));
     }
-	
+
 	@RequestMapping(value = "/teams/{id}", method = RequestMethod.GET)
     public ResponseEntity<?> getTeam(@PathVariable(value = "id") Long teamId) {
         return ResponseEntity.ok(teamService.findTeamById(teamId));
