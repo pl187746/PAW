@@ -26,10 +26,6 @@ function CardWindowController ($scope, $uibModalInstance, entity, Comment, Uploa
     $scope.card = entity;
     $scope.commentContent = '';
 
-    $scope.onFileSelect = function () {
-        console.log('hi');
-    };
-
     changeView(VIEWS.ATTACHMENTS);
 
     initializeFileButtonBehaviour();
@@ -72,7 +68,7 @@ function CardWindowController ($scope, $uibModalInstance, entity, Comment, Uploa
             url: '/cards/' + $scope.card.id + '/upload_attachment',
             data: {cardId: $scope.card.id, file: file}
         }).then(function (resp) {
-            console.log('Success ' + resp.config.data.file.name + 'uploaded. Response: ' + resp.data);
+            console.log('Success ' + resp.config.data.file.name + ' uploaded');
             $scope.card.attachments.push(resp.data);
         }, function (resp) {
             console.log('Error status: ' + resp.status);

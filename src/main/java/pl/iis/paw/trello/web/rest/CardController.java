@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import pl.iis.paw.trello.domain.Attachment;
 import pl.iis.paw.trello.domain.Card;
 import pl.iis.paw.trello.domain.CardList;
+import pl.iis.paw.trello.service.AttachmentService;
 import pl.iis.paw.trello.service.CardListService;
 import pl.iis.paw.trello.service.CardService;
 import pl.iis.paw.trello.service.StorageService;
@@ -30,12 +31,15 @@ public class CardController {
     private CardListService cardListService;
 
     private StorageService storageService;
+
+    private AttachmentService attachmentService;
 	
 	@Autowired
-    public CardController(CardService cardService, CardListService cardListService, StorageService storageService) {
+    public CardController(CardService cardService, CardListService cardListService, StorageService storageService, AttachmentService attachmentService) {
         this.cardService = cardService;
         this.cardListService = cardListService;
         this.storageService = storageService;
+        this.attachmentService = attachmentService;
     }
 	
 	@RequestMapping(value = "/cards", method = RequestMethod.GET)
@@ -77,7 +81,7 @@ public class CardController {
     public ResponseEntity<?> uploadAttachment(@PathVariable Long cardId, @RequestParam("file") MultipartFile file) {
         try {
             storageService.store(file, String.valueOf(cardId));
-            Attachment attachment = cardService.addAttachment(cardId, file.getOriginalFilename());
+            Attachment attachment = attachmentService.addAttachmentToCard(cardId, file.getOriginalFilename());
             return ResponseEntity.ok(attachment);
         } catch (Exception e) {
             log.error("Attachment could not be added {}", e);

@@ -14,11 +14,11 @@ public interface StorageService {
 
     void store(MultipartFile file, String subDirectory);
 
+    void deleteAll();
+
     Stream<Path> loadAll();
 
     Path load(String filename);
 
     Resource loadAsResource(String filename);
-
-    void deleteAll();
 }

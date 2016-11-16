@@ -113,12 +113,4 @@ public class CardService {
     public void deleteCard(Long id) {
     	deleteCard(findCardById(id));
     }
-
-	public Attachment addAttachment(Long cardId, String fileName) {
-		Card card = findCardById(cardId);
-		Attachment attachment = new Attachment(card, fileName);
-		card.getAttachments().add(attachment);
-		cardRepository.save(card);
-		return attachment;
-	}
 }
