@@ -3,6 +3,7 @@ package pl.iis.paw.trello.domain;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -34,7 +35,7 @@ public class Team implements Serializable {
 	)
 	private List<User> users;
 
-	@OneToMany(targetEntity = Board.class, mappedBy = "team")
+	@OneToMany(targetEntity = Board.class, mappedBy = "team", cascade = CascadeType.REMOVE)
 	private List<Board> boards;
 
 	public Team() { }
