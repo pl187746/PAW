@@ -188,22 +188,22 @@ body {
     padding: 20px;
 }
 
-.archive-button-item {
+.archive-button-item, .members-button-item {
     width: 78%;
     height: 100%;
 }
 
-.archive-button-remove {
+.archive-button-remove, .members-button-remove {
     width: 20%;
 }
 
-.archive-menu {
+.archive-menu, .members-menu {
     width: 300px;
     min-height: 400px;
     padding: 10px;
 }
 
-.archive-menu-item {
+.archive-menu-item, .members-menu-item {
     background-color: #dddddd;
 }
 

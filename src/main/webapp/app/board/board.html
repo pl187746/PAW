@@ -172,20 +172,28 @@
             </ul>
         </div>
 		
-		<div class="dropdown navbar-right">
+		<div class="dropdown navbar-right" style="margin-right: 20px;">
 			<button class="btn btn-default" data-toggle="dropdown" role="button">
                 <span>Members</span>
                 <span class="caret"></span>
             </button>
-			<ul class="dropdown-menu">
-				<li ng-repeat="member in board.members">
-					<span>{{member.login}}</span>
-					<button type="button" class="btn btn-danger" ng-click="removeMember(member)"><i class="fa fa-remove" aria-hidden="true"></i></button>
+			<ul class="dropdown-menu members-menu">
+				<li ng-repeat="member in board.members" class="members-menu-item">
+                    <button class="btn btn-default members-button-item">
+                        {{member.login}}
+                    </button>
+                    <button type="button" class="btn btn-danger members-button-remove" ng-click="removeMember(member)">
+                        <i class="fa fa-remove" aria-hidden="true"></i>
+                    </button>
 				</li>
 				<hr>
 				<li ng-repeat="user in users | filter:isUserNotAMember">
-					<span>{{user.login}}</span>
-					<button type="button" class="btn btn-success" ng-click="addMember(user)"><i class="fa fa-plus" aria-hidden="true"></i></button>
+                    <button class="btn btn-default members-button-item">
+                        {{user.login}}
+                    </button>
+                    <button type="button" class="btn btn-success members-button-remove" ng-click="addMember(user)">
+                        <i class="fa fa-plus" aria-hidden="true"></i>
+                    </button>
 				</li>
 			</ul>
 		</div>
