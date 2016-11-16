@@ -4,9 +4,9 @@ angular
     .module('trello')
     .controller('CardWindowController', CardWindowController);
 
-CardWindowController.$inject = ['$scope', '$http', '$uibModalInstance', 'entity', 'Comment', 'Upload'];
+CardWindowController.$inject = ['$scope', '$http', '$uibModalInstance', 'entity', 'Comment', 'Upload', 'Subject'];
 
-function CardWindowController ($scope, $http, $uibModalInstance, entity, Comment, Upload) {
+function CardWindowController ($scope, $http, $uibModalInstance, entity, Comment, Upload, Subject) {
     const VIEWS = {
         COMMENTS: 'COMMENTS',
         ATTACHMENTS: 'ATTACHMENTS'
