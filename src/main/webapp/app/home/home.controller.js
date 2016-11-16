@@ -5,12 +5,13 @@
         .module('trello')
         .controller('HomeController', HomeController);
 
-    HomeController.$inject = ['$rootScope', '$scope', '$state', 'Board', 'FavBoard', 'LoginService', 'Team'];
+    HomeController.$inject = ['$rootScope', '$scope', '$state', 'Board', 'FavBoard', 'LoginService', 'Team', 'User'];
 
-    function HomeController ($rootScope, $scope, $state, Board, FavBoard, LoginService, Team) {
+    function HomeController ($rootScope, $scope, $state, Board, FavBoard, LoginService, Team, User) {
         $scope.$state = $state;
         $scope.boards = null;
 		$scope.teams = null;
+		$scope.users = null;
 
         $scope.addBoard = addBoard;
         $scope.updateBoard = updateBoard;
@@ -30,6 +31,8 @@
         loadBoards();
 
 		loadTeams();
+
+		loadUsers();
 
         function loadBoards() {
             Board.query(onSuccess, onError);
@@ -284,5 +287,17 @@
                 console.log('Error while unliking user.id=' + user.id + ' board.id=' + boardId);
             }
 		}
+
+		function loadUsers() {
+			User.query(onSuccess, onError);
+
+			function onSuccess(data) {
+				$scope.users = data;
+			}
+
+			function onError() {
+			}
+		}
+
     }
 })();

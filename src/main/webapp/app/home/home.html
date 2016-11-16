@@ -53,6 +53,18 @@
 			<span>{{user.login}}</span>
 			<button ng-click="removeTeamMember(team, user)" class="btn btn-danger"><i class="fa fa-remove" aria-hidden="true"></i></button>
 		</span>
+		<div class="dropdown">
+			<button class="btn btn-default" data-toggle="dropdown" role="button">
+				<span>Add Member</span>
+				<span class="caret"></span>
+			</button>
+			<ul class="dropdown-menu">
+				<li ng-repeat="user in users">
+					<span>{{user.login}}</span>
+					<button type="button" class="btn btn-success" ng-click="addTeamMember(team, user)"><i class="fa fa-plus" aria-hidden="true"></i></button>
+				</li>
+			</ul>
+		</div>
 	</div>
     <h2>Boards</h2>
     <div class="center-block text-center col-md-12">
