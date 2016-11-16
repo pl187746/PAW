@@ -5,11 +5,12 @@
         .module('trello')
         .controller('HomeController', HomeController);
 
-    HomeController.$inject = ['$rootScope', '$scope', '$state', 'Board', 'FavBoard', 'LoginService'];
+    HomeController.$inject = ['$rootScope', '$scope', '$state', 'Board', 'FavBoard', 'LoginService', 'Team'];
 
-    function HomeController ($rootScope, $scope, $state, Board, FavBoard, LoginService) {
+    function HomeController ($rootScope, $scope, $state, Board, FavBoard, LoginService, Team) {
         $scope.$state = $state;
         $scope.boards = null;
+		$scope.teams = null;
 
         $scope.addBoard = addBoard;
         $scope.updateBoard = updateBoard;
@@ -20,6 +21,8 @@
 		$scope.unlikeBoard = unlikeBoard;
 
         loadBoards();
+
+		loadTeams();
 
         function loadBoards() {
             Board.query(onSuccess, onError);
@@ -78,15 +81,28 @@
                 console.log('Error while updating board with id ' + board.id);
             }
         }
-		
+
+		function loadTeams() {
+            Team.query(onSuccess, onError);
+
+            function onSuccess(data) {
+                $scope.teams = data;
+                console.log('Loaded teams of size: ' + $scope.teams.length);
+            }
+
+            function onError() {
+                console.log('Error while loading teams');
+            }
+        }
+
 		function getUser() {
 			return $rootScope.user;
 		}
-		
+
 		function isAuthenticated() {
             return getUser() != null;
         }
-		
+
 		function isUserLikingBoard(boardId) {
 			if(!isAuthenticated())
 				return false;
@@ -96,7 +112,7 @@
 			}
 			return false;
 		}
-		
+
 		function likeBoard(boardId) {
 			var user = getUser();
 			FavBoard.save({ 'userId': user.id, 'boardId': boardId}, onSuccess, onError);
@@ -111,7 +127,7 @@
                 console.log('Error while liking user.id=' + user.id + ' board.id=' + boardId);
             }
 		}
-		
+
 		function unlikeBoard(boardId) {
 			var user = getUser();
 			FavBoard.delete({ 'userId': user.id, 'boardId': boardId}, onSuccess, onError);
