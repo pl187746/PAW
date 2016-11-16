@@ -1,7 +1,7 @@
 <div class="well container text-center center-block">
     <h2>Boards</h2>
     <div class="center-block text-center col-md-12">
-        <div ng-repeat="board in boards" ng-init="boardIndex = $index" class="col-md-3 board-sign">
+        <div ng-repeat="board in boards | filter:isBoardNotTeamed" class="col-md-3 board-sign">
             <div class="board-sign">
                 <a ng-show="!boardInput" ng-click="boardInput = true" href="" class="board-input">
                     <h5 class="board-sign-title">{{board.name}}</h5>
@@ -11,7 +11,7 @@
                 <span class="center-block text-center">
                     <button ng-show="boardInput" ng-click="updateBoard(board); boardInput = false"
                             class="btn btn-success board-button-manage"><i class="fa fa-check" aria-hidden="true"></i></button>
-                    <button ng-show="boardInput" ng-click="removeBoard(board, boardIndex); boardInput = false"
+                    <button ng-show="boardInput" ng-click="removeBoard(board); boardInput = false"
                             class="btn btn-danger board-button-manage"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
                 </span>
 
@@ -28,8 +28,79 @@
         </div>
 
         <div class="board-add col-md-1">
-            <button class="btn btn-success card-button-add" ng-click="addBoard()">
+            <button class="btn btn-success card-button-add" ng-click="addBoard(null)">
                 <i class="fa fa-plus" aria-hidden="true"></i></button>
         </div>
     </div>
+</div>
+<h2>Teams</h2>
+<div ng-repeat="team in teams" class="well container text-center center-block">
+	<div>
+		<a ng-show="!teamInput" ng-click="teamInput = true" href="" class="team-input">
+			<h5 class="team-sign-title">{{team.name}}</h5>
+		</a>
+		<input ng-show="teamInput" type="text" ng-model="team.name" value="team.name" class="team-input team-input-editable">
+		<span class="center-block text-center">
+			<button ng-show="teamInput" ng-click="updateTeam(team); teamInput = false"
+					class="btn btn-success"><i class="fa fa-check" aria-hidden="true"></i></button>
+			<button ng-show="teamInput" ng-click="removeTeam(team); teamInput = false"
+					class="btn btn-danger"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+		</span>
+	</div>
+	<h2>Users</h2>
+	<div class="center-block text-center col-md-12">
+		<span ng-repeat="user in team.users">
+			<span>{{user.login}}</span>
+			<button ng-click="removeTeamMember(team, user)" class="btn btn-danger"><i class="fa fa-remove" aria-hidden="true"></i></button>
+		</span>
+		<div class="dropdown">
+			<button class="btn btn-default" data-toggle="dropdown" role="button">
+				<span>Add Member</span>
+				<span class="caret"></span>
+			</button>
+			<ul class="dropdown-menu">
+				<li ng-repeat="user in usersThatArentMembersOf(team)">
+					<span>{{user.login}}</span>
+					<button type="button" class="btn btn-success" ng-click="addTeamMember(team, user)"><i class="fa fa-plus" aria-hidden="true"></i></button>
+				</li>
+			</ul>
+		</div>
+	</div>
+    <h2>Boards</h2>
+    <div class="center-block text-center col-md-12">
+        <div ng-repeat="board in team.boards" class="col-md-3 board-sign">
+            <div class="board-sign">
+                <a ng-show="!boardInput" ng-click="boardInput = true" href="" class="board-input">
+                    <h5 class="board-sign-title">{{board.name}}</h5>
+                </a>
+                <input ng-show="boardInput" type="text" ng-model="board.name" value="board.name" class="board-input board-input-editable">
+
+                <span class="center-block text-center">
+                    <button ng-show="boardInput" ng-click="updateBoard(board); boardInput = false"
+                            class="btn btn-success board-button-manage"><i class="fa fa-check" aria-hidden="true"></i></button>
+                    <button ng-show="boardInput" ng-click="removeBoard(board); boardInput = false"
+                            class="btn btn-danger board-button-manage"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                </span>
+
+                <div class="text-center center-block">
+                    <button ui-sref="board({id:board.id})" class="btn btn-info board-button-go">
+                        <i class="fa fa-sign-in" aria-hidden="true"></i>
+                    </button>
+					<div ng-show="isAuthenticated()" style="margin-top:10px;">
+						<button class="btn btn-info" ng-show="!isUserLikingBoard(board.id)" ng-click="likeBoard(board.id)">Like</button>
+						<button class="btn btn-info" ng-show="isUserLikingBoard(board.id)" ng-click="unlikeBoard(board.id)">Unlike</button>
+					</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="board-add col-md-1">
+            <button class="btn btn-success card-button-add" ng-click="addBoard(team)">
+                <i class="fa fa-plus" aria-hidden="true"></i></button>
+        </div>
+    </div>
+</div>
+<div class="col-md-1">
+	<button class="btn btn-success" ng-click="addTeam()">
+		<i class="fa fa-plus" aria-hidden="true">New Team</i></button>
 </div>

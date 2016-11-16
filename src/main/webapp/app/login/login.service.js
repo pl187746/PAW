@@ -14,6 +14,7 @@
             login: login,
             logout: logout,
             isAuthenticated: isAuthenticated,
+			identity: identity,
             register: register
         };
 
@@ -65,5 +66,9 @@
         function isAuthenticated() {
             return Subject.isAuthenticated();
         }
+
+		function identity(refresh) {
+			return Subject.identity(refresh);
+		}
     }
 })();

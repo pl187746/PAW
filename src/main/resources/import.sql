@@ -1,6 +1,6 @@
-INSERT INTO Board VALUES (NULL,'Tabliczka 1');
-INSERT INTO Board VALUES (NULL,'Tablica 2');
-INSERT INTO Board VALUES (NULL,'Taboret 3');
+INSERT INTO Board (name) VALUES ('Tabliczka 1');
+INSERT INTO Board (name) VALUES ('Tablica 2');
+INSERT INTO Board (name) VALUES ('Taboret 3');
 
 INSERT INTO CARD_LIST (list_id,name,board_id,archive) VALUES (NULL, 'Lista 1/1', 1,FALSE );
 INSERT INTO CARD_LIST (list_id,name,board_id,archive) VALUES (NULL, 'Lista 1/2', 1,FALSE );
@@ -45,3 +45,19 @@ insert into CARD_LABELS (LABELED_CARDS_CARD_ID,LABELS_LABEL_ID) values (2,6);
 insert into CARD_LABELS (LABELED_CARDS_CARD_ID,LABELS_LABEL_ID) values (2,7);
 insert into CARD_LABELS (LABELED_CARDS_CARD_ID,LABELS_LABEL_ID) values (4,7);
 insert into CARD_LABELS (LABELED_CARDS_CARD_ID,LABELS_LABEL_ID) values (4,6);
+
+insert into BOARD_MEMBERS (board_id, user_id) values (1, 1);
+insert into BOARD_MEMBERS (board_id, user_id) values (1, 2);
+
+insert into TEAM (name) values ('Żółwie nindża');
+insert into TEAM (name) values ('Czterej pancerni');
+
+insert into TEAM_USERS (TEAM_ID, USER_ID) values (1, 1);
+insert into TEAM_USERS (TEAM_ID, USER_ID) values (1, 3);
+insert into TEAM_USERS (TEAM_ID, USER_ID) values (2, 1);
+insert into TEAM_USERS (TEAM_ID, USER_ID) values (2, 2);
+insert into TEAM_USERS (TEAM_ID, USER_ID) values (2, 4);
+
+insert into BOARD (name, team_id) values('Judo', 1);
+insert into BOARD (name, team_id) values('Czołgi', 2);
+insert into BOARD (name, team_id) values('Karate', 1);

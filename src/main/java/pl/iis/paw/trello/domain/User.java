@@ -1,21 +1,33 @@
 package pl.iis.paw.trello.domain;
 
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import org.hibernate.validator.constraints.Email;
-
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+
+import org.hibernate.validator.constraints.Email;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
-public class User {
+public class User implements Serializable {
 
-    @GeneratedValue
+	private static final long serialVersionUID = -7798638698033919862L;
+
+	@GeneratedValue
     @Id
     @Column(name = "user_id")
     private Long id;
@@ -41,6 +53,14 @@ public class User {
     
     @OneToMany(mappedBy = "user", targetEntity = FavBoard.class, cascade = CascadeType.REMOVE)
     private List<FavBoard> favoriteBoards;
+
+    @ManyToMany(mappedBy = "users", targetEntity = Team.class)
+    @JsonIgnore
+    private List<Team> teams;
+
+    @ManyToMany(targetEntity = Board.class, mappedBy = "members")
+    @JsonIgnore
+    private List<Board> associatedBoards;
 
     public User() { } // JPA
 
@@ -90,7 +110,15 @@ public class User {
 		this.favoriteBoards = favoriteBoards;
 	}
 
-    public Set<Authority> getAuthorities() {
+    public List<Team> getTeams() {
+		return teams;
+	}
+
+	public void setTeams(List<Team> teams) {
+		this.teams = teams;
+	}
+
+	public Set<Authority> getAuthorities() {
         return authorities;
     }
 
@@ -98,7 +126,15 @@ public class User {
         this.authorities = authorities;
     }
 
-    @Override
+    public List<Board> getAssociatedBoards() {
+		return associatedBoards;
+	}
+
+	public void setAssociatedBoards(List<Board> associatedBoards) {
+		this.associatedBoards = associatedBoards;
+	}
+
+	@Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;

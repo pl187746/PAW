@@ -2,8 +2,22 @@ package pl.iis.paw.trello.domain;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Optional;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.UniqueConstraint;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
 public class Board implements Serializable {
@@ -14,22 +28,35 @@ public class Board implements Serializable {
     @Id
     @Column(name = "board_id")
     private Long id;
-	
+
 	@Column(name = "name")
 	private String name;
-	
+
 	@OneToMany(mappedBy = "board", targetEntity = CardList.class, cascade = CascadeType.ALL)
 	private List<CardList> lists;
-	
+
 	@OneToMany(mappedBy = "board", targetEntity = FavBoard.class, cascade = CascadeType.REMOVE)
     private List<FavBoard> likingUsers;
-	
+
+	@ManyToMany(targetEntity = User.class)
+	@JoinTable(
+		joinColumns = { @JoinColumn(name = "board_id", referencedColumnName = "board_id") },
+		inverseJoinColumns = { @JoinColumn(name = "user_id", referencedColumnName = "user_id") },
+		uniqueConstraints = { @UniqueConstraint(columnNames = { "board_id", "user_id" }) }
+	)
+	private List<User> members;
+
+	@ManyToOne(targetEntity = Team.class, optional = true)
+	@JoinColumn(name = "team_id", referencedColumnName = "team_id")
+	@JsonIgnore
+	private Team team;
+
 	@OneToMany(mappedBy = "board", targetEntity = Record.class, cascade = CascadeType.REMOVE)
 	private List<Record> diary;
-	
+
 	@OneToMany(mappedBy = "board", targetEntity = Label.class, cascade = CascadeType.REMOVE)
 	private List<Label> availableLabels;
-	
+
 	public Board() { }
 
 	public Board(String name, List<CardList> lists) {
@@ -70,6 +97,14 @@ public class Board implements Serializable {
 		this.likingUsers = likingUsers;
 	}
 
+	public List<User> getMembers() {
+		return members;
+	}
+
+	public void setMembers(List<User> members) {
+		this.members = members;
+	}
+
 	public List<Record> getDiary() {
 		return diary;
 	}
@@ -84,6 +119,27 @@ public class Board implements Serializable {
 
 	public void setAvailableLabels(List<Label> availableLabels) {
 		this.availableLabels = availableLabels;
+	}
+
+	public Team getTeam() {
+		return team;
+	}
+
+	public void setTeam(Team team) {
+		this.team = team;
+	}
+
+	@JsonProperty("teamId")
+	public Long getTeamId() {
+		return Optional.ofNullable(team)
+				.map(Team::getId)
+				.orElse(null);
+	}
+
+	@JsonProperty("teamId")
+	public void setTeamId(Long teamId) {
+		this.team = new Team();
+		this.team.setId(teamId);
 	}
 
 }
