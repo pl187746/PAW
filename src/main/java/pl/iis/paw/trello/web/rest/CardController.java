@@ -8,7 +8,9 @@ import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -94,5 +96,16 @@ public class CardController {
         Attachment removedAttachment = attachmentService.removeAttachmentFromCard(attachmentId);
         storageService.delete(removedAttachment.getFileName(), String.valueOf(removedAttachment.getCard().getId()));
         return ResponseEntity.ok().build();
+    }
+
+    @RequestMapping(value = "/cards/attachments/{attachmentId}", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseEntity<Resource> downloadAttachment(@PathVariable Long attachmentId) {
+        Attachment attachment = attachmentService.findAttachmentById(attachmentId);
+        Resource file = storageService.loadAsResource(attachment.getFileName(), String.valueOf(attachment.getCard().getId()));
+        return ResponseEntity
+            .ok()
+            .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"")
+            .body(file);
     }
 }

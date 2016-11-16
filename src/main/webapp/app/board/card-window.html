@@ -52,7 +52,9 @@
                 <ul class="card-window-body-content">
                     <li class="list-group-item" ng-repeat="attachment in card.attachments">
                         <span class="col-xs-2">
-                            <button class="btn btn-success btn-xs"><i class="fa fa-download"></i></button>
+                            <a href="/cards/attachments/{{attachment.id}}" class="btn btn-success btn-xs">
+                                <i class="fa fa-download"></i>
+                            </a>
                             <button ng-click="removeAttachment(attachment.id)" class="btn btn-danger btn-xs">
                                 <i class="fa fa-remove"></i>
                             </button>
