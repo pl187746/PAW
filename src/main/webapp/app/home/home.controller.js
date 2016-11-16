@@ -18,6 +18,10 @@
 		$scope.addTeam = addTeam;
         $scope.updateTeam = updateTeam;
         $scope.removeTeam = removeTeam;
+		$scope.addTeamMember = addTeamMember;
+		$scope.removeTeamMember = removeTeamMember;
+		$scope.isUserATeamMember = isUserATeamMember;
+		$scope.isUserNotATeamMember = isUserNotATeamMember;
 		$scope.isAuthenticated = isAuthenticated;
 		$scope.isUserLikingBoard = isUserLikingBoard;
 		$scope.likeBoard = likeBoard;
@@ -187,6 +191,46 @@
 					}
 				}
 			}
+		}
+
+		function addTeamMember(team, user) {
+			if(team.users != null) {
+				team.users.push(user);
+			} else {
+				team.users = [ user ];
+			}
+			updateTeam(team);
+		}
+
+		function removeTeamMember(team, user) {
+			if(team.users != null) {
+				var up = false;
+				for(var i = 0; i < team.users.length; ++i) {
+					if(team.users[i].id == user.id) {
+						up = true;
+						team.users.splice(i, 1);
+						--i;
+					}
+				}
+				if(up) {
+					updateTeam(team);
+				}
+			}
+		}
+
+		function isUserATeamMember(team, user) {
+			if(team.users != null) {
+				for(var i in team.users) {
+					if(team.users[i].id == user.id) {
+						return true;
+					}
+				}
+			}
+			return false;
+		}
+
+		function isUserNotATeamMember(team, user) {
+			return ! isUserATeamMember(team, user);
 		}
 
 		function getUser() {

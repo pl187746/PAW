@@ -51,6 +51,7 @@
 	<div class="center-block text-center col-md-12">
 		<span ng-repeat="user in team.users">
 			<span>{{user.login}}</span>
+			<button ng-click="removeTeamMember(team, user)" class="btn btn-danger"><i class="fa fa-remove" aria-hidden="true"></i></button>
 		</span>
 	</div>
     <h2>Boards</h2>
