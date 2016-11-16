@@ -4,9 +4,9 @@ angular
     .module('trello')
     .controller('CardWindowController', CardWindowController);
 
-CardWindowController.$inject = ['$scope', '$uibModalInstance', 'entity', 'Comment', 'Upload'];
+CardWindowController.$inject = ['$scope', '$http', '$uibModalInstance', 'entity', 'Comment', 'Upload'];
 
-function CardWindowController ($scope, $uibModalInstance, entity, Comment, Upload) {
+function CardWindowController ($scope, $http, $uibModalInstance, entity, Comment, Upload) {
     const VIEWS = {
         COMMENTS: 'COMMENTS',
         ATTACHMENTS: 'ATTACHMENTS'
@@ -21,6 +21,7 @@ function CardWindowController ($scope, $uibModalInstance, entity, Comment, Uploa
 
     // Attachments
     $scope.submit = submit;
+    $scope.removeAttachment = removeAttachment;
 
     $scope.VIEWS = VIEWS;
     $scope.card = entity;
@@ -78,6 +79,16 @@ function CardWindowController ($scope, $uibModalInstance, entity, Comment, Uploa
         });
     }
 
+    function removeAttachment(attachmentId) {
+        $http.post('/cards/delete_attachment/' + attachmentId)
+            .then(function (response) {
+                removeAttachmentFromList(attachmentId);
+            })
+            .catch(function (response) {
+                console.log('Error while removing attachment');
+            })
+    }
+
     function initializeFileButtonBehaviour() {
         $(function() {
             $(document).on('change', ':file', function() {
@@ -102,5 +113,13 @@ function CardWindowController ($scope, $uibModalInstance, entity, Comment, Uploa
                 });
             });
         });
+    }
+
+    function removeAttachmentFromList(attachmentId) {
+        for (var i = 0; i < $scope.card.attachments.length; i++) {
+            if ($scope.card.attachments[i].id === attachmentId) {
+                $scope.card.attachments.splice(i, 1);
+            }
+        }
     }
 }

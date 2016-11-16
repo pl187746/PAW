@@ -14,6 +14,8 @@ public interface StorageService {
 
     void store(MultipartFile file, String subDirectory);
 
+    void delete(String fileName, String subDirectory);
+
     void deleteAll();
 
     Stream<Path> loadAll();

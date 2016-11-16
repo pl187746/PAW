@@ -33,4 +33,10 @@ public class AttachmentService {
         attachmentRepository.save(attachment);
         return attachment;
     }
+
+    public Attachment removeAttachmentFromCard(Long attachmentId) {
+        Attachment attachment = findAttachmentById(attachmentId);
+        attachmentRepository.delete(attachment);
+        return attachment;
+    }
 }

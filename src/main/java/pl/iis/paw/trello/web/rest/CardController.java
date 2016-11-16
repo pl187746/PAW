@@ -25,29 +25,29 @@ import pl.iis.paw.trello.service.StorageService;
 public class CardController {
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
-	
-	private CardService cardService;
+
+    private CardService cardService;
 
     private CardListService cardListService;
 
     private StorageService storageService;
 
     private AttachmentService attachmentService;
-	
-	@Autowired
+
+    @Autowired
     public CardController(CardService cardService, CardListService cardListService, StorageService storageService, AttachmentService attachmentService) {
         this.cardService = cardService;
         this.cardListService = cardListService;
         this.storageService = storageService;
         this.attachmentService = attachmentService;
     }
-	
-	@RequestMapping(value = "/cards", method = RequestMethod.GET)
+
+    @RequestMapping(value = "/cards", method = RequestMethod.GET)
     public ResponseEntity<?> getCards(Pageable pageable) {
         return ResponseEntity.ok(cardService.getCards(pageable));
     }
-	
-	@RequestMapping(value = "/cards/{id}", method = RequestMethod.GET)
+
+    @RequestMapping(value = "/cards/{id}", method = RequestMethod.GET)
     public ResponseEntity<?> getCard(@PathVariable(value = "id") Long cardId) {
         return ResponseEntity.ok(cardService.findCardById(cardId));
     }
@@ -87,5 +87,12 @@ public class CardController {
             log.error("Attachment could not be added {}", e);
             return ResponseEntity.unprocessableEntity().build();
         }
+    }
+
+    @RequestMapping(value = "/cards/delete_attachment/{attachmentId}", method = RequestMethod.POST)
+    public ResponseEntity<?> deleteAttachment(@PathVariable Long attachmentId) {
+        Attachment removedAttachment = attachmentService.removeAttachmentFromCard(attachmentId);
+        storageService.delete(removedAttachment.getFileName(), String.valueOf(removedAttachment.getCard().getId()));
+        return ResponseEntity.ok().build();
     }
 }
