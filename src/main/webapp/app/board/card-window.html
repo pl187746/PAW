@@ -10,7 +10,7 @@
                 <div class="card-window-body-info">
                     <h3>Comments</h3>
 
-                    <textarea ng-model="commentContent"></textarea>
+                    <textarea ng-model="$parent.commentContent"></textarea>
                     <button ng-click="addComment(commentContent)" class="btn btn-success">Add Comment</button>
                 </div>
 

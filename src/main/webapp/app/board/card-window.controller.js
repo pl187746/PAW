@@ -56,6 +56,7 @@ function CardWindowController ($scope, $http, $uibModalInstance, entity, Comment
         function onSuccess(response) {
             console.log('Added new comment to card with id ' + $scope.card.id);
             $scope.card.comments.push(response);
+            $scope.commentContent = '';
         }
 
         function onError() {
