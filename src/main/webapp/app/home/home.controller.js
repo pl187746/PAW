@@ -95,6 +95,51 @@
             }
         }
 
+		function addTeam() {
+            Team.save( {name : 'Empty'}, onSuccess, onError);
+
+            function onSuccess(response) {
+                $scope.teams.push(response);
+                console.log('Added new team');
+            }
+
+            function onError() {
+                console.log('Error while adding team')
+            }
+
+        }
+
+        function removeTeam(team) {
+            console.log('Remove team request for team with id' + team.id);
+
+			var teamIndex = $scope.teams.indexOf(team);
+            var teamId = team.id;
+            Team.delete({id : team.id}, onSuccess, onError);
+
+            function onSuccess() {
+                console.log('Removed team with id' + teamId);
+                $scope.teams.splice(teamIndex, 1);
+            }
+
+            function onError() {
+                console.log('Error while removing team with id' + teamId);
+            }
+        }
+
+        function updateTeam(team) {
+            console.log('Update team request for team with id ' + team.id);
+
+            Team.update(team, onSuccess, onError);
+
+            function onSuccess() {
+                console.log('Updated team with index ' + team.id);
+            }
+
+            function onError() {
+                console.log('Error while updating team with id ' + team.id);
+            }
+        }
+
 		function getUser() {
 			return $rootScope.user;
 		}
