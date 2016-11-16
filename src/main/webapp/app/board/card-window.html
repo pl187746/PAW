@@ -16,11 +16,24 @@
 
                 <ul class="card-window-body-content">
                     <li ng-repeat="comment in card.comments | orderBy:'id':true" class="list-group-item">
-                        <span class="col-xs-3">
+                        <span class=col-xs-3" ng-show="!commentEdit">
                             <strong>{{comment.author | limitTo: 10}}{{comment.author.length > 10 ? '...' : ''}}</strong>:
                         </span>
-                        <span class="col-xs-9" style="padding-left: 20px;">
-                            {{comment.content | limitTo: 40}}{{comment.content.length > 40 ? '...' : ''}}
+                        <span class="col-xs-7">
+                             {{comment.content | limitTo: 40}}{{comment.content.length > 40 ? '...' : ''}}
+                            <input ng-show="commentEdit" type="text" ng-model="comment.content" value="comment.content" class="list list-editable">
+                        </span>
+                        <span class="col-xs-2">
+                            <button class="btn btn-default btn-xs" ng-click="commentEdit = true" ng-show="(comment.author == user.login) && !commentEdit">
+                                <i class="fa fa-edit"></i>
+                        </button>
+
+                        <button class="btn btn-default btn-xs" ng-click="updateComment(comment);commentEdit = false" ng-show="commentEdit">
+                            <i class="fa fa-check"></i>
+                        </button>
+                        <button class="btn btn-danger btn-xs" ng-click="removeComment(comment,card)" ng-show="!commentEdit">
+                            <i class="fa fa-remove"></i>
+                        </button>
                         </span>
                         <div class="clearfix"></div>
                     </li>
