@@ -30,6 +30,7 @@
             function onSuccess(data) {
                 $scope.boards = data;
                 console.log('Loaded boards of size: ' + $scope.boards.length);
+				dedupBoards();
             }
 
             function onError() {
@@ -100,6 +101,7 @@
             function onSuccess(data) {
                 $scope.teams = data;
                 console.log('Loaded teams of size: ' + $scope.teams.length);
+				dedupBoards();
             }
 
             function onError() {
@@ -157,6 +159,24 @@
 				for(var ti in $scope.teams) {
 					if($scope.teams[ti].id === board.teamId) {
 						return $scope.teams[ti];
+					}
+				}
+			}
+			return null;
+		}
+
+		function dedupBoards() {
+			if($scope.boards == null || $scope.teams == null) {
+				return;
+			}
+			for(var i in $scope.boards) {
+				var board = $scope.boards[i];
+				var team = getBoardTeam(board);
+				if(team != null) {
+					for(var j in team.boards) {
+						if(team.boards[j].id === board.id) {
+							team.boards[j] = board;
+						}
 					}
 				}
 			}
