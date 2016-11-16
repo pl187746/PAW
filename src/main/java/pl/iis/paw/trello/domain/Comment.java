@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.Optional;
 
 /**
@@ -32,6 +33,9 @@ public class Comment implements Serializable {
     @JoinColumn(name = "author_id", referencedColumnName = "user_id")
     @JsonIgnore
     private User author;
+
+    @Column(name = "date")
+    private Date date;
 
     public Comment() { }
 
@@ -65,6 +69,14 @@ public class Comment implements Serializable {
 
     public User getAuthor() {
         return author;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 
     @JsonProperty(value = "cardId")
