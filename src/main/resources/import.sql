@@ -57,3 +57,7 @@ insert into TEAM_USERS (TEAM_ID, USER_ID) values (1, 3);
 insert into TEAM_USERS (TEAM_ID, USER_ID) values (2, 1);
 insert into TEAM_USERS (TEAM_ID, USER_ID) values (2, 2);
 insert into TEAM_USERS (TEAM_ID, USER_ID) values (2, 4);
+
+insert into BOARD (name, team_id) values('Judo', 1);
+insert into BOARD (name, team_id) values('Czołgi', 2);
+insert into BOARD (name, team_id) values('Karate', 1);
