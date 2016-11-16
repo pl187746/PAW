@@ -45,7 +45,7 @@ public class CommentController {
 
         return ResponseEntity
                 .created(new URI("/comments/" + comment.getId()))
-                .body(commentService.addComment(comment.getCard().getId(), comment.getContent()));
+                .body(commentService.addComment(comment.getCard().getId(), comment.getContent(),comment.getDate()));
     }
 
     @RequestMapping(value = "/comments",method = RequestMethod.PUT)

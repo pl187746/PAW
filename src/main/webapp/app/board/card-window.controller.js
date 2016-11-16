@@ -29,6 +29,7 @@ function CardWindowController ($scope, $http, $uibModalInstance, entity, Comment
     $scope.card = entity;
     $scope.commentContent = '';
     $scope.user = null;
+    $scope.date;
 
     changeView(VIEWS.ATTACHMENTS);
 
@@ -48,9 +49,9 @@ function CardWindowController ($scope, $http, $uibModalInstance, entity, Comment
 
     function addComment(comment) {
         console.log('Add comment request for card with id: ' + $scope.card.id + ' and content: ' + comment);
-
+        $scope.date = new Date();
         if (comment != null && comment.length > 0) {
-            Comment.save({cardId: $scope.card.id, content: comment}, onSuccess, onError);
+            Comment.save({cardId: $scope.card.id, content: comment, date: $scope.date}, onSuccess, onError);
         }
 
         function onSuccess(response) {

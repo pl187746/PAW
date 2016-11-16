@@ -11,6 +11,7 @@ import pl.iis.paw.trello.domain.User;
 import pl.iis.paw.trello.exception.CommentNotFoundException;
 import pl.iis.paw.trello.repository.CommentRepository;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -48,7 +49,7 @@ public class CommentService {
                 .orElseThrow(() -> new CommentNotFoundException(commentId));
     }
 
-    public Comment addComment(Long cardId, String content) {
+    public Comment addComment(Long cardId, String content,Date date) {
         User currentUser = userService.getCurrentUser();
         Card card = cardService.findCardById(cardId);
 
@@ -56,6 +57,7 @@ public class CommentService {
         comment.setAuthor(currentUser);
         comment.setContent(content);
         comment.setCard(card);
+        comment.setDate(date);
 
         return commentRepository.save(comment);
     }

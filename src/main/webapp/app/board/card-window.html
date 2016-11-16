@@ -17,7 +17,7 @@
                 <ul class="card-window-body-content">
                     <li ng-repeat="comment in card.comments | orderBy:'id':true" class="list-group-item">
                         <span class="col-xs-2">
-                            <strong>{{comment.author | limitTo: 10}}{{comment.author.length > 10 ? '...' : ''}}</strong>:
+                           <strong>{{comment.author | limitTo: 10}}{{comment.author.length > 10 ? '...' : ''}}</strong>:
                         </span>
 
                         <span class="col-xs-8">
@@ -39,6 +39,9 @@
                             <button class="btn btn-danger btn-xs" ng-click="removeComment(comment,card)" ng-show="!commentEdit">
                                 <i class="fa fa-remove"></i>
                             </button>
+                        </span>
+                        <span class="col-xs-5">
+                            <small ng-show="!commentEdit">{{comment.date | date: 'medium'}}</small>
                         </span>
                         <div class="clearfix"></div>
                     </li>
