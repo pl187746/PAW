@@ -84,7 +84,7 @@
 		}
 		
 		function isAuthenticated() {
-            return getUser() != null;
+            return LoginService.isAuthenticated();
         }
 		
 		function isUserLikingBoard(boardId) {
