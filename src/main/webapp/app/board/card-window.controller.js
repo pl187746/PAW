@@ -30,6 +30,7 @@ function CardWindowController ($scope, $http, $uibModalInstance, entity, Comment
     changeView(VIEWS.ATTACHMENTS);
 
     initializeFileButtonBehaviour();
+    initializeToolTips();
 
     function close() {
         $uibModalInstance.dismiss('cancel');
@@ -89,6 +90,14 @@ function CardWindowController ($scope, $http, $uibModalInstance, entity, Comment
             })
     }
 
+    function removeAttachmentFromList(attachmentId) {
+        for (var i = 0; i < $scope.card.attachments.length; i++) {
+            if ($scope.card.attachments[i].id === attachmentId) {
+                $scope.card.attachments.splice(i, 1);
+            }
+        }
+    }
+
     function initializeFileButtonBehaviour() {
         $(function() {
             $(document).on('change', ':file', function() {
@@ -115,11 +124,7 @@ function CardWindowController ($scope, $http, $uibModalInstance, entity, Comment
         });
     }
 
-    function removeAttachmentFromList(attachmentId) {
-        for (var i = 0; i < $scope.card.attachments.length; i++) {
-            if ($scope.card.attachments[i].id === attachmentId) {
-                $scope.card.attachments.splice(i, 1);
-            }
-        }
+    function initializeToolTips() {
+        $("[data-toggle=tooltip]").tooltip();
     }
 }

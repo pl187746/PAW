@@ -1,9 +1,11 @@
 package pl.iis.paw.trello.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.Objects;
 
 @Entity
@@ -27,13 +29,12 @@ public class Attachment {
     @JsonIgnore
     private User author;
 
-    public Attachment() { }
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "created_date")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, timezone = "UTC", pattern = "yyyy-MM-dd HH:mm")
+    private Date createdDate;
 
-    public Attachment(String fileName, Card card, User author) {
-        this.fileName = fileName;
-        this.card = card;
-        this.author = author;
-    }
+    public Attachment() { }
 
     public Long getId() {
         return id;
@@ -65,6 +66,14 @@ public class Attachment {
 
     public void setAuthor(User author) {
         this.author = author;
+    }
+
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
     }
 
     @JsonProperty(value = "cardId", access = JsonProperty.Access.READ_ONLY)

@@ -302,6 +302,7 @@ body {
     height: 300px;
     overflow: scroll;
     overflow-x: hidden;
+    overflow-y: auto;
 }
 
 .card-window-body textarea {
@@ -325,11 +326,6 @@ body {
 .card-window-close-button {
     width: 100px;
     margin: 30px auto 10px auto;
-}
-
-.card-window-comments {
-    overflow: scroll;
-    overflow-x: hidden;
 }
 
 .btn-file {

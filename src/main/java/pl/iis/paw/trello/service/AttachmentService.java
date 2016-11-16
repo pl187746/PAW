@@ -8,6 +8,7 @@ import pl.iis.paw.trello.domain.User;
 import pl.iis.paw.trello.exception.AttachmentNotFoundException;
 import pl.iis.paw.trello.repository.AttachmentRepository;
 
+import java.util.Date;
 import java.util.Optional;
 
 @Service
@@ -33,7 +34,13 @@ public class AttachmentService {
     public Attachment addAttachmentToCard(Long cardId, String fileName) {
         Card card = cardService.findCardById(cardId);
         User user = userService.getCurrentUser();
-        Attachment attachment = new Attachment(fileName, card, user);
+
+        Attachment attachment = new Attachment();
+        attachment.setCard(card);
+        attachment.setAuthor(user);
+        attachment.setFileName(fileName);
+        attachment.setCreatedDate(new Date());
+
         attachmentRepository.save(attachment);
         return attachment;
     }

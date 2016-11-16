@@ -16,7 +16,13 @@
 
                 <ul class="card-window-body-content">
                     <li ng-repeat="comment in card.comments | orderBy:'id':true" class="list-group-item">
-                        <strong>{{comment.author}}</strong> : {{comment.content}}
+                        <span class="col-xs-3">
+                            <strong>{{comment.author | limitTo: 10}}{{comment.author.length > 10 ? '...' : ''}}</strong>:
+                        </span>
+                        <span class="col-xs-9" style="padding-left: 20px;">
+                            {{comment.content | limitTo: 40}}{{comment.content.length > 40 ? '...' : ''}}
+                        </span>
+                        <div class="clearfix"></div>
                     </li>
                 </ul>
             </div>
@@ -47,10 +53,13 @@
                     <li class="list-group-item" ng-repeat="attachment in card.attachments">
                         <span class="col-xs-2">
                             <button class="btn btn-success btn-xs"><i class="fa fa-download"></i></button>
-                            <button ng-click="removeAttachment(attachment.id)" class="btn btn-danger btn-xs"><i class="fa fa-remove"></i></button>
+                            <button ng-click="removeAttachment(attachment.id)" class="btn btn-danger btn-xs">
+                                <i class="fa fa-remove"></i>
+                            </button>
                         </span>
-                        <span class="col-xs-8" style="padding-left: 20px;">
-                             {{attachment.fileName | limitTo: 40}}{{attachment.fileName.length > 40 ? '...' : ''}}
+                        <span class="col-xs-8" style="padding-left: 10px;" data-toggle="tooltip"
+                              title="Created: {{attachment.createdDate}}">
+                            {{attachment.fileName | limitTo: 40}}{{attachment.fileName.length > 40 ? '...' : ''}}
                         </span>
                         <span class="col-xs-2">
                             {{attachment.author | limitTo: 10}}{{attachment.author.length > 10 ? '...' : ''}}
