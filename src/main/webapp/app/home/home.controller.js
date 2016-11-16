@@ -58,9 +58,10 @@
 
         }
 
-        function removeBoard(board, team) {
+        function removeBoard(board) {
             console.log('Remove board request for board with id' + board.id);
 
+			var team = getBoardTeam(board);
 			var boardIndex = $scope.boards.indexOf(board);
             var boardId = board.id;
             Board.delete({id : board.id}, onSuccess, onError);
@@ -150,6 +151,16 @@
                 console.log('Error while updating team with id ' + team.id);
             }
         }
+
+		function getBoardTeam(board) {
+			if(board.teamId != null) {
+				for(var ti in $scope.teams) {
+					if($scope.teams[ti].id === board.teamId) {
+						return $scope.teams[ti];
+					}
+				}
+			}
+		}
 
 		function getUser() {
 			return $rootScope.user;
