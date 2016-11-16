@@ -80,7 +80,7 @@
         }
 		
 		function getUser() {
-			return $rootScope.user;
+			return LoginService.identity(false).$$state.value;
 		}
 		
 		function isAuthenticated() {
