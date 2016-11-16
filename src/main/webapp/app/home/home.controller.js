@@ -49,7 +49,6 @@
                 console.log('Error while adding board')
             }
 
-            loadBoards();
         }
 
         function removeBoard(board, boardIndex) {
