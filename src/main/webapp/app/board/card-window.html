@@ -8,10 +8,10 @@
             <!--Comments-->
             <div ng-if="view === VIEWS.COMMENTS">
                 <div class="card-window-body-info">
-                    <h3>Comments</h3>
+                    <h3 translate="CARD_COMMENTS">Comments</h3>
 
                     <textarea ng-model="$parent.commentContent"></textarea>
-                    <button ng-click="addComment(commentContent)" class="btn btn-success">Add Comment</button>
+                    <button ng-click="addComment(commentContent)" class="btn btn-success" translate="ADD_COMMENT">Add Comment</button>
                 </div>
 
                 <ul class="card-window-body-content">
@@ -51,20 +51,20 @@
             <!--Attachments-->
             <div ng-if="view === VIEWS.ATTACHMENTS">
                 <div class="card-window-body-info">
-                    <h3>Attachments</h3>
+                    <h3 translate="ATTACHMENTS">Attachments</h3>
 
                     <form name="form" ng-submit="submit(file)">
                         <div class="input-group">
                             <label class="input-group-btn">
                                 <span class="btn btn-primary">
-                                    Browse&hellip; <input type="file" ngf-select style="display: none;" ng-model="$parent.file">
+                                    <span translate="BROWSE">Browse&hellip;</span> <input type="file" ngf-select style="display: none;" ng-model="$parent.file">
                                 </span>
                             </label>
 
                             <input type="text" class="form-control" readonly>
                         </div>
 
-                        <button style="margin-top: 20px;" class="btn btn-info" type="submit">
+                        <button style="margin-top: 20px;" class="btn btn-info" type="submit" translate="UPLOAD">
                             <i class="fa fa-send"></i>  Upload
                         </button>
                     </form>
@@ -94,8 +94,10 @@
         </div>
 
         <div class="col-xs-4 text-center">
-            <button class="btn btn-default card-window-nav-button" ng-click="changeView(VIEWS.ATTACHMENTS)">Attachments</button>
-            <button class="btn btn-default card-window-nav-button" ng-click="changeView(VIEWS.COMMENTS)">Comments</button>
+            <button class="btn btn-default card-window-nav-button" ng-click="changeView(VIEWS.ATTACHMENTS)"
+                    translate="ATTACHMENTS">Attachments</button>
+            <button class="btn btn-default card-window-nav-button" ng-click="changeView(VIEWS.COMMENTS)"
+                    translate="CARD_COMMENTS">Comments</button>
         </div>
     </div>
 

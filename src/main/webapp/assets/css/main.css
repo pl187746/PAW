@@ -347,3 +347,7 @@ body {
     cursor: inherit;
     display: block;
 }
+
+.changeLanguageBtn {
+    color: white !important;
+}

@@ -86,7 +86,7 @@
                             <i class="fa fa-close" aria-hidden="true"></i>
                         </button>
                         <div>
-                            <h4>Labels</h4>
+                            <h4 translate="LABELS">Labels</h4>
                             <ul style="list-style-type: none;">
                                 <li class="label-item" ng-repeat="availLab in board.availableLabels">
                                     <div class="tbl-cell">
@@ -143,12 +143,12 @@
 
         <div class="dropdown navbar-right">
             <button class="btn btn-default" data-toggle="dropdown" role="button">
-                <span>Archive</span>
+                <span translate="ARCHIVE_DROPDOWN">Archive</span>
                 <span class="caret"></span>
             </button>
 
             <ul class="dropdown-menu archive-menu">
-                <h4>Lists:</h4>
+                <h4 translate="ARCHIVE_LISTS">Lists:</h4>
                 <li ng-repeat="list in board.lists" class="archive-menu-item">
                     <button ng-click="returnArchiveList(list)" ng-show="list.archive == true"
                             class="btn btn-default archive-button-item">{{list.name}}</button>
@@ -159,7 +159,7 @@
 
                 <hr>
 
-                <h4>Cards:</h4>
+                <h4 translate="ARCHIVE_CARDS">Cards:</h4>
                 <div ng-repeat="list in board.lists">
                     <li ng-repeat="card in list.cards">
                         <button ng-click="returnArchiveCard(card, list)" ng-show="card.archive == true"
@@ -174,7 +174,7 @@
 		
 		<div class="dropdown navbar-right" style="margin-right: 20px;">
 			<button class="btn btn-default" data-toggle="dropdown" role="button">
-                <span>Members</span>
+                <span translate="MEMBERS_DROPDOWN">Members</span>
                 <span class="caret"></span>
             </button>
 			<ul class="dropdown-menu members-menu">
@@ -200,7 +200,8 @@
 
         <div class="clearfix"></div>
         <div>
-            <button class="btn btn-default diary-btn" type="button" ng-click="showDiary = !showDiary">Diary</button>
+            <button class="btn btn-default diary-btn" type="button" ng-click="showDiary = !showDiary">
+                <span translate="DIARY">Diary</span></button>
             <div ng-show="showDiary" class="diary">
                 <p ng-repeat="rec in board.diary" class="diary-item">
                     <b>{{fmtDate(rec.timestamp)}}</b> by <em>{{rec.user}}</em> | {{fmtRecord(rec)}}
