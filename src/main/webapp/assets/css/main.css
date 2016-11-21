@@ -347,3 +347,11 @@ body {
     cursor: inherit;
     display: block;
 }
+
+.team-list-title {
+	text-align: center;
+}
+
+.team-add-btn {
+	text-align: center;
+}
