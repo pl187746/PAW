@@ -351,3 +351,8 @@ body {
 .changeLanguageBtn {
     color: white !important;
 }
+
+.language-img-small {
+    width: 30px;
+    height: 24px;
+}
