@@ -28,8 +28,16 @@
                 </li>
             </ul>
             <ul class="nav navbar-nav navbar-right" ng-switch="isAuthenticated()">
-                <li><a href="" ng-click="changeLanguage('en')"><img ng-click="changeLanguage('en')" ng-src="/assets/img/gb.png" class="language-img-small"></a></li>
-                <li><a href="" ng-click="changeLanguage('pl')"><img ng-src="/assets/img/pl.png" class="language-img-small"></a></li>
+                <li style="margin-right: 30px;" class="navbar-text">
+                    <span>
+                        <a href="" ng-click="changeLanguage('en')">
+                            <img ng-click="changeLanguage('en')" ng-src="/assets/img/gb.png" class="language-img-small">
+                        </a>
+                        <a href="" ng-click="changeLanguage('pl')">
+                            <img ng-src="/assets/img/pl.png" class="language-img-small">
+                        </a>
+                    </span>
+                </li>
                 <li><a ng-switch-when="true" href="" class="user-login"><span translate="LOGGED_AS">Logged as </span> {{user.login}}</a></li>
                 <li class="dropdown">
                     <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
