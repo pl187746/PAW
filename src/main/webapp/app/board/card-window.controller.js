@@ -9,9 +9,12 @@ CardWindowController.$inject = ['$scope', '$http', '$uibModalInstance', 'entity'
 function CardWindowController ($scope, $http, $uibModalInstance, entity, Comment, Upload, Subject) {
     const VIEWS = {
         COMMENTS: 'COMMENTS',
-        ATTACHMENTS: 'ATTACHMENTS'
+        ATTACHMENTS: 'ATTACHMENTS',
+        COMPLETION_DATE: 'COMPLETION_DATE'
     };
-
+    
+    $scope.DATE_FORMAT = 'yyyy-MM-dd hh:mm';
+    
     // Window
     $scope.close = close;
     $scope.changeView = changeView;
@@ -24,12 +27,16 @@ function CardWindowController ($scope, $http, $uibModalInstance, entity, Comment
     // Attachments
     $scope.submit = submit;
     $scope.removeAttachment = removeAttachment;
+    
+    // Completion Date
+    $scope.openCalendar = openCalendar;
 
     $scope.VIEWS = VIEWS;
     $scope.card = entity;
     $scope.commentContent = '';
     $scope.user = null;
-    $scope.date;
+    $scope.completionDate = entity.completionDate;
+    $scope.datePickerOpenStatus = {date: false, dateTime: false};
 
     changeView(VIEWS.ATTACHMENTS);
 
@@ -139,6 +146,10 @@ function CardWindowController ($scope, $http, $uibModalInstance, entity, Comment
             }
             $scope.user = account;
         });
+    }
+
+    function openCalendar() {
+        $scope.datePickerOpenStatus.date = true;
     }
 
     function initializeFileButtonBehaviour() {

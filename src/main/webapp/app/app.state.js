@@ -49,7 +49,8 @@
             NEW_TEAM: 'New team',
             ADD_MEMBER: 'Add member',
             LIKE: 'Like',
-            UNLIKE: 'Unlike'
+            UNLIKE: 'Unlike',
+            COMPLETION_DATE: 'Completion Date'
         });
         $translateProvider.translations('pl', {
             BOARD_SEARCH: 'Tablice',
@@ -83,7 +84,8 @@
             NEW_TEAM: 'Nowa drużyna',
             ADD_MEMBER: 'Dodaj członka',
             LIKE: 'Lubię',
-            UNLIKE: 'Nie lubię'
+            UNLIKE: 'Nie lubię',
+            COMPLETION_DATE: 'Terminarz'
         });
         $translateProvider.preferredLanguage('en');
 

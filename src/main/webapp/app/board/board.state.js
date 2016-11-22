@@ -35,7 +35,7 @@
                     backdrop: 'static',
                     resolve: {
                         entity: ['Card', function(Card) {
-                            return Card.get({id : $stateParams.cardId});
+                            return Card.get({id : $stateParams.cardId}).$promise;
                         }]
                     }
                 }).result.then(function() {

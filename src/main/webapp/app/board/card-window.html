@@ -91,6 +91,30 @@
                     </li>
                 </ul>
             </div>
+
+            <!-- COMPLETION DATE -->
+            <div ng-if="view === VIEWS.COMPLETION_DATE">
+                <div class="card-window-body-info">
+                    <h3 translate="COMPLETION_DATE">Completion Date</h3>
+
+                    <div class="input-group">
+                        <input type="text" class="form-control" name="completion_date" datetime-picker="{{DATE_FORMAT}}"
+                               ng-model="$parent.completionDate.date" saveAs="xD" is-open="datePickerOpenStatus.date" ng-readonly="true"/>
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn-default" ng-click="openCalendar('dateTime')">
+                                <i class="glyphicon glyphicon-calendar"></i>
+                            </button>
+                        </span>
+                    </div>
+
+                    <div class="input-group" style="margin-top: 10px;">
+                        <button class="btn btn-success" ng-if="completionDate.date !== card.completionDate">Save</button>
+                        <button class="btn btn-danger" ng-if="card.completionDate !== null" style="margin-left: 10px;">Delete</button>
+                    </div>
+                </div>
+
+                <div class="card-window-body-content"></div>
+            </div>
         </div>
 
         <div class="col-xs-4 text-center">
@@ -98,6 +122,8 @@
                     translate="ATTACHMENTS">Attachments</button>
             <button class="btn btn-default card-window-nav-button" ng-click="changeView(VIEWS.COMMENTS)"
                     translate="CARD_COMMENTS">Comments</button>
+            <button class="btn btn-default card-window-nav-button" ng-click="changeView(VIEWS.COMPLETION_DATE)"
+                    translate="COMPLETION_DATE">Completion Date</button>
         </div>
     </div>
 
