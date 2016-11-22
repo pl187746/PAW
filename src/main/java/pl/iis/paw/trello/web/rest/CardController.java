@@ -112,7 +112,19 @@ public class CardController {
 
     @RequestMapping(value = "/cards/{cardId}/completion_date", method = RequestMethod.POST)
     public ResponseEntity<?> addCompletionDateToCard(@PathVariable Long cardId, @RequestBody CompletionDate completionDate) {
-        cardService.changeCardCompletionDate(cardId, completionDate);
+        CompletionDate createdCompletionDate = cardService.createCardCompletionDate(cardId, completionDate);
+        return ResponseEntity.ok(createdCompletionDate);
+    }
+
+    @RequestMapping(value = "/cards/{cardId}/completion_date", method = RequestMethod.PUT)
+    public ResponseEntity<?> updateCardCompletionDate(@PathVariable Long cardId, @RequestBody CompletionDate completionDate) {
+        CompletionDate updatedCompletionDate = cardService.updateCardCompletionDate(cardId, completionDate);
+        return ResponseEntity.ok(updatedCompletionDate);
+    }
+
+    @RequestMapping(value = "/cards/{cardId}/completion_date", method = RequestMethod.DELETE)
+    public ResponseEntity<?> deleteCompletionDateFromCard(@PathVariable Long cardId) {
+        cardService.deleteCardCompletionDate(cardId);
         return ResponseEntity.ok().build();
     }
 
@@ -120,11 +132,5 @@ public class CardController {
     public ResponseEntity<?> getCompletionDateFromCard(@PathVariable Long cardId) {
         CompletionDate completionDate = cardService.findCardById(cardId).getCompletionDate();
         return ResponseEntity.ok(completionDate);
-    }
-
-    @RequestMapping(value = "/cards/{cardId}/completion_date", method = RequestMethod.DELETE)
-    public ResponseEntity<?> deleteCompletionDateFromCard(@PathVariable Long cardId) {
-        cardService.deleteCardCompletionDate(cardId);
-        return ResponseEntity.ok().build();
     }
 }

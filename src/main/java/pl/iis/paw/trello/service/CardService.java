@@ -105,11 +105,29 @@ public class CardService {
     	return cardRepository.save(existingCard);
     }
 
-    public void changeCardCompletionDate(Long cardId, CompletionDate completionDate) {
+	public CompletionDate createCardCompletionDate(Long cardId, CompletionDate completionDate) {
 		Card card = findCardById(cardId);
-		card.setCompletionDate(completionDate);
-		completionDate.setCard(card);
+
+		CompletionDate newDate = new CompletionDate();
+		newDate.setDate(completionDate.getDate());
+		newDate.setFinished(false);
+		newDate.setCard(card);
+
+		card.setCompletionDate(newDate);
 		cardRepository.save(card);
+
+		return newDate;
+	}
+
+	public CompletionDate updateCardCompletionDate(Long cardId, CompletionDate completionDate) {
+		Card card = findCardById(cardId);
+		CompletionDate existingDate = card.getCompletionDate();
+		existingDate.setDate(completionDate.getDate());
+		existingDate.setFinished(completionDate.getFinished());
+
+		cardRepository.save(card);
+
+		return existingDate;
 	}
 
 	public void deleteCardCompletionDate(Long cardId) {
