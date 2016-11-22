@@ -121,4 +121,10 @@ public class CardController {
         CompletionDate completionDate = cardService.findCardById(cardId).getCompletionDate();
         return ResponseEntity.ok(completionDate);
     }
+
+    @RequestMapping(value = "/cards/{cardId}/completion_date", method = RequestMethod.DELETE)
+    public ResponseEntity<?> deleteCompletionDateFromCard(@PathVariable Long cardId) {
+        cardService.deleteCardCompletionDate(cardId);
+        return ResponseEntity.ok().build();
+    }
 }

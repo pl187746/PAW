@@ -111,6 +111,12 @@ public class CardService {
 		completionDate.setCard(card);
 		cardRepository.save(card);
 	}
+
+	public void deleteCardCompletionDate(Long cardId) {
+		Card card = findCardById(cardId);
+		card.setCompletionDate(null);
+		cardRepository.save(card);
+	}
     
     public void deleteCard(Card card) {
     	recordService.record(card.getCardList().getBoard(), RecordType.CARD_DELETE, p("cardName", card.getName()));
