@@ -115,4 +115,10 @@ public class CardController {
         cardService.changeCardCompletionDate(cardId, completionDate);
         return ResponseEntity.ok().build();
     }
+
+    @RequestMapping(value = "/cards/{cardId}/completion_date", method = RequestMethod.GET)
+    public ResponseEntity<?> getCompletionDateFromCard(@PathVariable Long cardId) {
+        CompletionDate completionDate = cardService.findCardById(cardId).getCompletionDate();
+        return ResponseEntity.ok(completionDate);
+    }
 }
