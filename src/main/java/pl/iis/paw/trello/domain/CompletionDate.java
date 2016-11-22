@@ -1,6 +1,8 @@
 package pl.iis.paw.trello.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -20,6 +22,7 @@ public class CompletionDate {
     private Date date;
 
     @OneToOne(mappedBy = "completionDate")
+    @JsonIgnore
     private Card card;
 
     @Column(name = "finished")
@@ -55,6 +58,16 @@ public class CompletionDate {
 
     public void setFinished(Boolean finished) {
         this.finished = finished;
+    }
+
+    @JsonProperty(value = "cardId")
+    public Long getCardId() {
+        return card.getId();
+    }
+
+    @JsonProperty(value = "cardId")
+    public void setCardId(Long cardId) {
+        this.card.setId(cardId);
     }
 
     @Override

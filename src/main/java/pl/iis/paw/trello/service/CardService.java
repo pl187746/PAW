@@ -104,6 +104,13 @@ public class CardService {
     	
     	return cardRepository.save(existingCard);
     }
+
+    public void changeCardCompletionDate(Long cardId, CompletionDate completionDate) {
+		Card card = findCardById(cardId);
+		card.setCompletionDate(completionDate);
+		completionDate.setCard(card);
+		cardRepository.save(card);
+	}
     
     public void deleteCard(Card card) {
     	recordService.record(card.getCardList().getBoard(), RecordType.CARD_DELETE, p("cardName", card.getName()));

@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import pl.iis.paw.trello.domain.Attachment;
 import pl.iis.paw.trello.domain.Card;
 import pl.iis.paw.trello.domain.CardList;
+import pl.iis.paw.trello.domain.CompletionDate;
 import pl.iis.paw.trello.service.AttachmentService;
 import pl.iis.paw.trello.service.CardListService;
 import pl.iis.paw.trello.service.CardService;
@@ -107,5 +108,11 @@ public class CardController {
             .ok()
             .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"")
             .body(file);
+    }
+
+    @RequestMapping(value = "/cards/{cardId}/completion_date", method = RequestMethod.POST)
+    public ResponseEntity<?> addCompletionDateToCard(@PathVariable Long cardId, @RequestBody CompletionDate completionDate) {
+        cardService.changeCardCompletionDate(cardId, completionDate);
+        return ResponseEntity.ok().build();
     }
 }
