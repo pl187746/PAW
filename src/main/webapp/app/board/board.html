@@ -62,7 +62,8 @@
                                 cardInput = false" class="btn btn-default card-button-manage">
                                 <i class="fa fa-archive" aria-hidden="true"></i>
                             </button>
-                            <button ng-show="cardInput" class="btn btn-warning card-button-manage" ui-sref="board.card({cardId:card.id})">
+                            <button ng-show="cardInput" class="btn btn-warning card-button-manage" ng-click="cardInput = false"
+                                    ui-sref="board.card({cardId:card.id})">
                                 <i class="fa fa-list-alt" aria-hidden="true"></i>
                             </button>
                             <button ng-show="cardInput" ng-click="cardMenu = true;
