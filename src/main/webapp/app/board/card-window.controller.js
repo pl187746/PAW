@@ -37,6 +37,7 @@ function CardWindowController ($scope, $http, $uibModalInstance, entity, Comment
     $scope.deleteCompletionDate = deleteCompletionDate;
     $scope.isDefined = isDefined;
     $scope.parsedDate = parsedDate;
+    $scope.timeTaskLeft = timeTaskLeft;
 
     $scope.VIEWS = VIEWS;
     $scope.DATE_FORMAT = DATE_FORMAT;
@@ -226,8 +227,9 @@ function CardWindowController ($scope, $http, $uibModalInstance, entity, Comment
         function onSuccess() {
             console.log('Completion date has been deleted from card with id ' + $scope.card.id);
             $scope.completionDate.id = null;
-            hasChanged = true;
+            $scope.completionDate.finished = false;
             $scope.completionDateState.successMsg = 'Completion date has been removed';
+            hasChanged = true;
         }
 
         function onError() {
@@ -268,6 +270,14 @@ function CardWindowController ($scope, $http, $uibModalInstance, entity, Comment
 
     function parsedDate() {
         return moment($scope.completionDate.date).format('DD-MMM-YYYY  HH:mm');
+    }
+
+    function timeTaskLeft() {
+        if (isDefined($scope.completionDate.id)) {
+            return Date.now() - moment($scope.completionDate.date).toDate().getTime();
+        }
+
+        return 0;
     }
 
     function initializeFileButtonBehaviour() {

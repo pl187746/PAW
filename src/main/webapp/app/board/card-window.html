@@ -1,7 +1,8 @@
 <div class="card-window">
     <div class="card-window-header">
         <h3 class="modal-title">{{card.name}}</h3>
-        <h5 ng-if="isDefined(completionDate.id)">
+        <h5 ng-if="isDefined(completionDate.id)"
+            ng-class="completionDate.finished? 'time-task-done' : timeTaskLeft() > 0? 'time-task-late' : 'time-task-ok'">
            {{parsedDate()}}
         </h5>
     </div>
