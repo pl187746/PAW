@@ -55,7 +55,7 @@
         }
 
         function addBoard(team) {
-			var board = { name: 'Empty' };
+			var board = { name: 'Empty', members: [ getUser() ] };
 			if(team !== null) {
 				board.teamId = team.id;
 			}
