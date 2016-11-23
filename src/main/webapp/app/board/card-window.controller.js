@@ -29,7 +29,8 @@ function CardWindowController ($scope, $http, $uibModalInstance, entity, Comment
     // Completion Date
     $scope.openCalendar = openCalendar;
     $scope.addCompletionDate = addCompletionDate;
-    $scope.changeCompletionDate = changeCompletionDate;
+    $scope.updateCompletionDate = updateCompletionDate;
+    $scope.deleteCompletionDate = deleteCompletionDate;
     $scope.isDefined = isDefined;
 
     $scope.VIEWS = VIEWS;
@@ -171,7 +172,7 @@ function CardWindowController ($scope, $http, $uibModalInstance, entity, Comment
         }
     }
 
-    function changeCompletionDate() {
+    function updateCompletionDate() {
         var data = {
             date: $scope.dateTime,
             completed: $scope.completionDate.completed,
@@ -188,6 +189,21 @@ function CardWindowController ($scope, $http, $uibModalInstance, entity, Comment
 
         function onError() {
             console.log('Error while updating completion date in card with id ' + $scope.card.id);
+        }
+    }
+
+    function deleteCompletionDate() {
+        $http.delete('/cards/' + $scope.card.id + '/completion_date')
+            .then(onSuccess)
+            .catch(onError);
+
+        function onSuccess() {
+            console.log('Completion date has been deleted from card with id ' + $scope.card.id);
+            $scope.completionDate.id = null;
+        }
+
+        function onError() {
+            console.log('Error while deleting completion date from card with id ' + $scope.card.id);
         }
     }
 

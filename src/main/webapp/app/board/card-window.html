@@ -106,14 +106,15 @@
                         </span>
                     </p>
 
-                    <div class="input-group" style="margin-top: 10px;">
-                        <button class="btn btn-success" ng-if="isDefined(completionDate.id)" ng-click="changeCompletionDate()">
+                    <div class="input-group" style="margin-top: 10px;" ng-switch="isDefined(completionDate.id)">
+                        <button class="btn btn-success" ng-switch-when="true" ng-click="updateCompletionDate()">
                             Update
                         </button>
-                        <button class="btn btn-success" ng-if="!isDefined(completionDate.id)" ng-click="addCompletionDate()">
+                        <button class="btn btn-success" ng-switch-when="false" ng-click="addCompletionDate()">
                             Add
                         </button>
-                        <button class="btn btn-danger" ng-if="completionDate !== null" style="margin-left: 10px;">Delete</button>
+                        <button class="btn btn-danger" ng-switch-when="true" ng-click="deleteCompletionDate()"
+                                style="margin-left: 10px;">Delete</button>
                     </div>
                 </div>
 
