@@ -63,7 +63,7 @@
 			<ul class="dropdown-menu members-menu">
 				<li ng-repeat="user in usersThatArentMembersOf(team)">
 					<button class="btn btn-default members-button-item">{{user.login}}</button>
-					<button type="button" class="btn btn-success" ng-click="addTeamMember(team, user)"><i class="fa fa-plus" aria-hidden="true"></i></button>
+					<button type="button" class="btn btn-success members-button-remove" ng-click="addTeamMember(team, user)"><i class="fa fa-plus" aria-hidden="true"></i></button>
 				</li>
 			</ul>
 		</div>
