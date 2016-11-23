@@ -380,3 +380,26 @@ body {
 .team-input-editable {
     background-color: #dbe0e7;
 }
+
+.changeLanguageBtn {
+    color: white !important;
+}
+
+.language-img-small {
+    width: 30px;
+    height: 24px;
+}
+
+.time-task-done {
+    text-decoration: line-through;
+    color: #4c7c3e;
+}
+
+.time-task-ok {
+    color: #353535;
+}
+
+.time-task-late {
+    color: #792423;
+    text-decoration: underline;
+}

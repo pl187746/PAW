@@ -42,6 +42,11 @@ public class Card implements Serializable {
     @OneToMany(mappedBy = "card", targetEntity = Attachment.class, cascade = CascadeType.ALL)
     private List<Attachment> attachments;
 
+    @OneToOne(targetEntity = CompletionDate.class, orphanRemoval = true, cascade = CascadeType.ALL)
+    @JoinColumn(name = "completion_id", referencedColumnName = "completion_id")
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private CompletionDate completionDate;
+
     public Card() { }
 
     public Card(String name, CardList cardList) {
@@ -125,5 +130,13 @@ public class Card implements Serializable {
 
     public void setAttachments(List<Attachment> attachments) {
         this.attachments = attachments;
+    }
+
+    public CompletionDate getCompletionDate() {
+        return completionDate;
+    }
+
+    public void setCompletionDate(CompletionDate completionDate) {
+        this.completionDate = completionDate;
     }
 }

@@ -104,6 +104,38 @@ public class CardService {
     	
     	return cardRepository.save(existingCard);
     }
+
+	public CompletionDate createCardCompletionDate(Long cardId, CompletionDate completionDate) {
+		Card card = findCardById(cardId);
+
+		CompletionDate newDate = new CompletionDate();
+		newDate.setDate(completionDate.getDate());
+		newDate.setFinished(completionDate.getFinished());
+		newDate.setCard(card);
+
+		card.setCompletionDate(newDate);
+		card = cardRepository.save(card);
+
+		newDate.setId(card.getCompletionDate().getId());
+		return newDate;
+	}
+
+	public CompletionDate updateCardCompletionDate(Long cardId, CompletionDate completionDate) {
+		Card card = findCardById(cardId);
+		CompletionDate existingDate = card.getCompletionDate();
+		existingDate.setDate(completionDate.getDate());
+		existingDate.setFinished(completionDate.getFinished());
+
+		cardRepository.save(card);
+
+		return existingDate;
+	}
+
+	public void deleteCardCompletionDate(Long cardId) {
+		Card card = findCardById(cardId);
+		card.setCompletionDate(null);
+		cardRepository.save(card);
+	}
     
     public void deleteCard(Card card) {
     	recordService.record(card.getCardList().getBoard(), RecordType.CARD_DELETE, p("cardName", card.getName()));

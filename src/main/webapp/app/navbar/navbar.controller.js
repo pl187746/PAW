@@ -5,11 +5,12 @@
         .module('trello')
         .controller('NavbarController', NavbarController);
 
-    NavbarController.$inject = ['$rootScope', '$scope', '$state', 'Board', 'LoginService', 'Subject'];
+    NavbarController.$inject = ['$rootScope', '$scope', '$state','$translate', 'Board', 'LoginService', 'Subject'];
 
-    function NavbarController ($rootScope, $scope, $state, Board, LoginService, Subject) {
+    function NavbarController ($rootScope, $scope, $state, $translate, Board, LoginService, Subject) {
         $scope.logout = logout;
         $scope.isAuthenticated = isAuthenticated;
+        $scope.changeLanguage = changeLanguage;
 
         $scope.$state = $state;
         $rootScope.boards = null;
@@ -55,5 +56,9 @@
         function isAuthenticated() {
             return LoginService.isAuthenticated();
         }
+
+        function changeLanguage(langKey) {
+            $translate.use(langKey);
+        };
     }
 })();
