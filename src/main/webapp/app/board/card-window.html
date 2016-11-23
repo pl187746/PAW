@@ -118,6 +118,9 @@
                         </button>
                         <button class="btn btn-danger" ng-switch-when="true" ng-click="deleteCompletionDate()"
                                 style="margin-left: 10px;">Delete</button>
+                        <span class="checkbox-inline" style="margin-left: 20px;" ng-if="isDefined(completionDate.id)">
+                            <input type="checkbox" ng-model="$parent.completionDate.finished">   Done
+                        </span>
                     </div>
                 </div>
 

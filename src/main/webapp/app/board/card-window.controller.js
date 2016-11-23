@@ -168,7 +168,12 @@ function CardWindowController ($scope, $http, $uibModalInstance, entity, Comment
     function addCompletionDate() {
         resetErrorStates();
 
-        $http.post('/cards/' + $scope.card.id + '/completion_date', {date: $scope.dateTime})
+        var data = {
+            date: $scope.dateTime,
+            finished: $scope.completionDate.finished
+        };
+
+        $http.post('/cards/' + $scope.card.id + '/completion_date', data)
             .then(onSuccess)
             .catch(onError);
 
@@ -190,7 +195,7 @@ function CardWindowController ($scope, $http, $uibModalInstance, entity, Comment
 
         var data = {
             date: $scope.dateTime,
-            completed: $scope.completionDate.completed,
+            finished: $scope.completionDate.finished,
             id: $scope.completionDate.id
         };
 
@@ -238,13 +243,13 @@ function CardWindowController ($scope, $http, $uibModalInstance, entity, Comment
             $scope.completionDate = {
                 id: cDate.id,
                 cardId : cDate.cardId,
-                completed: cDate.completed
+                finished: cDate.finished
             };
             $scope.dateTime = new Date(cDate.date);
         } else {
             $scope.completionDate = {
                 cardId: $scope.card.id,
-                completed: false
+                finished: false
             };
             $scope.dateTime = new Date();
         }

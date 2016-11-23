@@ -110,7 +110,7 @@ public class CardService {
 
 		CompletionDate newDate = new CompletionDate();
 		newDate.setDate(completionDate.getDate());
-		newDate.setFinished(false);
+		newDate.setFinished(completionDate.getFinished());
 		newDate.setCard(card);
 
 		card.setCompletionDate(newDate);
