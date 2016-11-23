@@ -350,6 +350,7 @@ body {
 
 .team-list-title {
 	text-align: center;
+	font-weight: bold;
 }
 
 .team-add-btn {
@@ -379,6 +380,10 @@ body {
 
 .team-input-editable {
     background-color: #dbe0e7;
+}
+
+.inline-menu {
+	display: inline-block;
 }
 
 .changeLanguageBtn {
