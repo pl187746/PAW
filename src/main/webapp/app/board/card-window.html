@@ -1,6 +1,9 @@
 <div class="card-window">
     <div class="card-window-header">
         <h3 class="modal-title">{{card.name}}</h3>
+        <h5 ng-if="isDefined(completionDate.id)">
+           {{parsedDate()}}
+        </h5>
     </div>
 
     <div class="card-window-body">
@@ -98,7 +101,7 @@
                     <h3 translate="COMPLETION_DATE">Completion Date</h3>
 
                     <p class="input-group">
-                        <input type="text" class="form-control" datetime-picker="dd MMM yyyy HH:mm" ng-model="$parent.dateTime" is-open="datePickerOpenStatus.date"  />
+                        <input type="text" class="form-control" datetime-picker="{{DATE_FORMAT}}" ng-model="$parent.dateTime" is-open="datePickerOpenStatus.date"  />
                         <span class="input-group-btn">
                             <button type="button" class="btn btn-default" ng-click="openCalendar($event, prop)">
                                 <i class="fa fa-calendar"></i>

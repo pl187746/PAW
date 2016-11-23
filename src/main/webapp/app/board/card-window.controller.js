@@ -4,14 +4,16 @@ angular
     .module('trello')
     .controller('CardWindowController', CardWindowController);
 
-CardWindowController.$inject = ['$scope', '$http', '$uibModalInstance', 'entity', 'Comment', 'Upload', 'Subject'];
+CardWindowController.$inject = ['$scope', '$http', '$uibModalInstance', 'entity', 'Comment', 'Upload', 'Subject', 'uibDateParser'];
 
-function CardWindowController ($scope, $http, $uibModalInstance, entity, Comment, Upload, Subject) {
+function CardWindowController ($scope, $http, $uibModalInstance, entity, Comment, Upload, Subject, uibDateParser) {
     const VIEWS = {
         COMMENTS: 'COMMENTS',
         ATTACHMENTS: 'ATTACHMENTS',
         COMPLETION_DATE: 'COMPLETION_DATE'
     };
+
+    const DATE_FORMAT = 'dd MMM yyyy HH:mm';
 
     // Window
     $scope.close = close;
@@ -32,8 +34,10 @@ function CardWindowController ($scope, $http, $uibModalInstance, entity, Comment
     $scope.updateCompletionDate = updateCompletionDate;
     $scope.deleteCompletionDate = deleteCompletionDate;
     $scope.isDefined = isDefined;
+    $scope.parsedDate = parsedDate;
 
     $scope.VIEWS = VIEWS;
+    $scope.DATE_FORMAT = DATE_FORMAT;
     $scope.card = entity;
     $scope.commentContent = '';
     $scope.user = null;
@@ -183,7 +187,8 @@ function CardWindowController ($scope, $http, $uibModalInstance, entity, Comment
             .then(onSuccess)
             .catch(onError);
 
-        function onSuccess() {
+        function onSuccess(response) {
+            $scope.completionDate.date = response.data.date;
             console.log('Completion date has been updated in card with id ' + $scope.card.id);
         }
 
@@ -258,5 +263,9 @@ function CardWindowController ($scope, $http, $uibModalInstance, entity, Comment
 
     function initializeToolTips() {
         $("[data-toggle=tooltip]").tooltip();
+    }
+
+    function parsedDate() {
+        return moment($scope.completionDate.date).format('DD-MMM-YYYY  HH:mm');
     }
 }
