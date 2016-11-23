@@ -121,7 +121,15 @@
                     </div>
                 </div>
 
-                <div class="card-window-body-content"></div>
+                <div class="card-window-body-content">
+                    <div class="alert alert-success" ng-if="completionDateState.successMsg">
+                        <strong>{{completionDateState.successMsg}}</strong>
+                    </div>
+
+                    <div class="alert alert-danger" ng-if="completionDateState.errorMsg">
+                        <strong>{{completionDateState.errorMsg}}</strong>
+                    </div>
+                </div>
             </div>
         </div>
 

@@ -46,6 +46,7 @@ function CardWindowController ($scope, $http, $uibModalInstance, entity, Comment
     $scope.completionDate = null;
     $scope.dateTime = null;
     $scope.datePickerOpenStatus = {date: false, dateTime: false};
+    $scope.completionDateState = {};
 
     changeView(VIEWS.ATTACHMENTS);
 
@@ -165,6 +166,8 @@ function CardWindowController ($scope, $http, $uibModalInstance, entity, Comment
     }
 
     function addCompletionDate() {
+        resetErrorStates();
+
         $http.post('/cards/' + $scope.card.id + '/completion_date', {date: $scope.dateTime})
             .then(onSuccess)
             .catch(onError);
@@ -173,14 +176,18 @@ function CardWindowController ($scope, $http, $uibModalInstance, entity, Comment
             console.log('Completion date has been added to card with id ' + $scope.card.id);
             $scope.completionDate.id = response.data.id;
             hasChanged = true;
+            $scope.completionDateState.successMsg = 'Completion date has been added';
         }
 
         function onError() {
             console.log('Error while adding completion date to card with id ' + $scope.card.id);
+            $scope.completionDateState.errorMsg = 'Completion date couldn\'t be added';
         }
     }
 
     function updateCompletionDate() {
+        resetErrorStates();
+
         var data = {
             date: $scope.dateTime,
             completed: $scope.completionDate.completed,
@@ -195,14 +202,18 @@ function CardWindowController ($scope, $http, $uibModalInstance, entity, Comment
             $scope.completionDate.date = response.data.date;
             console.log('Completion date has been updated in card with id ' + $scope.card.id);
             hasChanged = true;
+            $scope.completionDateState.successMsg = 'Completion date has been updated';
         }
 
         function onError() {
             console.log('Error while updating completion date in card with id ' + $scope.card.id);
+            $scope.completionDateState.errorMsg = 'Completion date couldn\'t be updated';
         }
     }
 
     function deleteCompletionDate() {
+        resetErrorStates();
+
         $http.delete('/cards/' + $scope.card.id + '/completion_date')
             .then(onSuccess)
             .catch(onError);
@@ -211,10 +222,12 @@ function CardWindowController ($scope, $http, $uibModalInstance, entity, Comment
             console.log('Completion date has been deleted from card with id ' + $scope.card.id);
             $scope.completionDate.id = null;
             hasChanged = true;
+            $scope.completionDateState.successMsg = 'Completion date has been removed';
         }
 
         function onError() {
-            console.log('Error while deleting completion date from card with id ' + $scope.card.id);
+            console.log('Error` while deleting completion date from card with id ' + $scope.card.id);
+            $scope.completionDateState.errorMsg = 'Completion date couldn\'t be removed';
         }
     }
 
@@ -235,6 +248,13 @@ function CardWindowController ($scope, $http, $uibModalInstance, entity, Comment
             };
             $scope.dateTime = new Date();
         }
+    }
+
+    function resetErrorStates() {
+        $scope.completionDateState = {
+            successMsg : null,
+            errorMsg : null
+        };
     }
 
     function isDefined(value) {
