@@ -19,6 +19,9 @@
                     templateUrl: '/app/board/board.html',
                     controller: 'BoardController'
                 }
+            },
+            params: {
+                refresh: { dynamic: true}
             }
         })
         .state('board.card', {
@@ -38,8 +41,8 @@
                             return Card.get({id : $stateParams.cardId}).$promise;
                         }]
                     }
-                }).result.then(function() {
-                    $state.go('^');
+                }).result.then(function(result) {
+                    $state.go('^', {refresh: result});
                 }, function() {
                     $state.go('^');
                 });

@@ -54,9 +54,20 @@
         $scope.board = null;
         $scope.archList = [];
 
+        // Date
+		$scope.isDefined = isDefined;
+		$scope.parsedDate = parsedDate;
+
         loadBoard($stateParams.id);
 
 		loadUsers();
+
+		initializeToolTips();
+
+        if ($stateParams.refresh.hasChanged) {
+        	console.log('Card wit id ' + $stateParams.refresh.cardId + ' has to be refreshed');
+            refreshCard($stateParams.refresh.cardId);
+        }
 
 		function sortByOrd(arr) {
 			arr.sort(function(a, b) {
@@ -655,6 +666,45 @@
             return getCard(listIndex, cardIndex).comments;
         }
 
+        function refreshCard(refreshedCardId) {
+            Card.get({id: refreshedCardId}, onSuccess, onError);
+
+            function onSuccess(response) {;
+                var card = response;
+                var lists = getLists();
+                for (var listIndex = 0; listIndex < lists.length; listIndex++) {
+                    if (lists[listIndex].id !== card.listId) {
+                        continue;
+                    }
+
+                    var list = lists[listIndex];
+                    for (var cardIndex = 0; cardIndex < list.length; cardIndex++) {
+                        if (list[cardIndex].id !== card.id) {
+                            continue;
+                        }
+
+                        list[cardIndex].id = card;
+                        console.log('Card updated');
+                    }
+                }
+            }
+
+            function onError() {
+                console.log('Error while refreshing card with id ' + refreshedCardId);
+            }
+        }
+
+        function initializeToolTips() {
+            $("[data-toggle=tooltip]").tooltip();
+        }
+
+        function parsedDate(date) {
+            return moment(date).format('DD-MMM-YYYY  HH:mm');
+        }
+
+        function isDefined(value) {
+            return value !== undefined && value !== null;
+		}
     }
 })();
 

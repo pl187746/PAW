@@ -15,6 +15,8 @@ function CardWindowController ($scope, $http, $uibModalInstance, entity, Comment
 
     const DATE_FORMAT = 'dd MMM yyyy HH:mm';
 
+    var hasChanged = false;
+
     // Window
     $scope.close = close;
     $scope.changeView = changeView;
@@ -55,7 +57,8 @@ function CardWindowController ($scope, $http, $uibModalInstance, entity, Comment
     initializeCompletionDate();
 
     function close() {
-        $uibModalInstance.dismiss('cancel');
+        var result = {hasChanged: hasChanged, cardId: $scope.card.id};
+        $uibModalInstance.close(result);
     }
 
     function changeView(view) {
@@ -169,6 +172,7 @@ function CardWindowController ($scope, $http, $uibModalInstance, entity, Comment
         function onSuccess(response) {
             console.log('Completion date has been added to card with id ' + $scope.card.id);
             $scope.completionDate.id = response.data.id;
+            hasChanged = true;
         }
 
         function onError() {
@@ -190,6 +194,7 @@ function CardWindowController ($scope, $http, $uibModalInstance, entity, Comment
         function onSuccess(response) {
             $scope.completionDate.date = response.data.date;
             console.log('Completion date has been updated in card with id ' + $scope.card.id);
+            hasChanged = true;
         }
 
         function onError() {
@@ -205,6 +210,7 @@ function CardWindowController ($scope, $http, $uibModalInstance, entity, Comment
         function onSuccess() {
             console.log('Completion date has been deleted from card with id ' + $scope.card.id);
             $scope.completionDate.id = null;
+            hasChanged = true;
         }
 
         function onError() {
@@ -235,6 +241,10 @@ function CardWindowController ($scope, $http, $uibModalInstance, entity, Comment
         return value !== undefined && value !== null;
     }
 
+    function parsedDate() {
+        return moment($scope.completionDate.date).format('DD-MMM-YYYY  HH:mm');
+    }
+
     function initializeFileButtonBehaviour() {
         $(function() {
             $(document).on('change', ':file', function() {
@@ -261,11 +271,8 @@ function CardWindowController ($scope, $http, $uibModalInstance, entity, Comment
         });
     }
 
+
     function initializeToolTips() {
         $("[data-toggle=tooltip]").tooltip();
-    }
-
-    function parsedDate() {
-        return moment($scope.completionDate.date).format('DD-MMM-YYYY  HH:mm');
     }
 }

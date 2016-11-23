@@ -44,6 +44,7 @@ public class Card implements Serializable {
 
     @OneToOne(targetEntity = CompletionDate.class, orphanRemoval = true, cascade = CascadeType.ALL)
     @JoinColumn(name = "completion_id", referencedColumnName = "completion_id")
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private CompletionDate completionDate;
 
     public Card() { }
