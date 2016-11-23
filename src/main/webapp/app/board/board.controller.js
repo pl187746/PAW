@@ -50,9 +50,12 @@
 		$scope.fmtRecord = fmtRecord;
 		$scope.fmtDate = fmtDate;
 
+		$scope.createShareUrl = createShareUrl;
+
 		$scope.users = null;
         $scope.board = null;
         $scope.archList = [];
+        $scope.urlToShare = null;
 
         loadBoard($stateParams.id);
 
@@ -655,6 +658,12 @@
             return getCard(listIndex, cardIndex).comments;
         }
 
+        function createShareUrl() {
+			var id = $scope.board.id + 1234567890;
+			var number = (+id).toString(16);
+			$scope.urlToShare = 'localhost:8080/boards?share=' + number;
+			return $scope.urlToShare;
+        }
     }
 })();
 

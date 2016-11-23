@@ -33,7 +33,7 @@ public class BoardService {
     public List<Board> getBoards() {
     	return boardRepository.findAll();
     }
-    
+
     public List<Board> getBoards(Pageable pageable) {
     	return boardRepository.findAll(pageable).getContent();
     }
@@ -43,6 +43,11 @@ public class BoardService {
     			.ofNullable(boardRepository.findOne(boardId))
     			.orElseThrow(() -> new BoardNotFoundException(boardId));
     }
+
+	public Board findBoardByShareUrl(String shareLink) {
+		long id = Long.parseLong(shareLink,16) - 1234567890;
+		return findBoardById(id);
+	}
     
     public Board addBoard(Board board) {
     	board = boardRepository.save(board);
@@ -80,5 +85,4 @@ public class BoardService {
     public void deleteBoard(Long id) {
     	deleteBoard(findBoardById(id));
     }
-	
 }

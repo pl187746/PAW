@@ -8,11 +8,8 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.*;
 
 import pl.iis.paw.trello.domain.Board;
 import pl.iis.paw.trello.service.BoardService;
@@ -26,12 +23,16 @@ public class BoardController {
     public BoardController(BoardService boardService) {
         this.boardService = boardService;
     }
-	
+
 	@RequestMapping(value = "/boards", method = RequestMethod.GET)
-    public ResponseEntity<?> getBoards(Pageable pageable) {
-        return ResponseEntity.ok(boardService.getBoards(pageable));
+    public ResponseEntity<?> getBoards(Pageable pageable,@RequestParam(value = "share",required = false) String shareLink) {
+	    if(StringUtils.isEmpty(shareLink)){
+            return ResponseEntity.ok(boardService.getBoards(pageable));
+        } else {
+            return ResponseEntity.ok(boardService.findBoardByShareUrl(shareLink));
+        }
     }
-	
+
 	@RequestMapping(value = "/boards/{id}", method = RequestMethod.GET)
     public ResponseEntity<?> getBoard(@PathVariable(value = "id") Long boardId) {
         return ResponseEntity.ok(boardService.findBoardById(boardId));
