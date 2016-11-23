@@ -45,7 +45,8 @@
                             {{card.name}}
                         </span>
                         <span class="col-xs-1">
-                            <i class="fa fa-clock-o" aria-hidden="true" data-toggle="tooltip" ng-if="isDefined(card.completionDate)"
+                            <i class="fa fa-clock-o" aria-hidden="true" data-toggle="tooltip"
+                               ng-if="isDefined(card.completionDate) && !card.completionDate.finished"
                                title="{{parsedDate(card.completionDate.date)}}"></i>
                         </span>
                         <div class="clearfix"></div>
