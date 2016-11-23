@@ -114,8 +114,9 @@ public class CardService {
 		newDate.setCard(card);
 
 		card.setCompletionDate(newDate);
-		cardRepository.save(card);
+		card = cardRepository.save(card);
 
+		newDate.setId(card.getCompletionDate().getId());
 		return newDate;
 	}
 

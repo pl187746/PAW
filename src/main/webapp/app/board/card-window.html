@@ -97,19 +97,23 @@
                 <div class="card-window-body-info">
                     <h3 translate="COMPLETION_DATE">Completion Date</h3>
 
-                    <div class="input-group">
-                        <input type="text" class="form-control" name="completion_date" datetime-picker="{{DATE_FORMAT}}"
-                               ng-model="$parent.completionDate.date" saveAs="xD" is-open="datePickerOpenStatus.date" ng-readonly="true"/>
+                    <p class="input-group">
+                        <input type="text" class="form-control" datetime-picker="dd MMM yyyy HH:mm" ng-model="$parent.dateTime" is-open="datePickerOpenStatus.date"  />
                         <span class="input-group-btn">
-                            <button type="button" class="btn btn-default" ng-click="openCalendar('dateTime')">
-                                <i class="glyphicon glyphicon-calendar"></i>
+                            <button type="button" class="btn btn-default" ng-click="openCalendar($event, prop)">
+                                <i class="fa fa-calendar"></i>
                             </button>
                         </span>
-                    </div>
+                    </p>
 
                     <div class="input-group" style="margin-top: 10px;">
-                        <button class="btn btn-success" ng-if="completionDate.date !== card.completionDate">Save</button>
-                        <button class="btn btn-danger" ng-if="card.completionDate !== null" style="margin-left: 10px;">Delete</button>
+                        <button class="btn btn-success" ng-if="isDefined(completionDate.id)" ng-click="changeCompletionDate()">
+                            Update
+                        </button>
+                        <button class="btn btn-success" ng-if="!isDefined(completionDate.id)" ng-click="addCompletionDate()">
+                            Add
+                        </button>
+                        <button class="btn btn-danger" ng-if="completionDate !== null" style="margin-left: 10px;">Delete</button>
                     </div>
                 </div>
 

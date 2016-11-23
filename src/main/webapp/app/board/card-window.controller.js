@@ -12,9 +12,7 @@ function CardWindowController ($scope, $http, $uibModalInstance, entity, Comment
         ATTACHMENTS: 'ATTACHMENTS',
         COMPLETION_DATE: 'COMPLETION_DATE'
     };
-    
-    $scope.DATE_FORMAT = 'yyyy-MM-dd hh:mm';
-    
+
     // Window
     $scope.close = close;
     $scope.changeView = changeView;
@@ -30,12 +28,16 @@ function CardWindowController ($scope, $http, $uibModalInstance, entity, Comment
     
     // Completion Date
     $scope.openCalendar = openCalendar;
+    $scope.addCompletionDate = addCompletionDate;
+    $scope.changeCompletionDate = changeCompletionDate;
+    $scope.isDefined = isDefined;
 
     $scope.VIEWS = VIEWS;
     $scope.card = entity;
     $scope.commentContent = '';
     $scope.user = null;
-    $scope.completionDate = entity.completionDate;
+    $scope.completionDate = null;
+    $scope.dateTime = null;
     $scope.datePickerOpenStatus = {date: false, dateTime: false};
 
     changeView(VIEWS.ATTACHMENTS);
@@ -44,6 +46,8 @@ function CardWindowController ($scope, $http, $uibModalInstance, entity, Comment
     initializeToolTips();
 
     getAccount();
+
+    initializeCompletionDate();
 
     function close() {
         $uibModalInstance.dismiss('cancel');
@@ -150,6 +154,64 @@ function CardWindowController ($scope, $http, $uibModalInstance, entity, Comment
 
     function openCalendar() {
         $scope.datePickerOpenStatus.date = true;
+    }
+
+    function addCompletionDate() {
+        $http.post('/cards/' + $scope.card.id + '/completion_date', {date: $scope.dateTime})
+            .then(onSuccess)
+            .catch(onError);
+
+        function onSuccess(response) {
+            console.log('Completion date has been added to card with id ' + $scope.card.id);
+            $scope.completionDate.id = response.data.id;
+        }
+
+        function onError() {
+            console.log('Error while adding completion date to card with id ' + $scope.card.id);
+        }
+    }
+
+    function changeCompletionDate() {
+        var data = {
+            date: $scope.dateTime,
+            completed: $scope.completionDate.completed,
+            id: $scope.completionDate.id
+        };
+
+        $http.put('/cards/' + $scope.card.id + '/completion_date', data)
+            .then(onSuccess)
+            .catch(onError);
+
+        function onSuccess() {
+            console.log('Completion date has been updated in card with id ' + $scope.card.id);
+        }
+
+        function onError() {
+            console.log('Error while updating completion date in card with id ' + $scope.card.id);
+        }
+    }
+
+    function initializeCompletionDate() {
+        var cDate = $scope.card.completionDate;
+
+        if (isDefined(cDate)) {
+            $scope.completionDate = {
+                id: cDate.id,
+                cardId : cDate.cardId,
+                completed: cDate.completed
+            };
+            $scope.dateTime = new Date(cDate.date);
+        } else {
+            $scope.completionDate = {
+                cardId: $scope.card.id,
+                completed: false
+            };
+            $scope.dateTime = new Date();
+        }
+    }
+
+    function isDefined(value) {
+        return value !== undefined && value !== null;
     }
 
     function initializeFileButtonBehaviour() {

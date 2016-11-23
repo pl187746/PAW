@@ -16,7 +16,7 @@ public class CompletionDate {
     @Column(name = "completion_id")
     private Long id;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, timezone = "UTC", pattern = "yyyy-MM-dd HH:mm")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, timezone = "UTC")
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "date")
     private Date date;
