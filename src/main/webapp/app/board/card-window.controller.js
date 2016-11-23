@@ -4,9 +4,9 @@ angular
     .module('trello')
     .controller('CardWindowController', CardWindowController);
 
-CardWindowController.$inject = ['$scope', '$http', '$uibModalInstance', 'entity', 'Comment', 'Upload', 'Subject', 'uibDateParser'];
+CardWindowController.$inject = ['$scope', '$http', '$uibModalInstance', 'entity', 'Comment', 'Upload', 'Subject', 'uibDateParser', '$filter'];
 
-function CardWindowController ($scope, $http, $uibModalInstance, entity, Comment, Upload, Subject, uibDateParser) {
+function CardWindowController ($scope, $http, $uibModalInstance, entity, Comment, Upload, Subject, uibDateParser, $filter) {
     const VIEWS = {
         COMMENTS: 'COMMENTS',
         ATTACHMENTS: 'ATTACHMENTS',
@@ -15,6 +15,7 @@ function CardWindowController ($scope, $http, $uibModalInstance, entity, Comment
 
     const DATE_FORMAT = 'dd MMM yyyy HH:mm';
 
+    var $translate = $filter('translate');
     var hasChanged = false;
 
     // Window
@@ -183,12 +184,12 @@ function CardWindowController ($scope, $http, $uibModalInstance, entity, Comment
             console.log('Completion date has been added to card with id ' + $scope.card.id);
             $scope.completionDate.id = response.data.id;
             hasChanged = true;
-            $scope.completionDateState.successMsg = 'Completion date has been added';
+            $scope.completionDateState.successMsg = $translate('COMPLETION_DATE_ADD_SUCCESS');
         }
 
         function onError() {
             console.log('Error while adding completion date to card with id ' + $scope.card.id);
-            $scope.completionDateState.errorMsg = 'Completion date couldn\'t be added';
+            $scope.completionDateState.errorMsg = $translate('COMPLETION_DATE_ADD_ERROR');
         }
     }
 
@@ -201,8 +202,6 @@ function CardWindowController ($scope, $http, $uibModalInstance, entity, Comment
             id: $scope.completionDate.id
         };
 
-        console.log($scope.finished + '<<');
-
         $http.put('/cards/' + $scope.card.id + '/completion_date', data)
             .then(onSuccess)
             .catch(onError);
@@ -213,12 +212,12 @@ function CardWindowController ($scope, $http, $uibModalInstance, entity, Comment
             $scope.completionDate.date = response.data.date;
             $scope.completionDate.finished = response.data.finished;
             hasChanged = true;
-            $scope.completionDateState.successMsg = 'Completion date has been updated';
+            $scope.completionDateState.successMsg = $translate('COMPLETION_DATE_UPDATE_SUCCESS');
         }
 
         function onError() {
             console.log('Error while updating completion date in card with id ' + $scope.card.id);
-            $scope.completionDateState.errorMsg = 'Completion date couldn\'t be updated';
+            $scope.completionDateState.errorMsg = $translate('COMPLETION_DATE_UPDATE_ERROR');
         }
     }
 
@@ -234,13 +233,13 @@ function CardWindowController ($scope, $http, $uibModalInstance, entity, Comment
             $scope.completionDate.id = null;
             $scope.completionDate.finished = false;
             $scope.finished = false;
-            $scope.completionDateState.successMsg = 'Completion date has been removed';
+            $scope.completionDateState.successMsg = $translate('COMPLETION_DATE_DELETE_SUCCESS');
             hasChanged = true;
         }
 
         function onError() {
             console.log('Error` while deleting completion date from card with id ' + $scope.card.id);
-            $scope.completionDateState.errorMsg = 'Completion date couldn\'t be removed';
+            $scope.completionDateState.errorMsg = $translate('COMPLETION_DATE_DELETE_ERROR');
         }
     }
 

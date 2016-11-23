@@ -50,7 +50,17 @@
             ADD_MEMBER: 'Add member',
             LIKE: 'Like',
             UNLIKE: 'Unlike',
-            COMPLETION_DATE: 'Completion Date'
+            COMPLETION_DATE: 'Completion Date',
+            ADD: 'Add',
+            UPDATE: 'Update',
+            DELETE: 'Delete',
+            FINISHED: 'Finished',
+            COMPLETION_DATE_ADD_SUCCESS: 'Completion date has been added',
+            COMPLETION_DATE_ADD_ERROR: 'Completion date couldn\'t be added',
+            COMPLETION_DATE_UPDATE_SUCCESS: 'Completion date has been updated',
+            COMPLETION_DATE_UPDATE_ERROR: 'Completion date couldn\'t be updated',
+            COMPLETION_DATE_DELETE_SUCCESS: 'Completion date has been removed',
+            COMPLETION_DATE_DELETE_ERROR: 'Completion date couldn\'t be removed'
         });
         $translateProvider.translations('pl', {
             BOARD_SEARCH: 'Tablice',
@@ -85,7 +95,17 @@
             ADD_MEMBER: 'Dodaj członka',
             LIKE: 'Lubię',
             UNLIKE: 'Nie lubię',
-            COMPLETION_DATE: 'Terminarz'
+            COMPLETION_DATE: 'Terminarz',
+            ADD: 'Dodaj',
+            UPDATE: 'Aktualizuj',
+            DELETE: 'Usuń',
+            FINISHED: 'Zakończone',
+            COMPLETION_DATE_ADD_SUCCESS: 'Nowa data ukończenia zadania została dodana',
+            COMPLETION_DATE_ADD_ERROR: 'Nowa data ukończenia zadania nie mogła zostać dodana',
+            COMPLETION_DATE_UPDATE_SUCCESS: 'Data ukończenia zadania została zaaktualizowana',
+            COMPLETION_DATE_UPDATE_ERROR: 'Data ukończenia zadania nie mogła zostać zaaktualizowana',
+            COMPLETION_DATE_DELETE_SUCCESS: 'Data ukończenia zadania została usunięta',
+            COMPLETION_DATE_DELETE_ERROR: 'Data ukończenia zadania nie mogła zostać usunięta',
         });
         $translateProvider.preferredLanguage('en');
 

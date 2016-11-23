@@ -111,16 +111,13 @@
                     </p>
 
                     <div class="input-group" style="margin-top: 10px;" ng-switch="isDefined(completionDate.id)">
-                        <button class="btn btn-success" ng-switch-when="true" ng-click="updateCompletionDate()">
-                            Update
-                        </button>
-                        <button class="btn btn-success" ng-switch-when="false" ng-click="addCompletionDate()">
-                            Add
-                        </button>
-                        <button class="btn btn-danger" ng-switch-when="true" ng-click="deleteCompletionDate()"
-                                style="margin-left: 10px;">Delete</button>
+                        <button translate="UPDATE"class="btn btn-success" ng-switch-when="true" ng-click="updateCompletionDate()"></button>
+                        <button translate="ADD"class="btn btn-success" ng-switch-when="false" ng-click="addCompletionDate()"></button>
+                        <button translate="DELETE"class="btn btn-danger" ng-switch-when="true" ng-click="deleteCompletionDate()"
+                                style="margin-left: 10px;"></button>
                         <span class="checkbox-inline" style="margin-left: 20px;" ng-if="isDefined(completionDate.id)">
-                            <input type="checkbox" ng-model="$parent.$parent.finished">   Finished
+                            <input type="checkbox" ng-model="$parent.$parent.finished">
+                            <i translate="FINISHED"></i>
                         </span>
                     </div>
                 </div>
