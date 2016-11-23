@@ -51,10 +51,10 @@
 	</div>
 	<h2 translate="MEMBERS_DROPDOWN">Users</h2>
 	<div class="center-block text-center col-md-12">
-		<span ng-repeat="user in team.users">
+		<div ng-repeat="user in team.users" class="team-member">
 			<span>{{user.login}}</span>
 			<button ng-click="removeTeamMember(team, user)" class="btn btn-danger"><i class="fa fa-remove" aria-hidden="true"></i></button>
-		</span>
+		</div>
 		<div class="dropdown inline-menu">
 			<button class="btn btn-default" data-toggle="dropdown" role="button">
 				<span translate="ADD_MEMBER">Add Member</span>

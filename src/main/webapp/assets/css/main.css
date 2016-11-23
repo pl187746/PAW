@@ -382,6 +382,14 @@ body {
     background-color: #dbe0e7;
 }
 
+.team-member {
+	display: inline-block;
+	margin-right: 5px;
+	border-radius: 5px;
+	background-color: white;
+	padding: 1px;
+}
+
 .inline-menu {
 	display: inline-block;
 }
