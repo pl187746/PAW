@@ -46,6 +46,7 @@ function CardWindowController ($scope, $http, $uibModalInstance, entity, Comment
     $scope.user = null;
     $scope.completionDate = null;
     $scope.dateTime = null;
+    $scope.finished = false;
     $scope.datePickerOpenStatus = {date: false, dateTime: false};
     $scope.completionDateState = {};
 
@@ -171,7 +172,7 @@ function CardWindowController ($scope, $http, $uibModalInstance, entity, Comment
 
         var data = {
             date: $scope.dateTime,
-            finished: $scope.completionDate.finished
+            finished: $scope.finished
         };
 
         $http.post('/cards/' + $scope.card.id + '/completion_date', data)
@@ -196,17 +197,21 @@ function CardWindowController ($scope, $http, $uibModalInstance, entity, Comment
 
         var data = {
             date: $scope.dateTime,
-            finished: $scope.completionDate.finished,
+            finished: $scope.finished,
             id: $scope.completionDate.id
         };
+
+        console.log($scope.finished + '<<');
 
         $http.put('/cards/' + $scope.card.id + '/completion_date', data)
             .then(onSuccess)
             .catch(onError);
 
         function onSuccess(response) {
-            $scope.completionDate.date = response.data.date;
             console.log('Completion date has been updated in card with id ' + $scope.card.id);
+            console.log(response);
+            $scope.completionDate.date = response.data.date;
+            $scope.completionDate.finished = response.data.finished;
             hasChanged = true;
             $scope.completionDateState.successMsg = 'Completion date has been updated';
         }
@@ -228,6 +233,7 @@ function CardWindowController ($scope, $http, $uibModalInstance, entity, Comment
             console.log('Completion date has been deleted from card with id ' + $scope.card.id);
             $scope.completionDate.id = null;
             $scope.completionDate.finished = false;
+            $scope.finished = false;
             $scope.completionDateState.successMsg = 'Completion date has been removed';
             hasChanged = true;
         }
@@ -248,12 +254,14 @@ function CardWindowController ($scope, $http, $uibModalInstance, entity, Comment
                 finished: cDate.finished
             };
             $scope.dateTime = new Date(cDate.date);
+            $scope.finished = cDate.finished;
         } else {
             $scope.completionDate = {
                 cardId: $scope.card.id,
                 finished: false
             };
             $scope.dateTime = new Date();
+            $scope.finished = false;
         }
     }
 
