@@ -60,9 +60,9 @@
 				<span translate="ADD_MEMBER">Add Member</span>
 				<span class="caret"></span>
 			</button>
-			<ul class="dropdown-menu">
+			<ul class="dropdown-menu members-menu">
 				<li ng-repeat="user in usersThatArentMembersOf(team)">
-					<span>{{user.login}}</span>
+					<button class="btn btn-default members-button-item">{{user.login}}</button>
 					<button type="button" class="btn btn-success" ng-click="addTeamMember(team, user)"><i class="fa fa-plus" aria-hidden="true"></i></button>
 				</li>
 			</ul>
