@@ -130,7 +130,7 @@
         }
 
 		function addTeam() {
-            Team.save( {name : 'Empty'}, onSuccess, onError);
+            Team.save( {name: 'Empty', users: [ getUser() ]}, onSuccess, onError);
 
             function onSuccess(response) {
                 $scope.teams.push(response);
