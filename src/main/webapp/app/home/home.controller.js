@@ -55,7 +55,7 @@
         }
 
         function addBoard(team) {
-			var board = { name: 'Empty' };
+			var board = { name: 'Empty', members: [ getUser() ] };
 			if(team !== null) {
 				board.teamId = team.id;
 			}
@@ -130,7 +130,7 @@
         }
 
 		function addTeam() {
-            Team.save( {name : 'Empty'}, onSuccess, onError);
+            Team.save( {name: 'Empty', users: [ getUser() ]}, onSuccess, onError);
 
             function onSuccess(response) {
                 $scope.teams.push(response);
