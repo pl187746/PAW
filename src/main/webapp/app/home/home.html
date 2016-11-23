@@ -1,7 +1,7 @@
 <div class="well container text-center center-block">
     <h2 translate="BOARD_SEARCH">Boards</h2>
     <div class="center-block text-center col-md-12">
-        <div ng-repeat="board in boards | filter:isBoardNotTeamed" class="col-md-3 board-sign">
+        <div ng-repeat="board in boards | filter:isBoardNotTeamedAndIsCurrentUserMemberOfBoard" class="col-md-3 board-sign">
             <div class="board-sign">
                 <a ng-show="!boardInput" ng-click="boardInput = true" href="" class="board-input">
                     <h5 class="board-sign-title">{{board.name}}</h5>

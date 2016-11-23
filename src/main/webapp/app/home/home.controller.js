@@ -28,6 +28,7 @@
 		$scope.isBoardNotTeamed = isBoardNotTeamed;
 		$scope.isCurrentUserMemberOfTeam = isCurrentUserMemberOfTeam;
 		$scope.isCurrentUserMemberOfBoard = isCurrentUserMemberOfBoard;
+		$scope.isBoardNotTeamedAndIsCurrentUserMemberOfBoard = isBoardNotTeamedAndIsCurrentUserMemberOfBoard;
 		$scope.isAuthenticated = isAuthenticated;
 		$scope.isUserLikingBoard = isUserLikingBoard;
 		$scope.likeBoard = likeBoard;
@@ -274,6 +275,10 @@
 			if(!isAuthenticated())
 				return false;
 			return isUserABoardMember(board, getUser());
+		}
+
+		function isBoardNotTeamedAndIsCurrentUserMemberOfBoard(board) {
+			return isBoardNotTeamed(board) && isCurrentUserMemberOfBoard(board);
 		}
 
 		function getUser() {
