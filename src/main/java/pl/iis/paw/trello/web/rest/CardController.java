@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import pl.iis.paw.trello.domain.Attachment;
 import pl.iis.paw.trello.domain.Card;
 import pl.iis.paw.trello.domain.CardList;
+import pl.iis.paw.trello.domain.CompletionDate;
 import pl.iis.paw.trello.service.AttachmentService;
 import pl.iis.paw.trello.service.CardListService;
 import pl.iis.paw.trello.service.CardService;
@@ -107,5 +108,29 @@ public class CardController {
             .ok()
             .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"")
             .body(file);
+    }
+
+    @RequestMapping(value = "/cards/{cardId}/completion_date", method = RequestMethod.POST)
+    public ResponseEntity<?> addCompletionDateToCard(@PathVariable Long cardId, @RequestBody CompletionDate completionDate) {
+        CompletionDate createdCompletionDate = cardService.createCardCompletionDate(cardId, completionDate);
+        return ResponseEntity.ok(createdCompletionDate);
+    }
+
+    @RequestMapping(value = "/cards/{cardId}/completion_date", method = RequestMethod.PUT)
+    public ResponseEntity<?> updateCardCompletionDate(@PathVariable Long cardId, @RequestBody CompletionDate completionDate) {
+        CompletionDate updatedCompletionDate = cardService.updateCardCompletionDate(cardId, completionDate);
+        return ResponseEntity.ok(updatedCompletionDate);
+    }
+
+    @RequestMapping(value = "/cards/{cardId}/completion_date", method = RequestMethod.DELETE)
+    public ResponseEntity<?> deleteCompletionDateFromCard(@PathVariable Long cardId) {
+        cardService.deleteCardCompletionDate(cardId);
+        return ResponseEntity.ok().build();
+    }
+
+    @RequestMapping(value = "/cards/{cardId}/completion_date", method = RequestMethod.GET)
+    public ResponseEntity<?> getCompletionDateFromCard(@PathVariable Long cardId) {
+        CompletionDate completionDate = cardService.findCardById(cardId).getCompletionDate();
+        return ResponseEntity.ok(completionDate);
     }
 }
