@@ -4,13 +4,19 @@ angular
     .module('trello')
     .controller('CardWindowController', CardWindowController);
 
-CardWindowController.$inject = ['$scope', '$http', '$uibModalInstance', 'entity', 'Comment', 'Upload', 'Subject'];
+CardWindowController.$inject = ['$scope', '$http', '$uibModalInstance', 'entity', 'Comment', 'Upload', 'Subject', 'uibDateParser', '$filter'];
 
-function CardWindowController ($scope, $http, $uibModalInstance, entity, Comment, Upload, Subject) {
+function CardWindowController ($scope, $http, $uibModalInstance, entity, Comment, Upload, Subject, uibDateParser, $filter) {
     const VIEWS = {
         COMMENTS: 'COMMENTS',
-        ATTACHMENTS: 'ATTACHMENTS'
+        ATTACHMENTS: 'ATTACHMENTS',
+        COMPLETION_DATE: 'COMPLETION_DATE'
     };
+
+    const DATE_FORMAT = 'dd MMM yyyy HH:mm';
+
+    var $translate = $filter('translate');
+    var hasChanged = false;
 
     // Window
     $scope.close = close;
@@ -24,12 +30,26 @@ function CardWindowController ($scope, $http, $uibModalInstance, entity, Comment
     // Attachments
     $scope.submit = submit;
     $scope.removeAttachment = removeAttachment;
+    
+    // Completion Date
+    $scope.openCalendar = openCalendar;
+    $scope.addCompletionDate = addCompletionDate;
+    $scope.updateCompletionDate = updateCompletionDate;
+    $scope.deleteCompletionDate = deleteCompletionDate;
+    $scope.isDefined = isDefined;
+    $scope.parsedDate = parsedDate;
+    $scope.timeTaskLeft = timeTaskLeft;
 
     $scope.VIEWS = VIEWS;
+    $scope.DATE_FORMAT = DATE_FORMAT;
     $scope.card = entity;
     $scope.commentContent = '';
     $scope.user = null;
-    $scope.date;
+    $scope.completionDate = null;
+    $scope.dateTime = null;
+    $scope.finished = false;
+    $scope.datePickerOpenStatus = {date: false, dateTime: false};
+    $scope.completionDateState = {};
 
     changeView(VIEWS.ATTACHMENTS);
 
@@ -38,8 +58,11 @@ function CardWindowController ($scope, $http, $uibModalInstance, entity, Comment
 
     getAccount();
 
+    initializeCompletionDate();
+
     function close() {
-        $uibModalInstance.dismiss('cancel');
+        var result = {hasChanged: hasChanged, cardId: $scope.card.id};
+        $uibModalInstance.close(result);
     }
 
     function changeView(view) {
@@ -141,6 +164,129 @@ function CardWindowController ($scope, $http, $uibModalInstance, entity, Comment
         });
     }
 
+    function openCalendar() {
+        $scope.datePickerOpenStatus.date = true;
+    }
+
+    function addCompletionDate() {
+        resetErrorStates();
+
+        var data = {
+            date: $scope.dateTime,
+            finished: $scope.finished
+        };
+
+        $http.post('/cards/' + $scope.card.id + '/completion_date', data)
+            .then(onSuccess)
+            .catch(onError);
+
+        function onSuccess(response) {
+            console.log('Completion date has been added to card with id ' + $scope.card.id);
+            $scope.completionDate.id = response.data.id;
+            hasChanged = true;
+            $scope.completionDateState.successMsg = $translate('COMPLETION_DATE_ADD_SUCCESS');
+        }
+
+        function onError() {
+            console.log('Error while adding completion date to card with id ' + $scope.card.id);
+            $scope.completionDateState.errorMsg = $translate('COMPLETION_DATE_ADD_ERROR');
+        }
+    }
+
+    function updateCompletionDate() {
+        resetErrorStates();
+
+        var data = {
+            date: $scope.dateTime,
+            finished: $scope.finished,
+            id: $scope.completionDate.id
+        };
+
+        $http.put('/cards/' + $scope.card.id + '/completion_date', data)
+            .then(onSuccess)
+            .catch(onError);
+
+        function onSuccess(response) {
+            console.log('Completion date has been updated in card with id ' + $scope.card.id);
+            console.log(response);
+            $scope.completionDate.date = response.data.date;
+            $scope.completionDate.finished = response.data.finished;
+            hasChanged = true;
+            $scope.completionDateState.successMsg = $translate('COMPLETION_DATE_UPDATE_SUCCESS');
+        }
+
+        function onError() {
+            console.log('Error while updating completion date in card with id ' + $scope.card.id);
+            $scope.completionDateState.errorMsg = $translate('COMPLETION_DATE_UPDATE_ERROR');
+        }
+    }
+
+    function deleteCompletionDate() {
+        resetErrorStates();
+
+        $http.delete('/cards/' + $scope.card.id + '/completion_date')
+            .then(onSuccess)
+            .catch(onError);
+
+        function onSuccess() {
+            console.log('Completion date has been deleted from card with id ' + $scope.card.id);
+            $scope.completionDate.id = null;
+            $scope.completionDate.finished = false;
+            $scope.finished = false;
+            $scope.completionDateState.successMsg = $translate('COMPLETION_DATE_DELETE_SUCCESS');
+            hasChanged = true;
+        }
+
+        function onError() {
+            console.log('Error` while deleting completion date from card with id ' + $scope.card.id);
+            $scope.completionDateState.errorMsg = $translate('COMPLETION_DATE_DELETE_ERROR');
+        }
+    }
+
+    function initializeCompletionDate() {
+        var cDate = $scope.card.completionDate;
+
+        if (isDefined(cDate)) {
+            $scope.completionDate = {
+                id: cDate.id,
+                cardId : cDate.cardId,
+                finished: cDate.finished
+            };
+            $scope.dateTime = new Date(cDate.date);
+            $scope.finished = cDate.finished;
+        } else {
+            $scope.completionDate = {
+                cardId: $scope.card.id,
+                finished: false
+            };
+            $scope.dateTime = new Date();
+            $scope.finished = false;
+        }
+    }
+
+    function resetErrorStates() {
+        $scope.completionDateState = {
+            successMsg : null,
+            errorMsg : null
+        };
+    }
+
+    function isDefined(value) {
+        return value !== undefined && value !== null;
+    }
+
+    function parsedDate() {
+        return moment($scope.completionDate.date).format('DD-MMM-YYYY  HH:mm');
+    }
+
+    function timeTaskLeft() {
+        if (isDefined($scope.completionDate.id)) {
+            return Date.now() - moment($scope.completionDate.date).toDate().getTime();
+        }
+
+        return 0;
+    }
+
     function initializeFileButtonBehaviour() {
         $(function() {
             $(document).on('change', ':file', function() {
@@ -166,6 +312,7 @@ function CardWindowController ($scope, $http, $uibModalInstance, entity, Comment
             });
         });
     }
+
 
     function initializeToolTips() {
         $("[data-toggle=tooltip]").tooltip();

@@ -1,6 +1,10 @@
 <div class="card-window">
     <div class="card-window-header">
         <h3 class="modal-title">{{card.name}}</h3>
+        <h5 ng-if="isDefined(completionDate.id)"
+            ng-class="completionDate.finished? 'time-task-done' : timeTaskLeft() > 0? 'time-task-late' : 'time-task-ok'">
+           {{parsedDate()}}
+        </h5>
     </div>
 
     <div class="card-window-body">
@@ -8,10 +12,10 @@
             <!--Comments-->
             <div ng-if="view === VIEWS.COMMENTS">
                 <div class="card-window-body-info">
-                    <h3>Comments</h3>
+                    <h3 translate="CARD_COMMENTS">Comments</h3>
 
                     <textarea ng-model="$parent.commentContent"></textarea>
-                    <button ng-click="addComment(commentContent)" class="btn btn-success">Add Comment</button>
+                    <button ng-click="addComment(commentContent)" class="btn btn-success" translate="ADD_COMMENT">Add Comment</button>
                 </div>
 
                 <ul class="card-window-body-content">
@@ -51,20 +55,20 @@
             <!--Attachments-->
             <div ng-if="view === VIEWS.ATTACHMENTS">
                 <div class="card-window-body-info">
-                    <h3>Attachments</h3>
+                    <h3 translate="ATTACHMENTS">Attachments</h3>
 
                     <form name="form" ng-submit="submit(file)">
                         <div class="input-group">
                             <label class="input-group-btn">
                                 <span class="btn btn-primary">
-                                    Browse&hellip; <input type="file" ngf-select style="display: none;" ng-model="$parent.file">
+                                    <span translate="BROWSE">Browse&hellip;</span> <input type="file" ngf-select style="display: none;" ng-model="$parent.file">
                                 </span>
                             </label>
 
                             <input type="text" class="form-control" readonly>
                         </div>
 
-                        <button style="margin-top: 20px;" class="btn btn-info" type="submit">
+                        <button style="margin-top: 20px;" class="btn btn-info" type="submit" translate="UPLOAD">
                             <i class="fa fa-send"></i>  Upload
                         </button>
                     </form>
@@ -91,11 +95,52 @@
                     </li>
                 </ul>
             </div>
+
+            <!-- COMPLETION DATE -->
+            <div ng-if="view === VIEWS.COMPLETION_DATE">
+                <div class="card-window-body-info">
+                    <h3 translate="COMPLETION_DATE">Completion Date</h3>
+
+                    <p class="input-group">
+                        <input type="text" class="form-control" datetime-picker="{{DATE_FORMAT}}" ng-model="$parent.dateTime" is-open="datePickerOpenStatus.date"  />
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn-default" ng-click="openCalendar($event, prop)">
+                                <i class="fa fa-calendar"></i>
+                            </button>
+                        </span>
+                    </p>
+
+                    <div class="input-group" style="margin-top: 10px;" ng-switch="isDefined(completionDate.id)">
+                        <button translate="UPDATE"class="btn btn-success" ng-switch-when="true" ng-click="updateCompletionDate()"></button>
+                        <button translate="ADD"class="btn btn-success" ng-switch-when="false" ng-click="addCompletionDate()"></button>
+                        <button translate="DELETE"class="btn btn-danger" ng-switch-when="true" ng-click="deleteCompletionDate()"
+                                style="margin-left: 10px;"></button>
+                        <span class="checkbox-inline" style="margin-left: 20px;" ng-if="isDefined(completionDate.id)">
+                            <input type="checkbox" ng-model="$parent.$parent.finished">
+                            <i translate="FINISHED"></i>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="card-window-body-content">
+                    <div class="alert alert-success" ng-if="completionDateState.successMsg">
+                        <strong>{{completionDateState.successMsg}}</strong>
+                    </div>
+
+                    <div class="alert alert-danger" ng-if="completionDateState.errorMsg">
+                        <strong>{{completionDateState.errorMsg}}</strong>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div class="col-xs-4 text-center">
-            <button class="btn btn-default card-window-nav-button" ng-click="changeView(VIEWS.ATTACHMENTS)">Attachments</button>
-            <button class="btn btn-default card-window-nav-button" ng-click="changeView(VIEWS.COMMENTS)">Comments</button>
+            <button class="btn btn-default card-window-nav-button" ng-click="changeView(VIEWS.ATTACHMENTS)"
+                    translate="ATTACHMENTS">Attachments</button>
+            <button class="btn btn-default card-window-nav-button" ng-click="changeView(VIEWS.COMMENTS)"
+                    translate="CARD_COMMENTS">Comments</button>
+            <button class="btn btn-default card-window-nav-button" ng-click="changeView(VIEWS.COMPLETION_DATE)"
+                    translate="COMPLETION_DATE">Completion Date</button>
         </div>
     </div>
 

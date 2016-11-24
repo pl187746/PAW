@@ -1,13 +1,13 @@
 <div class="row">
     <div class="col-md-4 col-md-offset-4 login-block">
-        <h1 class="text-center">Log in</h1>
+        <h1 class="text-center" translate="LOG_IN">Log in</h1>
 
         <div class="alert alert-danger" ng-show="authenticationError">
-            <strong>Failed to sign in!</strong> Please check your credentials and try again.
+            <strong translate="LOGGED_IN_FAILED">Failed to sign in!</strong> <span translate="CHECK_CREDENTIALS">Please check your credentials and try again.</span>
         </div>
 
         <div class="alert alert-success" ng-show="authenticationSuccess">
-            <strong>Logged in successfully</strong>
+            <strong translate="LOGGED_IN_SUCCESS">Logged in successfully</strong>
         </div>
 
         <form role="form" ng-submit="login()">
@@ -18,21 +18,21 @@
             </div>
 
             <div id="password-group" class="form-group">
-                <label>Password</label>
+                <label translate="PASSWORD">Password</label>
                 <input type="password" name="password" class="form-control" placeholder="Password" ng-model="credentials.password">
                 <span class="help-block"></span>
             </div>
 
             <div id="remember-me-group" class="form-group">
                 <label><input type="checkbox" name="remember-me" value="true" ng-model="credentials.rememberMe">
-                    Remember me</label>
+                    <span translate="REMEMBER_ME">Remember me</span></label>
             </div>
 
-            <button type="submit" class="btn btn-success btn-lg btn-block">Log in!</button>
+            <button type="submit" class="btn btn-success btn-lg btn-block" translate="SIGN_IN">Log in!</button>
         </form>
 
         <div class="alert alert-link">
-            Don't have account yet? <a href="" ui-sref="register">Register</a>
+            <span translate="DOESNT_HAVE_ACCOUNT">Don't have account yet? </span> <a href="" ui-sref="register" translate="REGISTER">Register</a>
         </div>
     </div>
 </div>
