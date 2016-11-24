@@ -10,7 +10,7 @@
     function stateConfig($stateProvider) {
         $stateProvider.state('board', {
             parent: 'app',
-            url: '/board/{id}',
+            url: '/board/{id}?share={shareId}',
             data: {
                 pageTitle: 'Board'
             },

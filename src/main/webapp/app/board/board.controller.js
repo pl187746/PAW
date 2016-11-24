@@ -5,9 +5,9 @@
         .module('trello')
         .controller('BoardController', BoardController);
 
-    BoardController.$inject = ['$rootScope', '$scope', '$stateParams', 'Board', 'Card', 'List', 'User', 'Label', 'Record', 'Comment'];
+    BoardController.$inject = ['$rootScope', '$http', '$scope', '$stateParams', 'Board', 'Card', 'List', 'User', 'Label', 'Record', 'Comment'];
 
-    function BoardController ($rootScope, $scope, $stateParams, Board, Card, List, User, Label, Record, Comment) {
+    function BoardController ($rootScope, $http, $scope, $stateParams, Board, Card, List, User, Label, Record, Comment) {
         // Cards
         $scope.updateCard = updateCard;
         $scope.removeCard = removeCard;
@@ -61,10 +61,13 @@
         $scope.createShareUrl = createShareUrl;
         $scope.urlToShare = null;
 
-        loadBoard($stateParams.id);
+        if (isDefined($stateParams.share)) {
+            loadBoardBySharedId($stateParams.share);
+        } else {
+        	loadBoardById($stateParams.id)
+        }
 
         loadUsers();
-
         initializeToolTips();
 
         if ($stateParams.refresh.hasChanged) {
@@ -78,7 +81,7 @@
             });
         }
 
-        function loadBoard(id) {
+        function loadBoardById(id) {
             Board.get({"id" : id}, onSuccess, onError);
 
             function onSuccess(data) {
@@ -105,6 +108,7 @@
                 $scope.board = data;
                 sortDiary($scope.board.diary);
                 console.log('Loaded board of of name: ' + $scope.board.name)
+                createShareUrl();
             }
 
             function onError(response) {
@@ -113,6 +117,51 @@
                 var boardId = $stateParams.id;
                 if (response.status === 404 || response.status === 400) {
                     $scope.error = 'Invalid board id : ' + boardId;
+                    console.log($scope.error);
+                }
+            }
+        }
+
+        function loadBoardBySharedId(sharedId) {
+            $http.get('boards?share=' + sharedId).then(onSuccess).catch(onError);
+
+            function onSuccess(response) {
+            	var data = response.data;
+
+                sortByOrd(data.lists);
+                for(var li in data.lists) {
+                    sortByOrd(data.lists[li].cards);
+                }
+
+                for(var li in data.lists) {
+                    for(var ci in data.lists[li].cards) {
+                        var lbs = data.lists[li].cards[ci].labels;
+                        if(lbs == null) {
+                            data.lists[li].cards[ci] = [];
+                        } else {
+                            for(var i in lbs) {
+                                for(var j in data.availableLabels) {
+                                    if(lbs[i].id == data.availableLabels[j].id) {
+                                        lbs[i] = data.availableLabels[j];
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                $scope.board = data;
+                sortDiary($scope.board.diary);
+                console.log('Loaded board of of name: ' + $scope.board.name)
+                createShareUrl();
+            }
+
+            function onError(response) {
+                console.log('Error while loading board');
+
+                var boardId = $stateParams.share;
+                if (response.status === 404 || response.status === 400) {
+                    $scope.error = 'Invalid board shared id : ' + boardId;
                     console.log($scope.error);
                 }
             }
@@ -712,7 +761,7 @@
         function createShareUrl() {
             var id = $scope.board.id + 1234567890;
             var number = (+id).toString(16);
-            $scope.urlToShare = 'localhost:8080/boards?share=' + number;
+            $scope.urlToShare = 'localhost:8080/#/board/?share=' + number;
             return $scope.urlToShare;
         }
     }
