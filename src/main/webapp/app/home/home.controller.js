@@ -26,6 +26,9 @@
 		$scope.usersThatArentMembersOf = usersThatArentMembersOf;
 		$scope.isBoardTeamed = isBoardTeamed;
 		$scope.isBoardNotTeamed = isBoardNotTeamed;
+		$scope.isCurrentUserMemberOfTeam = isCurrentUserMemberOfTeam;
+		$scope.isCurrentUserMemberOfBoard = isCurrentUserMemberOfBoard;
+		$scope.isBoardNotTeamedAndIsCurrentUserMemberOfBoard = isBoardNotTeamedAndIsCurrentUserMemberOfBoard;
 		$scope.isAuthenticated = isAuthenticated;
 		$scope.isUserLikingBoard = isUserLikingBoard;
 		$scope.likeBoard = likeBoard;
@@ -52,7 +55,7 @@
         }
 
         function addBoard(team) {
-			var board = { name: 'Empty' };
+			var board = { name: 'Empty', members: [ getUser() ] };
 			if(team !== null) {
 				board.teamId = team.id;
 			}
@@ -127,7 +130,7 @@
         }
 
 		function addTeam() {
-            Team.save( {name : 'Empty'}, onSuccess, onError);
+            Team.save( {name: 'Empty', users: [ getUser() ]}, onSuccess, onError);
 
             function onSuccess(response) {
                 $scope.teams.push(response);
@@ -249,6 +252,33 @@
 
 		function isBoardNotTeamed(board) {
 			return ! isBoardTeamed(board);
+		}
+
+		function isCurrentUserMemberOfTeam(team) {
+			if(!isAuthenticated())
+				return false;
+			return isUserATeamMember(team, getUser());
+		}
+
+		function isUserABoardMember(board, user) {
+			if(board.members != null) {
+				for(var i in board.members) {
+					if(board.members[i].id == user.id) {
+						return true;
+					}
+				}
+			}
+			return false;
+		}
+
+		function isCurrentUserMemberOfBoard(board) {
+			if(!isAuthenticated())
+				return false;
+			return isUserABoardMember(board, getUser());
+		}
+
+		function isBoardNotTeamedAndIsCurrentUserMemberOfBoard(board) {
+			return isBoardNotTeamed(board) && isCurrentUserMemberOfBoard(board);
 		}
 
 		function getUser() {

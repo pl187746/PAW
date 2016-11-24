@@ -348,6 +348,52 @@ body {
     display: block;
 }
 
+.team-list-title {
+	text-align: center;
+	font-weight: bold;
+}
+
+.team-add-btn {
+	text-align: center;
+}
+
+.team-sign-title {
+    margin-top: 0;
+    margin-bottom: 0;
+    font-size: 16px;
+    color: inherit;
+    text-align: center;
+}
+
+.team-input {
+    width: 100%;
+    background-color: #fff9f6;
+    position: relative;
+    display: block;
+    padding: 10px 15px;
+    margin-bottom: -1px;
+    border: 1px solid #cbd0dd;
+    color: black;
+    text-decoration: none;
+	text-align: center;
+}
+
+.team-input-editable {
+    background-color: #dbe0e7;
+}
+
+.team-member {
+	display: inline-block;
+	margin-right: 5px;
+	border-radius: 5px;
+	background-color: white;
+	padding: 1px;
+}
+
+.inline-menu {
+	display: inline-block;
+}
+
 .changeLanguageBtn {
     color: white !important;
 }

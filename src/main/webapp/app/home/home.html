@@ -1,7 +1,8 @@
+<div ng-show="isAuthenticated()">
 <div class="well container text-center center-block">
     <h2 translate="BOARD_SEARCH">Boards</h2>
     <div class="center-block text-center col-md-12">
-        <div ng-repeat="board in boards | filter:isBoardNotTeamed" class="col-md-3 board-sign">
+        <div ng-repeat="board in boards | filter:isBoardNotTeamedAndIsCurrentUserMemberOfBoard" class="col-md-3 board-sign">
             <div class="board-sign">
                 <a ng-show="!boardInput" ng-click="boardInput = true" href="" class="board-input">
                     <h5 class="board-sign-title">{{board.name}}</h5>
@@ -35,9 +36,9 @@
         </div>
     </div>
 </div>
-<h2 translate="TEAMS">Teams</h2>
-<div ng-repeat="team in teams" class="well container text-center center-block">
-	<div>
+<h2 class="team-list-title" translate="TEAMS">Teams</h2>
+<div ng-repeat="team in teams | filter:isCurrentUserMemberOfTeam" class="well container text-center center-block">
+	<div class="center-block text-center col-md-12">
 		<a ng-show="!teamInput" ng-click="teamInput = true" href="" class="team-input">
 			<h5 class="team-sign-title">{{team.name}}</h5>
 		</a>
@@ -51,19 +52,19 @@
 	</div>
 	<h2 translate="MEMBERS_DROPDOWN">Users</h2>
 	<div class="center-block text-center col-md-12">
-		<span ng-repeat="user in team.users">
+		<div ng-repeat="user in team.users" class="team-member">
 			<span>{{user.login}}</span>
 			<button ng-click="removeTeamMember(team, user)" class="btn btn-danger"><i class="fa fa-remove" aria-hidden="true"></i></button>
-		</span>
-		<div class="dropdown">
+		</div>
+		<div class="dropdown inline-menu">
 			<button class="btn btn-default" data-toggle="dropdown" role="button">
 				<span translate="ADD_MEMBER">Add Member</span>
 				<span class="caret"></span>
 			</button>
-			<ul class="dropdown-menu">
+			<ul class="dropdown-menu members-menu">
 				<li ng-repeat="user in usersThatArentMembersOf(team)">
-					<span>{{user.login}}</span>
-					<button type="button" class="btn btn-success" ng-click="addTeamMember(team, user)"><i class="fa fa-plus" aria-hidden="true"></i></button>
+					<button class="btn btn-default members-button-item">{{user.login}}</button>
+					<button type="button" class="btn btn-success members-button-remove" ng-click="addTeamMember(team, user)"><i class="fa fa-plus" aria-hidden="true"></i></button>
 				</li>
 			</ul>
 		</div>
@@ -102,7 +103,8 @@
         </div>
     </div>
 </div>
-<div class="col-md-1">
+<div class="team-add-btn">
 	<button class="btn btn-success" ng-click="addTeam()">
 		<i class="fa fa-plus" aria-hidden="true"><span translate="NEW_TEAM">New Team</span></i></button>
+</div>
 </div>
