@@ -166,9 +166,8 @@ function CardWindowController ($scope, $http, $uibModalInstance, entity, Comment
             if (account !== null) {
                 $scope.user = account;
 
-                // Check subscription
                 for (var i = 0; i < $scope.card.subscribers.length; i++) {
-                    if ($scope.card.subscribers[i].login.toLowerCase() === account.login.toLowerCase()) {
+                    if ($scope.card.subscribers[i] === account.login) {
                         $scope.subscribed = true;
                     }
                 }
@@ -277,11 +276,21 @@ function CardWindowController ($scope, $http, $uibModalInstance, entity, Comment
     }
 
     function subscribeCard() {
-        $scope.subscribed = true;
+        $http.post('/cards/' + $scope.card.id + '/subscribe')
+            .then(function (response) {
+                console.log('Card has been subscribed');
+                $scope.subscribed = true;
+                hasChanged = true;
+        });
     }
 
     function unsubscribeCard() {
-        $scope.subscribed = false;
+        $http.post('/cards/' + $scope.card.id + '/unsubscribe')
+            .then(function (response) {
+                console.log('Card has been unsubscribed');
+                $scope.subscribed = false;
+                hasChanged = true;
+        });
     }
 
     function resetErrorStates() {
