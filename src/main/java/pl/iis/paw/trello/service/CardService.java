@@ -152,8 +152,18 @@ public class CardService {
     public void subscribeCard(Long cardId) {
 		User currentUser = userService.getCurrentUser();
 		Card card = findCardById(cardId);
-		if (!card.getSubscribers().contains(currentUser)) {
-			card.getSubscribers().add(currentUser);
+		List<User> subscribers = card.getSubscribers();
+		if (!subscribers.contains(currentUser)) {
+			subscribers.add(currentUser);
+		}
+	}
+
+	public void unsubscribeCard(Long cardId) {
+    	User currentUser = userService.getCurrentUser();
+    	Card card = findCardById(cardId);
+		List<User> subscribers = card.getSubscribers();
+		if (subscribers.contains(currentUser)) {
+    		subscribers.remove(currentUser);
 		}
 	}
 }
