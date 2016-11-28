@@ -21,67 +21,67 @@ public class CardListService {
 
 	private final static Logger log = LoggerFactory.getLogger(CardListService.class);
 
-    private CardListRepository cardListRepository;
-    private RecordService recordService;
+	private CardListRepository cardListRepository;
+	private RecordService recordService;
 
-    @Autowired
-    public CardListService(CardListRepository cardListRepository, RecordService recordService) {
-        this.cardListRepository = cardListRepository;
-        this.recordService = recordService;
-    }
-    
-    public List<CardList> getCardLists() {
-    	return cardListRepository.findAll();
-    }
-    
-    public List<CardList> getCardLists(Pageable pageable) {
-    	return cardListRepository.findAll(pageable).getContent();
-    }
-    
-    public CardList findCardListById(Long cardListId) {
-    	return Optional
-    			.ofNullable(cardListRepository.findOne(cardListId))
-    			.orElseThrow(() -> new CardListNotFoundException(cardListId));
-    }
-    
-    public CardList addCardList(CardList cardList) {
-    	cardList = cardListRepository.save(cardList);
-    	recordService.record(cardList.getBoard(), RecordType.LIST_CREATE,  p("listName", cardList.getName()));
-    	return cardList;
-    }
-    
-    public CardList updateCardList(CardList cardList) {
-    	return updateCardList(cardList.getId(), cardList);
-    }
-    
-    public CardList updateCardList(Long id, CardList cardList) {
-    	CardList existingCardList = findCardListById(id);
-    	
-    	Optional.ofNullable(cardList.getName())
-		.filter(n -> !n.equals(existingCardList.getName()))
-		.ifPresent(n -> {
-			recordService.record(existingCardList.getBoard(), RecordType.LIST_RENAME, p("oldListName", existingCardList.getName()), p("newListName", n));
+	@Autowired
+	public CardListService(CardListRepository cardListRepository, RecordService recordService) {
+		this.cardListRepository = cardListRepository;
+		this.recordService = recordService;
+	}
+
+	public List<CardList> getCardLists() {
+		return cardListRepository.findAll();
+	}
+
+	public List<CardList> getCardLists(Pageable pageable) {
+		return cardListRepository.findAll(pageable).getContent();
+	}
+
+	public CardList findCardListById(Long cardListId) {
+		return Optional.ofNullable(cardListRepository.findOne(cardListId))
+				.orElseThrow(() -> new CardListNotFoundException(cardListId));
+	}
+
+	public CardList addCardList(CardList cardList) {
+		cardList = cardListRepository.save(cardList);
+		recordService.record(cardList.getBoard(), RecordType.LIST_CREATE, null, p("listName", cardList.getName()));
+		return cardList;
+	}
+
+	public CardList updateCardList(CardList cardList) {
+		return updateCardList(cardList.getId(), cardList);
+	}
+
+	public CardList updateCardList(Long id, CardList cardList) {
+		CardList existingCardList = findCardListById(id);
+
+		Optional.ofNullable(cardList.getName()).filter(n -> !n.equals(existingCardList.getName())).ifPresent(n -> {
+			recordService.record(existingCardList.getBoard(), RecordType.LIST_RENAME, null,
+					p("oldListName", existingCardList.getName()), null, p("newListName", n));
 			existingCardList.setName(n);
 		});
-    	
-    	Optional.ofNullable(cardList.getBoard()).ifPresent(existingCardList::setBoard);
-    	Optional.ofNullable(cardList.getOrd()).ifPresent(existingCardList::setOrd);
-        
-    	if(existingCardList.isArchive() != cardList.isArchive()) {
-    		recordService.record(existingCardList.getBoard(), (cardList.isArchive() ? RecordType.LIST_ARCHIVE : RecordType.LIST_UNARCHIVE), p("listName", existingCardList.getName()));
-    		existingCardList.setArchive(cardList.isArchive());
-    	}
-    	
-    	return cardListRepository.save(existingCardList);
-    }
-    
-    public void deleteCardList(CardList cardList) {
-    	recordService.record(cardList.getBoard(), RecordType.LIST_DELETE, p("listName", cardList.getName()));
-    	cardListRepository.delete(cardList);
-    }
-    
-    public void deleteCardList(Long id) {
-    	deleteCardList(findCardListById(id));
-    }
-	
+
+		Optional.ofNullable(cardList.getBoard()).ifPresent(existingCardList::setBoard);
+		Optional.ofNullable(cardList.getOrd()).ifPresent(existingCardList::setOrd);
+
+		if (existingCardList.isArchive() != cardList.isArchive()) {
+			recordService.record(existingCardList.getBoard(),
+					(cardList.isArchive() ? RecordType.LIST_ARCHIVE : RecordType.LIST_UNARCHIVE), null,
+					p("listName", existingCardList.getName()));
+			existingCardList.setArchive(cardList.isArchive());
+		}
+
+		return cardListRepository.save(existingCardList);
+	}
+
+	public void deleteCardList(CardList cardList) {
+		recordService.record(cardList.getBoard(), RecordType.LIST_DELETE, null, p("listName", cardList.getName()));
+		cardListRepository.delete(cardList);
+	}
+
+	public void deleteCardList(Long id) {
+		deleteCardList(findCardListById(id));
+	}
+
 }

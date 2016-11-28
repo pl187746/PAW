@@ -18,9 +18,9 @@ import pl.iis.paw.trello.repository.FavBoardRepository;
 
 @Service
 public class FavBoardService {
-	
+
 	private final static Logger log = LoggerFactory.getLogger(BoardService.class);
-	
+
 	private FavBoardRepository favBoardRepository;
 	private RecordService recordService;
 
@@ -30,44 +30,43 @@ public class FavBoardService {
 		this.favBoardRepository = favBoardRepository;
 		this.recordService = recordService;
 	}
-	
+
 	public List<FavBoard> getFavBoards() {
 		return favBoardRepository.findAll();
 	}
-	
+
 	public List<FavBoard> getFavBoards(Pageable pageable) {
 		return favBoardRepository.findAll(pageable).getContent();
 	}
-	
+
 	public FavBoard getFavBoardById(Long favBoardId) {
-		return Optional
-				.ofNullable(favBoardRepository.findOne(favBoardId))
+		return Optional.ofNullable(favBoardRepository.findOne(favBoardId))
 				.orElseThrow(() -> new FavBoardNotFoundException(favBoardId));
 	}
-	
+
 	public List<FavBoard> getFavBoardsByUser(User user) {
 		return favBoardRepository.findByUser(user);
 	}
-	
+
 	public List<FavBoard> getFavBoardsByBoard(Board board) {
 		return favBoardRepository.findByBoard(board);
 	}
-	
+
 	public Optional<FavBoard> getFavBoardByUserAndBoard(User user, Board board) {
 		return Optional.ofNullable(favBoardRepository.findByUserAndBoard(user, board));
 	}
-	
+
 	public FavBoard addFavBoard(FavBoard favBoard) {
 		favBoard = favBoardRepository.save(favBoard);
-		recordService.record(favBoard.getBoard(), RecordType.BOARD_LIKE);
+		recordService.record(favBoard.getBoard(), RecordType.BOARD_LIKE, null);
 		return favBoard;
 	}
-	
+
 	public void deleteFavBoard(FavBoard favBoard) {
-		recordService.record(favBoard.getBoard(), RecordType.BOARD_UNLIKE);
+		recordService.record(favBoard.getBoard(), RecordType.BOARD_UNLIKE, null);
 		favBoardRepository.delete(favBoard);
 	}
-	
+
 	public void deleteFavBoard(Long favBoardId) {
 		deleteFavBoard(getFavBoardById(favBoardId));
 	}
