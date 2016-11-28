@@ -27,8 +27,8 @@ public class User implements Serializable {
 
 	private static final long serialVersionUID = -7798638698033919862L;
 
-	@GeneratedValue
     @Id
+	@GeneratedValue
     @Column(name = "user_id")
     private Long id;
 
@@ -61,6 +61,9 @@ public class User implements Serializable {
     @ManyToMany(targetEntity = Board.class, mappedBy = "members")
     @JsonIgnore
     private List<Board> associatedBoards;
+
+    @ManyToMany(mappedBy = "subscribers", targetEntity = Card.class)
+    private List<Card> subscribedCards;
 
     public User() { } // JPA
 
@@ -134,7 +137,15 @@ public class User implements Serializable {
 		this.associatedBoards = associatedBoards;
 	}
 
-	@Override
+    public List<Card> getSubscribedCards() {
+        return subscribedCards;
+    }
+
+    public void setSubscribedCards(List<Card> subscribedCards) {
+        this.subscribedCards = subscribedCards;
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
