@@ -40,6 +40,10 @@ function CardWindowController ($scope, $http, $uibModalInstance, entity, Comment
     $scope.parsedDate = parsedDate;
     $scope.timeTaskLeft = timeTaskLeft;
 
+    // Subscription
+    $scope.subscribeCard = subscribeCard;
+    $scope.unsubscribeCard = unsubscribeCard;
+
     $scope.VIEWS = VIEWS;
     $scope.DATE_FORMAT = DATE_FORMAT;
     $scope.card = entity;
@@ -50,6 +54,7 @@ function CardWindowController ($scope, $http, $uibModalInstance, entity, Comment
     $scope.finished = false;
     $scope.datePickerOpenStatus = {date: false, dateTime: false};
     $scope.completionDateState = {};
+    $scope.subscribed = false;
 
     changeView(VIEWS.ATTACHMENTS);
 
@@ -159,8 +164,15 @@ function CardWindowController ($scope, $http, $uibModalInstance, entity, Comment
     function getAccount() {
         Subject.identity().then(function(account) {
             if (account !== null) {
+                $scope.user = account;
+
+                // Check subscription
+                for (var i = 0; i < $scope.card.subscribers.length; i++) {
+                    if ($scope.card.subscribers[i].login.toLowerCase() === account.login.toLowerCase()) {
+                        $scope.subscribed = true;
+                    }
+                }
             }
-            $scope.user = account;
         });
     }
 
@@ -262,6 +274,14 @@ function CardWindowController ($scope, $http, $uibModalInstance, entity, Comment
             $scope.dateTime = new Date();
             $scope.finished = false;
         }
+    }
+
+    function subscribeCard() {
+        $scope.subscribed = true;
+    }
+
+    function unsubscribeCard() {
+        $scope.subscribed = false;
     }
 
     function resetErrorStates() {
