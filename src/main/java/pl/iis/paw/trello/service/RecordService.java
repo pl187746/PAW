@@ -66,7 +66,7 @@ public class RecordService {
 	}
 	
 	public void record(Board board, RecordType type, Map<String, String> params) {
-		Record rec = new Record(type, new Date(), board, currentUser(), params);
+		Record rec = new Record(type, new Date(), board, currentUser(), null, params);
 		recordRepository.save(rec);
 	}
 	
