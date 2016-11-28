@@ -27,13 +27,16 @@ public class CardService {
 	private LabelRepository labelRepository;;
 	private RecordService recordService;
 	private CardListService cardListService;
+	private UserService userService;
 
     @Autowired
-    public CardService(CardRepository cardRepository, RecordService recordService, CardListService cardListService, LabelRepository labelRepository) {
+    public CardService(CardRepository cardRepository, RecordService recordService, CardListService cardListService,
+					   LabelRepository labelRepository, UserService userService) {
         this.cardRepository = cardRepository;
         this.recordService = recordService;
         this.cardListService = cardListService;
         this.labelRepository = labelRepository;
+		this.userService = userService;
 	}
     
     public List<Card> getCards() {
@@ -145,4 +148,12 @@ public class CardService {
     public void deleteCard(Long id) {
     	deleteCard(findCardById(id));
     }
+
+    public void subscribeCard(Long cardId) {
+		User currentUser = userService.getCurrentUser();
+		Card card = findCardById(cardId);
+		if (!card.getSubscribers().contains(currentUser)) {
+			card.getSubscribers().add(currentUser);
+		}
+	}
 }
