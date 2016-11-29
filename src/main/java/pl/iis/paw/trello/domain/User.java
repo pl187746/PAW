@@ -65,6 +65,9 @@ public class User implements Serializable {
     @ManyToMany(mappedBy = "subscribers", targetEntity = Card.class)
     private List<Card> subscribedCards;
 
+    @ManyToMany(mappedBy = "subscribers", targetEntity = Board.class)
+    private List<Board> subscribedBoards;
+
     public User() { } // JPA
 
     public User(String login, String password, String email) {
@@ -143,6 +146,14 @@ public class User implements Serializable {
 
     public void setSubscribedCards(List<Card> subscribedCards) {
         this.subscribedCards = subscribedCards;
+    }
+
+    public List<Board> getSubscribedBoards() {
+        return subscribedBoards;
+    }
+
+    public void setSubscribedBoards(List<Board> subscribedBoards) {
+        this.subscribedBoards = subscribedBoards;
     }
 
     @Override

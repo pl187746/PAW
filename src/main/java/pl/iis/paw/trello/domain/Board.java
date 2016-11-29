@@ -3,6 +3,7 @@ package pl.iis.paw.trello.domain;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -56,6 +57,13 @@ public class Board implements Serializable {
 
 	@OneToMany(mappedBy = "board", targetEntity = Label.class, cascade = CascadeType.REMOVE)
 	private List<Label> availableLabels;
+
+	@ManyToMany(targetEntity = User.class)
+	@JoinTable(name = "board_subscribers",
+		joinColumns = {@JoinColumn(name = "board_id", referencedColumnName = "board_id")},
+		inverseJoinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "user_id")})
+	@JsonIgnore
+	private List<User> subscribers;
 
 	public Board() { }
 
@@ -129,6 +137,14 @@ public class Board implements Serializable {
 		this.team = team;
 	}
 
+	public List<User> getSubscribers() {
+		return subscribers;
+	}
+
+	public void setSubscribers(List<User> subscribers) {
+		this.subscribers = subscribers;
+	}
+
 	@JsonProperty("teamId")
 	public Long getTeamId() {
 		return Optional.ofNullable(team)
@@ -142,4 +158,9 @@ public class Board implements Serializable {
 		this.team.setId(teamId);
 	}
 
+
+	@JsonProperty(value = "subscribers", access = JsonProperty.Access.READ_ONLY)
+	public List<String> getSubsrcribersLogins() {
+		return subscribers.stream().map(sub -> sub.getLogin()).collect(Collectors.toList());
+	}
 }
