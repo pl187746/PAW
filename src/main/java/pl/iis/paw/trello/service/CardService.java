@@ -58,7 +58,7 @@ public class CardService {
 
 	public Card addCard(Card card) {
 		card = cardRepository.save(card);
-		recordService.record(card.getCardList().getBoard(), RecordType.CARD_CREATE, null,
+		recordService.record(card.getCardList().getBoard(), RecordType.CARD_CREATE, card.getSubscribers(),
 				p("listName", card.getCardList().getName()), p("cardName", card.getName()));
 		return card;
 	}
@@ -71,7 +71,7 @@ public class CardService {
 		Card existingCard = findCardById(id);
 
 		Optional.ofNullable(card.getName()).filter(n -> !n.equals(existingCard.getName())).ifPresent(n -> {
-			recordService.record(existingCard.getCardList().getBoard(), RecordType.CARD_RENAME, null,
+			recordService.record(existingCard.getCardList().getBoard(), RecordType.CARD_RENAME, card.getSubscribers(),
 					p("oldCardName", existingCard.getName()), p("newCardName", n));
 			existingCard.setName(n);
 		});
@@ -80,7 +80,7 @@ public class CardService {
 
 		Optional.ofNullable(card.getListId()).filter(i -> !i.equals(existingCard.getListId())).ifPresent(i -> {
 			CardList dstCardList = cardListService.findCardListById(i);
-			recordService.record(existingCard.getCardList().getBoard(), RecordType.CARD_CHANGE_LIST, null,
+			recordService.record(existingCard.getCardList().getBoard(), RecordType.CARD_CHANGE_LIST, card.getSubscribers(),
 					p("cardName", existingCard.getName()), p("oldListName", existingCard.getCardList().getName()),
 					p("newListName", dstCardList.getName()));
 			existingCard.setCardList(dstCardList);
@@ -88,7 +88,7 @@ public class CardService {
 
 		if (existingCard.isArchive() != card.isArchive()) {
 			recordService.record(existingCard.getCardList().getBoard(),
-					(card.isArchive() ? RecordType.CARD_ARCHIVE : RecordType.CARD_UNARCHIVE), null,
+					(card.isArchive() ? RecordType.CARD_ARCHIVE : RecordType.CARD_UNARCHIVE), card.getSubscribers(),
 					p("cardName", existingCard.getName()));
 			existingCard.setArchive(card.isArchive());
 		}
@@ -100,11 +100,11 @@ public class CardService {
 					Set<Long> newLbIdSet = lbs.stream().map(Label::getId).collect(Collectors.toSet());
 					existingCard.getLabels().stream().filter(o -> !newLbIdSet.contains(o.getId()))
 							.forEach(o -> recordService.record(existingCard.getCardList().getBoard(),
-									RecordType.CARD_REMOVE_LABEL, null, p("cardName", existingCard.getName()),
+									RecordType.CARD_REMOVE_LABEL, card.getSubscribers(), p("cardName", existingCard.getName()),
 									p("labelName", o.getName()), p("labelColor", o.getColor())));
 					lbs.stream().filter(n -> !oldLbIdSet.contains(n.getId()))
 							.forEach(n -> recordService.record(existingCard.getCardList().getBoard(),
-									RecordType.CARD_ADD_LABEL, null, p("cardName", existingCard.getName()),
+									RecordType.CARD_ADD_LABEL, card.getSubscribers(), p("cardName", existingCard.getName()),
 									p("labelName", n.getName()), p("labelColor", n.getColor())));
 					existingCard.setLabels(lbs);
 				});
@@ -145,7 +145,7 @@ public class CardService {
 	}
 
 	public void deleteCard(Card card) {
-		recordService.record(card.getCardList().getBoard(), RecordType.CARD_DELETE, null,
+		recordService.record(card.getCardList().getBoard(), RecordType.CARD_DELETE, card.getSubscribers(),
 				p("cardName", card.getName()));
 		cardRepository.delete(card);
 	}
