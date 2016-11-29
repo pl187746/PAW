@@ -1,6 +1,7 @@
 /src/main/webapp/assets/*
 !/src/main/webapp/assets/css/
 !/src/main/webapp/assets/img/
+!/src/main/webapp/assets/jasmine/
 
 
 # Created by https://www.gitignore.io/api/eclipse maven,eclipse,maven,bower
