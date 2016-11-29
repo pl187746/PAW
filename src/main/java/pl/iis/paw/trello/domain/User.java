@@ -63,9 +63,11 @@ public class User implements Serializable {
     private List<Board> associatedBoards;
 
     @ManyToMany(mappedBy = "subscribers", targetEntity = Card.class)
+    @JsonIgnore
     private List<Card> subscribedCards;
 
     @ManyToMany(mappedBy = "subscribers", targetEntity = Board.class)
+    @JsonIgnore
     private List<Board> subscribedBoards;
 
     public User() { } // JPA

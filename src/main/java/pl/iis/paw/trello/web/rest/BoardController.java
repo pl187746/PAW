@@ -56,4 +56,15 @@ public class BoardController {
         return ResponseEntity.ok().build();
     }
 
+    @RequestMapping(value = "/boards/{boardId}/subscribe", method = RequestMethod.POST)
+    public ResponseEntity<?> subscribeBoard(@PathVariable Long boardId) {
+        boardService.subscribeBoard(boardId);
+        return ResponseEntity.ok().build();
+    }
+
+    @RequestMapping(value = "/boards/{boardId}/unsubscribe", method = RequestMethod.POST)
+    public ResponseEntity<?> unsubscribeBoard(@PathVariable Long boardId) {
+        boardService.unsubscribeBoard(boardId);
+        return ResponseEntity.ok().build();
+    }
 }
