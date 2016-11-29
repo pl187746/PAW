@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import pl.iis.paw.trello.domain.Board;
 import pl.iis.paw.trello.domain.RecordType;
+import pl.iis.paw.trello.domain.User;
 import pl.iis.paw.trello.exception.BoardNotFoundException;
 import pl.iis.paw.trello.repository.BoardRepository;
 
@@ -23,11 +24,13 @@ public class BoardService {
 
     private BoardRepository boardRepository;
     private RecordService recordService;
+    private UserService userService;
 
     @Autowired
-    public BoardService(BoardRepository boardRepository, RecordService recordService) {
+    public BoardService(BoardRepository boardRepository, RecordService recordService, UserService userService) {
         this.boardRepository = boardRepository;
         this.recordService = recordService;
+		this.userService = userService;
     }
     
     public List<Board> getBoards() {
@@ -85,4 +88,24 @@ public class BoardService {
     public void deleteBoard(Long id) {
     	deleteBoard(findBoardById(id));
     }
+
+	public void subscribeBoard(Long boardId) {
+		User currentUser = userService.getCurrentUser();
+		Board board = findBoardById(boardId);
+		List<User> subscribers = board.getSubscribers();
+
+		if (!subscribers.contains(currentUser)) {
+			subscribers.add(currentUser);
+		}
+		boardRepository.save(board);
+	}
+
+	public void unsubscribeBoard(Long boardId) {
+		User currentUser = userService.getCurrentUser();
+		Board board = findBoardById(boardId);
+		List<User> subscribers = board.getSubscribers();
+
+		subscribers.remove(currentUser);
+		boardRepository.save(board);
+	}
 }

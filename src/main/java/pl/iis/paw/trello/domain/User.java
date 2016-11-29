@@ -65,10 +65,14 @@ public class User implements Serializable {
 	private List<Record> notifications;
 
 	@ManyToMany(mappedBy = "subscribers", targetEntity = Card.class)
+    @JsonIgnore
 	private List<Card> subscribedCards;
 
-	public User() {
-	} // JPA
+    @ManyToMany(mappedBy = "subscribers", targetEntity = Board.class)
+    @JsonIgnore
+    private List<Board> subscribedBoards;
+
+    public User() { } // JPA
 
 	public User(String login, String password, String email) {
 		this.login = login;
@@ -147,6 +151,14 @@ public class User implements Serializable {
 	public void setSubscribedCards(List<Card> subscribedCards) {
 		this.subscribedCards = subscribedCards;
 	}
+
+    public List<Board> getSubscribedBoards() {
+        return subscribedBoards;
+    }
+
+    public void setSubscribedBoards(List<Board> subscribedBoards) {
+        this.subscribedBoards = subscribedBoards;
+    }
 
 	@Override
 	public boolean equals(Object o) {

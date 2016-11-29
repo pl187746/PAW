@@ -159,7 +159,9 @@ public class CardService {
 		Card card = findCardById(cardId);
 		List<User> subscribers = card.getSubscribers();
 
+		if (!subscribers.contains(currentUser)) {
 		subscribers.add(currentUser);
+		}
 		cardRepository.save(card);
 	}
 
