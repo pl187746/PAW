@@ -5,9 +5,9 @@
         .module('trello')
         .controller('BoardController', BoardController);
 
-    BoardController.$inject = ['$rootScope', '$http', '$scope', '$stateParams', 'Board', 'Card', 'List', 'User', 'Label', 'Record', 'Comment'];
+    BoardController.$inject = ['$rootScope', '$http', '$scope', '$stateParams', 'Board', 'Card', 'List', 'User', 'Label', 'Record', 'Comment', 'Subject'];
 
-    function BoardController ($rootScope, $http, $scope, $stateParams, Board, Card, List, User, Label, Record, Comment) {
+    function BoardController ($rootScope, $http, $scope, $stateParams, Board, Card, List, User, Label, Record, Comment, Subject) {
         // Cards
         $scope.updateCard = updateCard;
         $scope.removeCard = removeCard;
@@ -50,6 +50,7 @@
         $scope.fmtRecord = fmtRecord;
         $scope.fmtDate = fmtDate;
 
+        $scope.user = null;
         $scope.users = null;
         $scope.board = null;
         $scope.archList = [];
@@ -60,6 +61,11 @@
 
         $scope.createShareUrl = createShareUrl;
         $scope.urlToShare = null;
+
+        // Subscription
+        $scope.subscribed = false;
+        $scope.subscribeBoard = subscribeBoard;
+        $scope.unsubscribeBoard = unsubscribeBoard;
 
         if (isDefined($stateParams.share)) {
             loadBoardBySharedId($stateParams.share);
@@ -73,6 +79,19 @@
         if ($stateParams.refresh.hasChanged) {
             console.log('Card wit id ' + $stateParams.refresh.cardId + ' has to be refreshed');
             refreshCard($stateParams.refresh.cardId);
+        }
+
+        function loadAccount() {
+            Subject.identity().then(function(account) {
+                if (account !== null) {
+                    $scope.user = account;
+                    for (var i = 0; i < $scope.board.subscribers.length; i++) {
+                        if ($scope.board.subscribers[i] === account.login) {
+                            $scope.subscribed = true;
+                        }
+                    }
+                }
+            });
         }
 
         function sortByOrd(arr) {
@@ -105,10 +124,12 @@
                         }
                     }
                 }
+
                 $scope.board = data;
                 sortDiary($scope.board.diary);
                 console.log('Loaded board of of name: ' + $scope.board.name)
                 createShareUrl();
+                loadAccount();
             }
 
             function onError(response) {
@@ -154,6 +175,7 @@
                 sortDiary($scope.board.diary);
                 console.log('Loaded board of of name: ' + $scope.board.name)
                 createShareUrl();
+                loadAccount();
             }
 
             function onError(response) {
@@ -763,6 +785,14 @@
             var number = (+id).toString(16);
             $scope.urlToShare = 'localhost:8080/#/board/?share=' + number;
             return $scope.urlToShare;
+        }
+
+        function subscribeBoard() {
+            $scope.subscribed = true;
+        }
+
+        function unsubscribeBoard() {
+            $scope.subscribed = false;
         }
     }
 })();

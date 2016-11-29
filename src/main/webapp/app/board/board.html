@@ -11,7 +11,6 @@
                 </a>
                 <input ng-show="listInput" type="text" ng-model="list.name" value="list.name" class="list list-editable">
 
-
                 <span class="center-block text-center">
 						<button ng-show="listInput && !isListFirst(list)" ng-click="moveList(list, -1); listInput = false"
                                 class="btn list-button-manage">
@@ -150,6 +149,11 @@
                         <i class="fa fa-plus" aria-hidden="true"></i></button>
                 </div>
             </div>
+        </div>
+
+        <div class="dropdown navbar-right" style="margin-left: 20px; height: 30px;">
+            <button class="btn btn-default" role="button" ng-show="!subscribed" ng-click="subscribeBoard()">Subscribe</button>
+            <button class="btn btn-success" role="button" ng-show="subscribed" ng-click="unsubscribeBoard()">Subscribed</button>
         </div>
 
         <div class="dropdown navbar-right">
