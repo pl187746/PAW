@@ -788,11 +788,19 @@
         }
 
         function subscribeBoard() {
-            $scope.subscribed = true;
+            $http.post('/boards/' + $scope.board.id + '/subscribe')
+                .then(function (response) {
+                    console.log('Board has been subscribed');
+                    $scope.subscribed = true;
+                });
         }
 
         function unsubscribeBoard() {
-            $scope.subscribed = false;
+            $http.post('/boards/' + $scope.board.id + '/unsubscribe')
+                .then(function (response) {
+                    console.log('Board has been unsubscribed');
+                    $scope.subscribed = false;
+                });
         }
     }
 })();
