@@ -54,7 +54,7 @@ public class BoardService {
     
     public Board addBoard(Board board) {
     	board = boardRepository.save(board);
-    	recordService.record(board, RecordType.BOARD_CREATE, null, p("boardName", board.getName()));
+    	recordService.record(board, RecordType.BOARD_CREATE, board.getSubscribers(), p("boardName", board.getName()));
     	return board;
     }
     
@@ -68,7 +68,7 @@ public class BoardService {
     	Optional.ofNullable(board.getName())
     		.filter(n -> !n.equals(existingBoard.getName()))
     		.ifPresent(n -> {
-    			recordService.record(existingBoard, RecordType.BOARD_RENAME, null, p("oldBoardName", existingBoard.getName()), p("newBoardName", n));
+    			recordService.record(existingBoard, RecordType.BOARD_RENAME, existingBoard.getSubscribers(), p("oldBoardName", existingBoard.getName()), p("newBoardName", n));
     			existingBoard.setName(n);
     		});
     	
