@@ -802,6 +802,18 @@
                     $scope.subscribed = false;
                 });
         }
+
+        $scope.movingCard = null;
+
+        $scope.cardMoved = function(list, card, $index) {
+            console.log('card moved');
+
+            list.cards.splice($index, 1);
+            card.listId = list.id;
+            updateCard(card);
+
+            updateCardOrds(list);
+        };
     }
 })();
 

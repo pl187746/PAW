@@ -31,8 +31,13 @@
                 </span>
             </div>
 
-            <div class="card-list-body">
-                <div ng-repeat="card in list.cards" class="list-group" ng-show="card.archive == false">
+            <div class="card-list-body" dnd-list="list.cards">
+                <div ng-repeat="card in list.cards" class="list-group" ng-show="card.archive == false"
+                     dnd-draggable="card"
+                     dnd-effect-allowed="move"
+                     dnd-selected="movingCard = card"
+                     dnd-moved="cardMoved(list, card, $index)"
+                     ng-class="{'selected': movingCard === card}">
 
                     <span ng-repeat="label in card.labels" class="label-mark" style="background-color: {{label.color}}"
                           title="{{label.name}}">&nbsp;

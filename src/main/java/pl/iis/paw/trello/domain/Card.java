@@ -101,7 +101,7 @@ public class Card implements Serializable {
 
     @JsonProperty(value = "subscribers", access = JsonProperty.Access.READ_ONLY)
     public List<String> getSubsrcribersLogins() {
-        return subscribers.stream().map(sub -> sub.getLogin()).collect(Collectors.toList());
+        return subscribers != null? subscribers.stream().map(sub -> sub.getLogin()).collect(Collectors.toList()) : new ArrayList<>();
     }
 
     public Long getOrd() {

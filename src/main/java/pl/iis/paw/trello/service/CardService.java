@@ -2,6 +2,7 @@ package pl.iis.paw.trello.service;
 
 import static pl.iis.paw.trello.service.RecordService.P.p;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
