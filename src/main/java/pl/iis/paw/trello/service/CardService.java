@@ -71,7 +71,7 @@ public class CardService {
 		Card existingCard = findCardById(id);
 
 		Optional.ofNullable(card.getName()).filter(n -> !n.equals(existingCard.getName())).ifPresent(n -> {
-			recordService.record(existingCard.getCardList().getBoard(), RecordType.CARD_RENAME, card.getSubscribers(),
+			recordService.record(existingCard.getCardList().getBoard(), RecordType.CARD_RENAME, existingCard.getSubscribers(),
 					p("oldCardName", existingCard.getName()), p("newCardName", n));
 			existingCard.setName(n);
 		});
@@ -80,7 +80,7 @@ public class CardService {
 
 		Optional.ofNullable(card.getListId()).filter(i -> !i.equals(existingCard.getListId())).ifPresent(i -> {
 			CardList dstCardList = cardListService.findCardListById(i);
-			recordService.record(existingCard.getCardList().getBoard(), RecordType.CARD_CHANGE_LIST, card.getSubscribers(),
+			recordService.record(existingCard.getCardList().getBoard(), RecordType.CARD_CHANGE_LIST, existingCard.getSubscribers(),
 					p("cardName", existingCard.getName()), p("oldListName", existingCard.getCardList().getName()),
 					p("newListName", dstCardList.getName()));
 			existingCard.setCardList(dstCardList);
@@ -88,7 +88,7 @@ public class CardService {
 
 		if (existingCard.isArchive() != card.isArchive()) {
 			recordService.record(existingCard.getCardList().getBoard(),
-					(card.isArchive() ? RecordType.CARD_ARCHIVE : RecordType.CARD_UNARCHIVE), card.getSubscribers(),
+					(card.isArchive() ? RecordType.CARD_ARCHIVE : RecordType.CARD_UNARCHIVE), existingCard.getSubscribers(),
 					p("cardName", existingCard.getName()));
 			existingCard.setArchive(card.isArchive());
 		}
@@ -100,11 +100,11 @@ public class CardService {
 					Set<Long> newLbIdSet = lbs.stream().map(Label::getId).collect(Collectors.toSet());
 					existingCard.getLabels().stream().filter(o -> !newLbIdSet.contains(o.getId()))
 							.forEach(o -> recordService.record(existingCard.getCardList().getBoard(),
-									RecordType.CARD_REMOVE_LABEL, card.getSubscribers(), p("cardName", existingCard.getName()),
+									RecordType.CARD_REMOVE_LABEL, existingCard.getSubscribers(), p("cardName", existingCard.getName()),
 									p("labelName", o.getName()), p("labelColor", o.getColor())));
 					lbs.stream().filter(n -> !oldLbIdSet.contains(n.getId()))
 							.forEach(n -> recordService.record(existingCard.getCardList().getBoard(),
-									RecordType.CARD_ADD_LABEL, card.getSubscribers(), p("cardName", existingCard.getName()),
+									RecordType.CARD_ADD_LABEL, existingCard.getSubscribers(), p("cardName", existingCard.getName()),
 									p("labelName", n.getName()), p("labelColor", n.getColor())));
 					existingCard.setLabels(lbs);
 				});
