@@ -158,8 +158,4 @@ public class Board implements Serializable {
 		this.team.setId(teamId);
 	}
 
-	@JsonProperty(value = "subscribers", access = JsonProperty.Access.READ_ONLY)
-	public List<String> getSubsrcribersLogins() {
-		return subscribers.stream().map(sub -> sub.getLogin()).collect(Collectors.toList());
-	}
 }
