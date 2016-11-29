@@ -99,11 +99,6 @@ public class Card implements Serializable {
             .orElse(null);
     }
 
-    @JsonProperty(value = "subscribers", access = JsonProperty.Access.READ_ONLY)
-    public List<String> getSubsrcribersLogins() {
-        return subscribers.stream().map(sub -> sub.getLogin()).collect(Collectors.toList());
-    }
-
     public Long getOrd() {
         return ord;
     }
