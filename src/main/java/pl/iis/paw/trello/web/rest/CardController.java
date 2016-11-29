@@ -133,4 +133,16 @@ public class CardController {
         CompletionDate completionDate = cardService.findCardById(cardId).getCompletionDate();
         return ResponseEntity.ok(completionDate);
     }
+
+    @RequestMapping(value = "/cards/{cardId}/subscribe", method = RequestMethod.POST)
+    public ResponseEntity<?> subscribeCard(@PathVariable Long cardId) {
+        cardService.subscribeCard(cardId);
+        return ResponseEntity.ok().build();
+    }
+
+    @RequestMapping(value = "/cards/{cardId}/unsubscribe", method = RequestMethod.POST)
+    public ResponseEntity<?> unsubscribeCard(@PathVariable Long cardId) {
+        cardService.unsubscribeCard(cardId);
+        return ResponseEntity.ok().build();
+    }
 }

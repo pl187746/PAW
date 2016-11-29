@@ -18,6 +18,7 @@ import pl.iis.paw.trello.domain.CardList;
 import pl.iis.paw.trello.domain.CompletionDate;
 import pl.iis.paw.trello.domain.Label;
 import pl.iis.paw.trello.domain.RecordType;
+import pl.iis.paw.trello.domain.User;
 import pl.iis.paw.trello.exception.CardNotFoundException;
 import pl.iis.paw.trello.repository.CardRepository;
 import pl.iis.paw.trello.repository.LabelRepository;
@@ -31,14 +32,16 @@ public class CardService {
 	private LabelRepository labelRepository;;
 	private RecordService recordService;
 	private CardListService cardListService;
+	private UserService userService;
 
 	@Autowired
 	public CardService(CardRepository cardRepository, RecordService recordService, CardListService cardListService,
-			LabelRepository labelRepository) {
+					   LabelRepository labelRepository, UserService userService) {
 		this.cardRepository = cardRepository;
 		this.recordService = recordService;
 		this.cardListService = cardListService;
 		this.labelRepository = labelRepository;
+		this.userService = userService;
 	}
 
 	public List<Card> getCards() {
@@ -149,5 +152,23 @@ public class CardService {
 
 	public void deleteCard(Long id) {
 		deleteCard(findCardById(id));
+	}
+
+    public void subscribeCard(Long cardId) {
+		User currentUser = userService.getCurrentUser();
+		Card card = findCardById(cardId);
+		List<User> subscribers = card.getSubscribers();
+
+		subscribers.add(currentUser);
+		cardRepository.save(card);
+	}
+
+	public void unsubscribeCard(Long cardId) {
+    	User currentUser = userService.getCurrentUser();
+    	Card card = findCardById(cardId);
+		List<User> subscribers = card.getSubscribers();
+
+		subscribers.remove(currentUser);
+		cardRepository.save(card);
 	}
 }

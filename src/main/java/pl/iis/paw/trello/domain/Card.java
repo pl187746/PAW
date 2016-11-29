@@ -1,8 +1,8 @@
 package pl.iis.paw.trello.domain;
 
 import java.io.Serializable;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import javax.persistence.*;
 
@@ -47,6 +47,13 @@ public class Card implements Serializable {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private CompletionDate completionDate;
 
+    @ManyToMany(targetEntity = User.class)
+    @JoinTable(name = "card_subscribers",
+        joinColumns = {@JoinColumn(name = "card_id", referencedColumnName = "card_id")},
+        inverseJoinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "user_id")})
+    @JsonIgnore
+    private List<User> subscribers;
+
     public Card() { }
 
     public Card(String name, CardList cardList) {
@@ -90,6 +97,11 @@ public class Card implements Serializable {
         return Optional.ofNullable(cardList)
             .map(CardList::getId)
             .orElse(null);
+    }
+
+    @JsonProperty(value = "subscribers", access = JsonProperty.Access.READ_ONLY)
+    public List<String> getSubsrcribersLogins() {
+        return subscribers.stream().map(sub -> sub.getLogin()).collect(Collectors.toList());
     }
 
     public Long getOrd() {
@@ -138,5 +150,13 @@ public class Card implements Serializable {
 
     public void setCompletionDate(CompletionDate completionDate) {
         this.completionDate = completionDate;
+    }
+
+    public List<User> getSubscribers() {
+        return subscribers;
+    }
+
+    public void setSubscribers(List<User> subscribers) {
+        this.subscribers = subscribers;
     }
 }

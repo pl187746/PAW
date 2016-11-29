@@ -141,6 +141,12 @@
                     translate="CARD_COMMENTS">Comments</button>
             <button class="btn btn-default card-window-nav-button" ng-click="changeView(VIEWS.COMPLETION_DATE)"
                     translate="COMPLETION_DATE">Completion Date</button>
+            <button class="btn btn-default card-window-nav-button" ng-click="subscribeCard()" ng-show="!subscribed">
+                Subscribe
+            </button>
+            <button class="btn btn-success card-window-nav-button" ng-click="unsubscribeCard()" ng-show="subscribed">
+                Subscribed
+            </button>
         </div>
     </div>
 

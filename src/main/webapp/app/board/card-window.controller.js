@@ -40,6 +40,10 @@ function CardWindowController ($scope, $http, $uibModalInstance, entity, Comment
     $scope.parsedDate = parsedDate;
     $scope.timeTaskLeft = timeTaskLeft;
 
+    // Subscription
+    $scope.subscribeCard = subscribeCard;
+    $scope.unsubscribeCard = unsubscribeCard;
+
     $scope.VIEWS = VIEWS;
     $scope.DATE_FORMAT = DATE_FORMAT;
     $scope.card = entity;
@@ -50,6 +54,7 @@ function CardWindowController ($scope, $http, $uibModalInstance, entity, Comment
     $scope.finished = false;
     $scope.datePickerOpenStatus = {date: false, dateTime: false};
     $scope.completionDateState = {};
+    $scope.subscribed = false;
 
     changeView(VIEWS.ATTACHMENTS);
 
@@ -159,8 +164,14 @@ function CardWindowController ($scope, $http, $uibModalInstance, entity, Comment
     function getAccount() {
         Subject.identity().then(function(account) {
             if (account !== null) {
+                $scope.user = account;
+
+                for (var i = 0; i < $scope.card.subscribers.length; i++) {
+                    if ($scope.card.subscribers[i] === account.login) {
+                        $scope.subscribed = true;
+                    }
+                }
             }
-            $scope.user = account;
         });
     }
 
@@ -262,6 +273,24 @@ function CardWindowController ($scope, $http, $uibModalInstance, entity, Comment
             $scope.dateTime = new Date();
             $scope.finished = false;
         }
+    }
+
+    function subscribeCard() {
+        $http.post('/cards/' + $scope.card.id + '/subscribe')
+            .then(function (response) {
+                console.log('Card has been subscribed');
+                $scope.subscribed = true;
+                hasChanged = true;
+        });
+    }
+
+    function unsubscribeCard() {
+        $http.post('/cards/' + $scope.card.id + '/unsubscribe')
+            .then(function (response) {
+                console.log('Card has been unsubscribed');
+                $scope.subscribed = false;
+                hasChanged = true;
+        });
     }
 
     function resetErrorStates() {
