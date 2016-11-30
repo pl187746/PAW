@@ -2,6 +2,7 @@ package pl.iis.paw.trello.service;
 
 import static pl.iis.paw.trello.service.RecordService.P.p;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -58,7 +59,8 @@ public class CardService {
 
 	public Card addCard(Card card) {
 		card = cardRepository.save(card);
-		recordService.record(card.getCardList().getBoard(), RecordType.CARD_CREATE, card.getSubscribers(),
+		recordService.record(card.getCardList().getBoard(), RecordType.CARD_CREATE,
+			card.getSubscribers() != null? card.getSubscribers() : new ArrayList<>(),
 				p("listName", card.getCardList().getName()), p("cardName", card.getName()));
 		return card;
 	}

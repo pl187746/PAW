@@ -419,13 +419,19 @@ body {
 }
 
 .notifications-img {
-     width: 30px;
- }
+    width: 30px;
+    height: 25px;
+}
 
 .notification_item {
     display: block;
 }
 
 .notification_new {
-    background-color: red;
+    background-color: #ff7d62;
+}
+
+.notification-menu {
+    padding: 8px;
+    width: 300px;
 }

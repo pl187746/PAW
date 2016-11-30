@@ -40,11 +40,16 @@
                 </li>
 				<li class="dropdown">
 					<a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" ng-click="updateNotificationsViewTime()" ng-switch="areThereNewNotifications()">
-						<img ng-switch-when="false" class="notifications-img" src="/assets/img/bell.png">
-						<img ng-switch-when="true" class="notifications-img" src="/assets/img/bell-new.png">
+						<img ng-switch-when="false" class="notifications-img" ng-src="/assets/img/bell.png">
+						<img ng-switch-when="true" class="notifications-img" ng-src="/assets/img/bell-new.png">
 					</a>
-					<ul class="dropdown-menu">
-						<li ng-repeat="rec in user.notifications.slice().reverse()" class="notification_item" ng-class="{notification_new:isNewRecord(rec)}"><b>{{fmtDate(rec.timestamp)}}</b> by <em>{{rec.user}}</em> | {{fmtRecord(rec)}}</li>
+					<ul class="dropdown-menu notification-menu">
+						<li ng-repeat="rec in user.notifications.slice().reverse()" class="notification_item"
+                            ng-class="{notification_new:isNewRecord(rec)}">
+                            <p><b>{{fmtDate(rec.timestamp)}}</b> by <em>{{rec.user}}</em></p>
+                            <p>{{fmtRecord(rec)}}</p>
+                            <hr>
+                        </li>
 					</ul>
 				</li>
                 <li><a ng-switch-when="true" href="" class="user-login"><span translate="LOGGED_AS">Logged as </span> {{user.login}}</a></li>
