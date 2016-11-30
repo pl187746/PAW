@@ -18,6 +18,7 @@
         $scope.transferCardToNextList = transferCardToNextList;
         $scope.hasCardLabel = hasCardLabel;
         $scope.toggleLabel = toggleLabel;
+        $scope.cardMoved = cardMoved;
 
         // Labels
         $scope.updateLabel = updateLabel;
@@ -54,6 +55,7 @@
         $scope.users = null;
         $scope.board = null;
         $scope.archList = [];
+        $scope.movingCard = null;
 
         // Date
         $scope.isDefined = isDefined;
@@ -803,17 +805,35 @@
                 });
         }
 
-        $scope.movingCard = null;
-
-        $scope.cardMoved = function(list, card, $index) {
-            console.log('card moved');
-
+        function cardMoved(list, card, $index) {
             list.cards.splice($index, 1);
-            card.listId = list.id;
+            var newList = getListOfCard(card);
+            card.listId = newList.id;
             updateCard(card);
+            updateOrders(newList);
 
-            updateCardOrds(list);
-        };
+            function updateOrders(newList) {
+                var cards = newList.cards;
+
+                for (var i = 0; i < cards.length; i++) {
+                    var card = cards[i];
+                    card.ord = i;
+                    updateCard(card);
+                }
+            }
+        }
+
+        function getListOfCard(card) {
+            var lists = getLists();
+            for (var i = 0; i < lists.length; i++) {
+                var cards = lists[i].cards;
+                for (var j = 0; j < cards.length; j++) {
+                    if (cards[j].id === card.id) {
+                        return lists[i];
+                    }
+                }
+            }
+        }
     }
 })();
 

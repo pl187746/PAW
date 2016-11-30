@@ -35,9 +35,9 @@
                 <div ng-repeat="card in list.cards" class="list-group" ng-show="card.archive == false"
                      dnd-draggable="card"
                      dnd-effect-allowed="move"
-                     dnd-selected="movingCard = card"
                      dnd-moved="cardMoved(list, card, $index)"
-                     ng-class="{'selected': movingCard === card}">
+                     dnd-dragstart="movingCard = card"
+                     ng-class="{'selected': movingCard.id === card.id}">
 
                     <span ng-repeat="label in card.labels" class="label-mark" style="background-color: {{label.color}}"
                           title="{{label.name}}">&nbsp;
@@ -46,7 +46,7 @@
 
                     <a ng-show="!cardInput" ng-click="cardInput = true" href="" class="card">
                         <span class="col-xs-10">
-                            {{card.name}}
+                            {{card.name}} - {{card.ord}}
                         </span>
                         <span class="col-xs-1">
                             <i class="fa fa-clock-o" aria-hidden="true" data-toggle="tooltip"

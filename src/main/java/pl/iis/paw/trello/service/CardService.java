@@ -74,7 +74,7 @@ public class CardService {
 				existingCard.setName(n);
 			});
 
-    	Optional.ofNullable(card.getOrd()).ifPresent(existingCard::setOrd);
+    	Optional.ofNullable(card.getOrd()).ifPresent(ord -> existingCard.setOrd(ord));
     	
     	Optional.ofNullable(card.getListId())
     		.filter(i -> !i.equals(existingCard.getListId()))
