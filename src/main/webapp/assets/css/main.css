@@ -417,6 +417,14 @@ body {
     text-decoration: underline;
 }
 
-.notifications-img{
+.notifications-img {
 	width: 30px;
+}
+
+.notification_item {
+	display: block;
+}
+
+.notification_new {
+	background-color: red;
 }

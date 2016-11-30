@@ -94,10 +94,10 @@ public class UserService {
     public User updateUser(User user) {
         User existingUser = findUserById(user.getId());
 
-        existingUser.setLogin(user.getLogin());
-        existingUser.setEmail(user.getEmail());
-        existingUser.setPassword(user.getPassword());
-        existingUser.setNotificationsLastViewTime(user.getNotificationsLastViewTime());
+        Optional.ofNullable(user.getLogin()).ifPresent(existingUser::setLogin);
+        Optional.ofNullable(user.getEmail()).ifPresent(existingUser::setEmail);
+        Optional.ofNullable(user.getPassword()).ifPresent(existingUser::setPassword);
+        Optional.ofNullable(user.getNotificationsLastViewTime()).ifPresent(existingUser::setNotificationsLastViewTime);
 
         return userRepository.save(existingUser);
     }

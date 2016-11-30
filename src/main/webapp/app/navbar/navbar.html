@@ -43,7 +43,7 @@
 						<img class="notifications-img" src="/assets/img/bell.png">
 					</a>
 					<ul class="dropdown-menu">
-						<li ng-repeat="rec in user.notifications"><b>{{fmtDate(rec.timestamp)}}</b> by <em>{{rec.user}}</em> | {{fmtRecord(rec)}}</li>
+						<li ng-repeat="rec in user.notifications" class="notification_item" ng-class="{notification_new:isNewRecord(rec)}"><b>{{fmtDate(rec.timestamp)}}</b> by <em>{{rec.user}}</em> | {{fmtRecord(rec)}}</li>
 					</ul>
 				</li>
                 <li><a ng-switch-when="true" href="" class="user-login"><span translate="LOGGED_AS">Logged as </span> {{user.login}}</a></li>
