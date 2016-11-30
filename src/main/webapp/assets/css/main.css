@@ -13,6 +13,7 @@ body {
 
 .card, .list, .board-item {
     height: 40px;
+    position: relative;
 }
 
 .list {
@@ -418,13 +419,13 @@ body {
 }
 
 .notifications-img {
-	width: 30px;
-}
+     width: 30px;
+ }
 
 .notification_item {
-	display: block;
+    display: block;
 }
 
 .notification_new {
-	background-color: red;
+    background-color: red;
 }
