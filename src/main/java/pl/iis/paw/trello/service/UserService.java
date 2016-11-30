@@ -97,6 +97,7 @@ public class UserService {
         existingUser.setLogin(user.getLogin());
         existingUser.setEmail(user.getEmail());
         existingUser.setPassword(user.getPassword());
+        existingUser.setNotificationsLastViewTime(user.getNotificationsLastViewTime());
 
         return userRepository.save(existingUser);
     }

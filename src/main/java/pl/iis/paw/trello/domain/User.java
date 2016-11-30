@@ -1,6 +1,7 @@
 package pl.iis.paw.trello.domain;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
@@ -16,9 +17,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import org.hibernate.validator.constraints.Email;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -46,8 +50,8 @@ public class User implements Serializable {
 	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "user_authority", joinColumns = {
-			@JoinColumn(name = "user_id", referencedColumnName = "user_id") }, inverseJoinColumns = {
-					@JoinColumn(name = "authority_name", referencedColumnName = "name") })
+		@JoinColumn(name = "user_id", referencedColumnName = "user_id") }, inverseJoinColumns = {
+		@JoinColumn(name = "authority_name", referencedColumnName = "name") })
 	private Set<Authority> authorities = new HashSet<>();
 
 	@OneToMany(mappedBy = "user", targetEntity = FavBoard.class, cascade = CascadeType.REMOVE)
@@ -64,15 +68,20 @@ public class User implements Serializable {
 	@ManyToMany(targetEntity = Record.class, mappedBy = "notifiedUsers")
 	private List<Record> notifications;
 
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "notifications_last_view_time")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, timezone = "UTC", pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+	private Date notificationsLastViewTime;
+
 	@ManyToMany(mappedBy = "subscribers", targetEntity = Card.class)
-    @JsonIgnore
+	@JsonIgnore
 	private List<Card> subscribedCards;
 
-    @ManyToMany(mappedBy = "subscribers", targetEntity = Board.class)
-    @JsonIgnore
-    private List<Board> subscribedBoards;
+	@ManyToMany(mappedBy = "subscribers", targetEntity = Board.class)
+	@JsonIgnore
+	private List<Board> subscribedBoards;
 
-    public User() { } // JPA
+	public User() { } // JPA
 
 	public User(String login, String password, String email) {
 		this.login = login;
@@ -152,13 +161,13 @@ public class User implements Serializable {
 		this.subscribedCards = subscribedCards;
 	}
 
-    public List<Board> getSubscribedBoards() {
-        return subscribedBoards;
-    }
+	public List<Board> getSubscribedBoards() {
+		return subscribedBoards;
+	}
 
-    public void setSubscribedBoards(List<Board> subscribedBoards) {
-        this.subscribedBoards = subscribedBoards;
-    }
+	public void setSubscribedBoards(List<Board> subscribedBoards) {
+		this.subscribedBoards = subscribedBoards;
+	}
 
 	@Override
 	public boolean equals(Object o) {
@@ -182,6 +191,14 @@ public class User implements Serializable {
 
 	public void setNotifications(List<Record> notifications) {
 		this.notifications = notifications;
+	}
+
+	public Date getNotificationsLastViewTime() {
+		return notificationsLastViewTime;
+	}
+
+	public void setNotificationsLastViewTime(Date notificationsLastViewTime) {
+		this.notificationsLastViewTime = notificationsLastViewTime;
 	}
 
 }
