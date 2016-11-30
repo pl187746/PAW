@@ -97,7 +97,7 @@ public class RecordService {
 
 		public static Map<String, String> toMap(P[] array) {
 			Map<String, String> map = new HashMap<>();
-			Arrays.stream(array).forEach(p -> map.put(p.name, p.value));
+			Arrays.stream(array).filter(p -> p != null && p.name != null && p.value != null).forEach(p -> map.put(p.name, p.value));
 			return map;
 		}
 	}
