@@ -44,9 +44,9 @@
                     <div class="clearfix"></div>
 
                     <a dnd-handle ng-show="!cardInput" ng-click="cardInput = true" href="" class="card">
-                        <div>
-                            {{card.name}}
-                        </div>
+                        <div style="text-decoration: line-through" ng-if="card.completionDate.finished">{{card.name}}</div>
+                        <div ng-if="!card.completionDate.finished">{{card.name}}</div>
+
                         <div style="color: #6a6a6a">
                             <i class="fa fa-clock-o" aria-hidden="true" data-toggle="tooltip"
                                ng-if="isDefined(card.completionDate) && !card.completionDate.finished"
