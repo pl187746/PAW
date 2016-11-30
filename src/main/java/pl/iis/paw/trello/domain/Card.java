@@ -1,10 +1,22 @@
 package pl.iis.paw.trello.domain;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -99,10 +111,15 @@ public class Card implements Serializable {
             .orElse(null);
     }
 
-    @JsonProperty(value = "subscribers", access = JsonProperty.Access.READ_ONLY)
+    @JsonProperty(value = "subscribers")
     public List<String> getSubsrcribersLogins() {
         return subscribers != null? subscribers.stream().map(sub -> sub.getLogin()).collect(Collectors.toList()) : new ArrayList<>();
     }
+
+    @JsonProperty(value = "subscribers")
+	public void setSubsrcribersLogins(List<String> ignore) {
+		//zeby jackson sie nie rzucal
+	}
 
     public Long getOrd() {
         return ord;
@@ -159,4 +176,5 @@ public class Card implements Serializable {
     public void setSubscribers(List<User> subscribers) {
         this.subscribers = subscribers;
     }
+
 }
