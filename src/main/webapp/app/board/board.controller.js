@@ -19,6 +19,7 @@
         $scope.hasCardLabel = hasCardLabel;
         $scope.toggleLabel = toggleLabel;
         $scope.cardMoved = cardMoved;
+        $scope.listMoved = listMoved;
 
         // Labels
         $scope.updateLabel = updateLabel;
@@ -56,6 +57,7 @@
         $scope.board = null;
         $scope.archList = [];
         $scope.movingCard = null;
+        $scope.movingList = null;
 
         // Date
         $scope.isDefined = isDefined;
@@ -809,18 +811,20 @@
             list.cards.splice($index, 1);
             var newList = getListOfCard(card);
             card.listId = newList.id;
-            updateCard(card);
-            updateOrders(newList);
 
-            function updateOrders(newList) {
-                var cards = newList.cards;
-
-                for (var i = 0; i < cards.length; i++) {
-                    var card = cards[i];
-                    card.ord = i;
-                    updateCard(card);
+            for (var i = 0; i < newList.cards.length; i++) {
+                if (newList.cards[i].id === card.id) {
+                    newList.cards[i].listId = newList.id;
+                    break;
                 }
             }
+            updateOrders(newList.cards, updateCard);
+        }
+
+        function listMoved(list, $index) {
+            getLists().splice($index, 1);
+
+            updateOrders(getLists(), updateList);
         }
 
         function getListOfCard(card) {
@@ -832,6 +836,16 @@
                         return lists[i];
                     }
                 }
+            }
+        }
+
+        function updateOrders(items, updateFunction) {
+            for (var i = 0; i < items.length; i++) {
+                items[i].ord = i;
+            }
+
+            for (var i = 0; i < items.length; i++) {
+                updateFunction(items[i]);
             }
         }
     }

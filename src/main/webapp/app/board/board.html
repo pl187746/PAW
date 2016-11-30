@@ -3,8 +3,13 @@
         <strong>{{error}}</strong>
     </div>
 
-    <div ng-show="error == null"class="row board col-md-12">
-        <div ng-repeat="list in board.lists" class="col-sm-2 card-list" ng-show="list.archive == false">
+    <div ng-show="error == null"class="row board col-md-12" dnd-list="board.lists">
+        <div ng-repeat="list in board.lists" class="col-sm-2 card-list" ng-show="list.archive == false"
+             dnd-draggable="list"
+             dnd-effect-allowed="move"
+             dnd-moved="listMoved(list, $index)"
+             dnd-dragstart="movingList = list"
+             ng-class="{'selected': movingList.id === list.id}">
             <div class="card-list-heading">
                 <a ng-show="!listInput" ng-click="listInput = true" href="" class="list">
                     <h3 class="card-list-title">{{list.name}}</h3>
