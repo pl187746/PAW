@@ -144,8 +144,12 @@
         </div>
 
         <div class="dropdown navbar-right" style="margin-left: 20px; height: 30px;">
-            <button class="btn btn-default" role="button" ng-show="!subscribed" ng-click="subscribeBoard()">Subscribe</button>
-            <button class="btn btn-success" role="button" ng-show="subscribed" ng-click="unsubscribeBoard()">Subscribed</button>
+            <button class="btn btn-default" role="button" ng-show="!subscribed" ng-click="subscribeBoard()">
+                <span translate="SUBSCRIBE">Subscribe</span>
+            </button>
+            <button class="btn btn-success" role="button" ng-show="subscribed" ng-click="unsubscribeBoard()">
+                <span translate="SUBSCRIBED">Subscribed</span>
+            </button>
         </div>
 
         <div class="dropdown navbar-right">
@@ -207,7 +211,7 @@
 
         <div class="dropdown navbar-right" style="margin-right: 20px; height: 30px;">
             <button class="btn btn-default" data-toggle="dropdown" role="button">
-                <span>Shared</span>
+                <span translate="SHARE">Share</span>
                 <span class="caret"></span>
             </button>
             <ul class="dropdown-menu" style="width: 300px; height: 50px;">

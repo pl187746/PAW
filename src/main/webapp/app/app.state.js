@@ -60,7 +60,10 @@
             COMPLETION_DATE_UPDATE_SUCCESS: 'Completion date has been updated',
             COMPLETION_DATE_UPDATE_ERROR: 'Completion date couldn\'t be updated',
             COMPLETION_DATE_DELETE_SUCCESS: 'Completion date has been removed',
-            COMPLETION_DATE_DELETE_ERROR: 'Completion date couldn\'t be removed'
+            COMPLETION_DATE_DELETE_ERROR: 'Completion date couldn\'t be removed',
+            SUBSCRIBE: 'Subscribe',
+            SUBSCRIBED: 'Subscribed',
+            SHARE: 'Share'
         });
         $translateProvider.translations('pl', {
             BOARD_SEARCH: 'Tablice',
@@ -106,6 +109,9 @@
             COMPLETION_DATE_UPDATE_ERROR: 'Data ukończenia zadania nie mogła zostać zaaktualizowana',
             COMPLETION_DATE_DELETE_SUCCESS: 'Data ukończenia zadania została usunięta',
             COMPLETION_DATE_DELETE_ERROR: 'Data ukończenia zadania nie mogła zostać usunięta',
+            SUBSCRIBE: 'Subskrybuj',
+            SUBSCRIBED: 'Zasubskrybowano',
+            SHARE: 'Udostępnij'
         });
         $translateProvider.preferredLanguage('en');
 
