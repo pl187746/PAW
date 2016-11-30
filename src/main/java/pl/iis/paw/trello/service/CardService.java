@@ -2,6 +2,9 @@ package pl.iis.paw.trello.service;
 
 import static pl.iis.paw.trello.service.RecordService.P.p;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -13,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import pl.iis.paw.trello.domain.Board;
 import pl.iis.paw.trello.domain.Card;
 import pl.iis.paw.trello.domain.CardList;
 import pl.iis.paw.trello.domain.CompletionDate;
@@ -58,7 +62,7 @@ public class CardService {
 
 	public Card addCard(Card card) {
 		card = cardRepository.save(card);
-		recordService.record(card.getCardList().getBoard(), RecordType.CARD_CREATE, card.getSubscribers(),
+		recordService.record(card.getCardList().getBoard(), RecordType.CARD_CREATE, getCardSubscribers(card),
 				p("listName", card.getCardList().getName()), p("cardName", card.getName()));
 		return card;
 	}
@@ -69,9 +73,10 @@ public class CardService {
 
 	public Card updateCard(Long id, Card card) {
 		Card existingCard = findCardById(id);
+		List<User> subscribers = getCardSubscribers(existingCard);
 
 		Optional.ofNullable(card.getName()).filter(n -> !n.equals(existingCard.getName())).ifPresent(n -> {
-			recordService.record(existingCard.getCardList().getBoard(), RecordType.CARD_RENAME, existingCard.getSubscribers(),
+			recordService.record(existingCard.getCardList().getBoard(), RecordType.CARD_RENAME, subscribers,
 					p("oldCardName", existingCard.getName()), p("newCardName", n));
 			existingCard.setName(n);
 		});
@@ -80,7 +85,7 @@ public class CardService {
 
 		Optional.ofNullable(card.getListId()).filter(i -> !i.equals(existingCard.getListId())).ifPresent(i -> {
 			CardList dstCardList = cardListService.findCardListById(i);
-			recordService.record(existingCard.getCardList().getBoard(), RecordType.CARD_CHANGE_LIST, existingCard.getSubscribers(),
+			recordService.record(existingCard.getCardList().getBoard(), RecordType.CARD_CHANGE_LIST, subscribers,
 					p("cardName", existingCard.getName()), p("oldListName", existingCard.getCardList().getName()),
 					p("newListName", dstCardList.getName()));
 			existingCard.setCardList(dstCardList);
@@ -88,7 +93,7 @@ public class CardService {
 
 		if (existingCard.isArchive() != card.isArchive()) {
 			recordService.record(existingCard.getCardList().getBoard(),
-					(card.isArchive() ? RecordType.CARD_ARCHIVE : RecordType.CARD_UNARCHIVE), existingCard.getSubscribers(),
+					(card.isArchive() ? RecordType.CARD_ARCHIVE : RecordType.CARD_UNARCHIVE), subscribers,
 					p("cardName", existingCard.getName()));
 			existingCard.setArchive(card.isArchive());
 		}
@@ -100,11 +105,11 @@ public class CardService {
 					Set<Long> newLbIdSet = lbs.stream().map(Label::getId).collect(Collectors.toSet());
 					existingCard.getLabels().stream().filter(o -> !newLbIdSet.contains(o.getId()))
 							.forEach(o -> recordService.record(existingCard.getCardList().getBoard(),
-									RecordType.CARD_REMOVE_LABEL, existingCard.getSubscribers(), p("cardName", existingCard.getName()),
+									RecordType.CARD_REMOVE_LABEL, subscribers, p("cardName", existingCard.getName()),
 									p("labelName", o.getName()), p("labelColor", o.getColor())));
 					lbs.stream().filter(n -> !oldLbIdSet.contains(n.getId()))
 							.forEach(n -> recordService.record(existingCard.getCardList().getBoard(),
-									RecordType.CARD_ADD_LABEL, existingCard.getSubscribers(), p("cardName", existingCard.getName()),
+									RecordType.CARD_ADD_LABEL, subscribers, p("cardName", existingCard.getName()),
 									p("labelName", n.getName()), p("labelColor", n.getColor())));
 					existingCard.setLabels(lbs);
 				});
@@ -145,13 +150,20 @@ public class CardService {
 	}
 
 	public void deleteCard(Card card) {
-		recordService.record(card.getCardList().getBoard(), RecordType.CARD_DELETE, card.getSubscribers(),
+		recordService.record(card.getCardList().getBoard(), RecordType.CARD_DELETE, getCardSubscribers(card),
 				p("cardName", card.getName()));
 		cardRepository.delete(card);
 	}
 
 	public void deleteCard(Long id) {
 		deleteCard(findCardById(id));
+	}
+
+	private List<User> getCardSubscribers(Card card) {
+		LinkedHashSet<User> subscribers = new LinkedHashSet<>();
+		Optional.ofNullable(card).map(Card::getSubscribers).ifPresent(subscribers::addAll);
+		Optional.ofNullable(card).map(Card::getCardList).map(CardList::getBoard).map(Board::getSubscribers).ifPresent(subscribers::addAll);
+		return new ArrayList<User>(subscribers);
 	}
 
     public void subscribeCard(Long cardId) {
