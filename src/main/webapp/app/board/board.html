@@ -44,14 +44,21 @@
                     <div class="clearfix"></div>
 
                     <a dnd-handle ng-show="!cardInput" ng-click="cardInput = true" href="" class="card">
-                    <span class="col-xs-10">
-                        {{card.name}}
-                    </span>
-                        <span class="col-xs-1">
-                        <i class="fa fa-clock-o" aria-hidden="true" data-toggle="tooltip"
-                           ng-if="isDefined(card.completionDate) && !card.completionDate.finished"
-                           title="{{parsedDate(card.completionDate.date)}}"></i>
-                    </span>
+                        <div>
+                            {{card.name}}
+                        </div>
+                        <div style="color: #6a6a6a">
+                            <i class="fa fa-clock-o" aria-hidden="true" data-toggle="tooltip"
+                               ng-if="isDefined(card.completionDate) && !card.completionDate.finished"
+                               title="{{parsedDate(card.completionDate.date)}}"></i>
+                            <i class="fa fa-eye" style="margin-left: 5px;" aria-hidden="true" data-toogle="tooltip"
+                               ng-if="isCardSubscribed(card)" title="Card subscribed"></i>
+                            <span ng-if="card.comments.length > 0" style="margin-left: 5px;">
+                                {{card.comments.length}}
+                                <i class="fa fa-comment"></i>
+                            </span>
+                        </div>
+
                         <div class="clearfix"></div>
                     </a>
 

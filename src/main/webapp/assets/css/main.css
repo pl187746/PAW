@@ -12,7 +12,8 @@ body {
 }
 
 .card, .list, .board-item {
-    height: 40px;
+    min-height: 40px;
+    max-height: 80px;
     position: relative;
 }
 

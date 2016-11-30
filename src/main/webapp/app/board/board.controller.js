@@ -15,6 +15,7 @@
         $scope.hasCardLabel = hasCardLabel;
         $scope.toggleLabel = toggleLabel;
         $scope.cardMoved = cardMoved;
+        $scope.isCardSubscribed = isCardSubscribed;
 
         // Labels
         $scope.updateLabel = updateLabel;
@@ -784,6 +785,16 @@
             for (var i = 0; i < items.length; i++) {
                 updateFunction(items[i]);
             }
+        }
+
+        function isCardSubscribed(card) {
+            for (var i = 0; i < card.subscribers.length; i++) {
+                if (card.subscribers[i] === $scope.user.login) {
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 })();
