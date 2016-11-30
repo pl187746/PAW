@@ -21,7 +21,8 @@
         $scope.fmtRecord = fmtRecord;
         $scope.fmtDate = fmtDate;
         $scope.updateNotificationsViewTime = updateNotificationsViewTime;
-		$scope.isNewRecord = isNewRecord;
+        $scope.isNewRecord = isNewRecord;
+		$scope.areThereNewNotifications = areThereNewNotifications;
 
         $scope.$on('authenticationSuccess', function() {
             getAccount();
@@ -154,7 +155,7 @@
             }
 
             var date = new Date();
-			var user = { id: $scope.user.id, notificationsLastViewTime: date.toISOString() };
+            var user = { id: $scope.user.id, notificationsLastViewTime: date.toISOString() };
 
             User.update(user, onSuccess, onError);
 
@@ -174,6 +175,18 @@
             var viewTime = Date.parse($scope.user.notificationsLastViewTime);
             var recTime = Date.parse(rec.timestamp);
             return recTime > viewTime;
+        }
+
+        function areThereNewNotifications() {
+            if($scope.user == null || $scope.user.notifications == null) {
+                return false;
+            }
+            for(var i in $scope.user.notifications) {
+                if(isNewRecord($scope.user.notifications[i])) {
+                    return true;
+                }
+            }
+            return false;
         }
     }
 
