@@ -12,14 +12,9 @@
         $scope.updateCard = updateCard;
         $scope.removeCard = removeCard;
         $scope.addCard = addCard;
-        $scope.moveCard = moveCard;
-        $scope.isCardFirst = isCardFirst;
-        $scope.isCardLast = isCardLast;
-        $scope.transferCardToNextList = transferCardToNextList;
         $scope.hasCardLabel = hasCardLabel;
         $scope.toggleLabel = toggleLabel;
         $scope.cardMoved = cardMoved;
-        $scope.listMoved = listMoved;
 
         // Labels
         $scope.updateLabel = updateLabel;
@@ -32,11 +27,9 @@
         $scope.addList = addList;
         $scope.archiveList = archiveList;
         $scope.returnArchiveList = returnArchiveList;
-        $scope.moveList = moveList;
-        $scope.isListFirst = isListFirst;
-        $scope.isListLast = isListLast;
         $scope.archiveCard = archiveCard;
         $scope.returnArchiveCard = returnArchiveCard;
+        $scope.listMoved = listMoved;
 
         //Members
         $scope.addMember = addMember;
@@ -210,62 +203,6 @@
                     return i;
             }
             return null;
-        }
-
-        function lastIdx(arr) {
-            for(var i = arr.length - 1; i >= 0; --i) {
-                if(!arr[i].archive)
-                    return i;
-            }
-            return null;
-        }
-
-        function isListFirst(list) {
-            var lists = getLists();
-            return lists.indexOf(list) == firstIdx(lists);
-        }
-
-        function isListLast(list) {
-            var lists = getLists();
-            return lists.indexOf(list) == lastIdx(lists);
-        }
-
-        function isCardFirst(list, card) {
-            return list.cards.indexOf(card) == firstIdx(list.cards);
-        }
-
-        function isCardLast(list, card) {
-            return list.cards.indexOf(card) == lastIdx(list.cards);
-        }
-
-        function moveObj(arr, obj, dir, updFun) {
-            if(!dir)
-                return;
-            dir = ((dir < -1) ? -1 : ((dir > 1) ? 1 : dir));
-            var index = arr.indexOf(obj);
-            var newIdx = index;
-            for(;;) {
-                newIdx += dir;
-                if(newIdx < 0 || newIdx >= arr.length)
-                    break;
-                if(!arr[newIdx].archive)
-                    break;
-            }
-            newIdx = ((newIdx < 0) ? 0 : ((newIdx >= arr.length) ? (arr.length - 1) : newIdx));
-            if(newIdx != index) {
-                arr.splice(newIdx, 0, arr.splice(index, 1)[0]);
-                updFun();
-            }
-        }
-
-        function moveList(list, dir) {
-            return moveObj(getLists(), list, dir, updateListOrds);
-        }
-
-        function moveCard(list, card, dir) {
-            return moveObj(list.cards, card, dir, function () {
-                updateCardOrds(list);
-            });
         }
 
         function updateOrds(arr, updFun) {

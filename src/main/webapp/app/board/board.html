@@ -17,22 +17,14 @@
                 <input ng-show="listInput" type="text" ng-model="list.name" value="list.name" class="list list-editable">
 
                 <span class="center-block text-center">
-						<button ng-show="listInput && !isListFirst(list)" ng-click="moveList(list, -1); listInput = false"
-                                class="btn list-button-manage">
-                            <i class="fa fa-backward" aria-hidden="true"></i>
-                        </button>
-                        <button ng-show="listInput" ng-click="updateList(list); listInput = false"
-                                class="btn btn-success list-button-manage">
-                            <i class="fa fa-check" aria-hidden="true"></i>
-                        </button>
-                        <button ng-show="listInput" ng-click="archiveList(list); listInput = false"
-                                class="btn btn-default list-button-manage">
-                            <i class="fa fa-archive" aria-hidden="true"></i>
-                        </button>
-						<button ng-show="listInput && !isListLast(list)" ng-click="moveList(list, 1); listInput = false"
-                                class="btn list-button-manage">
-                            <i class="fa fa-forward" aria-hidden="true"></i>
-                        </button>
+                    <button ng-show="listInput" ng-click="updateList(list); listInput = false"
+                            class="btn btn-success list-button-manage">
+                    <i class="fa fa-check" aria-hidden="true"></i>
+                    </button>
+                    <button ng-show="listInput" ng-click="archiveList(list); listInput = false"
+                            class="btn btn-default list-button-manage">
+                        <i class="fa fa-archive" aria-hidden="true"></i>
+                    </button>
                 </span>
             </div>
 
@@ -51,7 +43,7 @@
 
                     <a ng-show="!cardInput" ng-click="cardInput = true" href="" class="card">
                         <span class="col-xs-10">
-                            {{card.name}} - {{card.ord}}
+                            {{card.name}}
                         </span>
                         <span class="col-xs-1">
                             <i class="fa fa-clock-o" aria-hidden="true" data-toggle="tooltip"
@@ -79,24 +71,6 @@
                             <button ng-show="cardInput" ng-click="cardMenu = true;
                                 cardInput = false" class="btn btn-default card-button-manage">
                                 <i class="fa fa-asterisk" aria-hidden="true"></i>
-                            </button>
-                        </div>
-                        <div>
-                            <button ng-show="cardInput && !isListFirst(list)" ng-click="transferCardToNextList(card, list, -1);
-                                cardInput = false" class="btn btn-primary card-button-manage">
-                                <i class="fa fa-arrow-left" aria-hidden="true"></i>
-                            </button>
-						    <button ng-show="cardInput && !isCardFirst(list, card)" ng-click="moveCard(list, card, -1);
-						        cardInput = false" class="btn btn-primary card-button-manage">
-                                <i class="fa fa-arrow-up" aria-hidden="true"></i>
-                            </button>
-                            <button ng-show="cardInput && !isCardLast(list, card)" ng-click="moveCard(list, card, 1);
-                                cardInput = false" class="btn btn-primary card-button-manage">
-                                <i class="fa fa-arrow-down" aria-hidden="true"></i>
-                            </button>
-                            <button ng-show="cardInput && !isListLast(list)" ng-click="transferCardToNextList(card, list, 1);
-                                cardInput = false" class="btn btn-primary card-button-manage">
-                                <i class="fa fa-arrow-right" aria-hidden="true"></i>
                             </button>
                         </div>
                     </span>
