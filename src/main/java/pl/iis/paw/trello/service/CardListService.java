@@ -11,8 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import pl.iis.paw.trello.domain.Board;
 import pl.iis.paw.trello.domain.CardList;
 import pl.iis.paw.trello.domain.RecordType;
+import pl.iis.paw.trello.domain.User;
 import pl.iis.paw.trello.exception.CardListNotFoundException;
 import pl.iis.paw.trello.repository.CardListRepository;
 
@@ -45,7 +47,8 @@ public class CardListService {
 
 	public CardList addCardList(CardList cardList) {
 		cardList = cardListRepository.save(cardList);
-		recordService.record(cardList.getBoard(), RecordType.LIST_CREATE, null, p("listName", cardList.getName()));
+		List<User> subscribers = Optional.of(cardList.getBoard()).map(Board::getSubscribers).orElse(null);
+		recordService.record(cardList.getBoard(), RecordType.LIST_CREATE, subscribers, p("listName", cardList.getName()));
 		return cardList;
 	}
 
@@ -55,9 +58,10 @@ public class CardListService {
 
 	public CardList updateCardList(Long id, CardList cardList) {
 		CardList existingCardList = findCardListById(id);
+		List<User> subscribers = Optional.of(existingCardList.getBoard()).map(Board::getSubscribers).orElse(null);
 
 		Optional.ofNullable(cardList.getName()).filter(n -> !n.equals(existingCardList.getName())).ifPresent(n -> {
-			recordService.record(existingCardList.getBoard(), RecordType.LIST_RENAME, null,
+			recordService.record(existingCardList.getBoard(), RecordType.LIST_RENAME, subscribers,
 					p("oldListName", existingCardList.getName()), p("newListName", n));
 			existingCardList.setName(n);
 		});
@@ -67,7 +71,7 @@ public class CardListService {
 
 		if (existingCardList.isArchive() != cardList.isArchive()) {
 			recordService.record(existingCardList.getBoard(),
-					(cardList.isArchive() ? RecordType.LIST_ARCHIVE : RecordType.LIST_UNARCHIVE), null,
+					(cardList.isArchive() ? RecordType.LIST_ARCHIVE : RecordType.LIST_UNARCHIVE), subscribers,
 					p("listName", existingCardList.getName()));
 			existingCardList.setArchive(cardList.isArchive());
 		}
@@ -76,7 +80,8 @@ public class CardListService {
 	}
 
 	public void deleteCardList(CardList cardList) {
-		recordService.record(cardList.getBoard(), RecordType.LIST_DELETE, null, p("listName", cardList.getName()));
+		List<User> subscribers = Optional.of(cardList.getBoard()).map(Board::getSubscribers).orElse(null);
+		recordService.record(cardList.getBoard(), RecordType.LIST_DELETE, subscribers, p("listName", cardList.getName()));
 		cardListRepository.delete(cardList);
 	}
 
