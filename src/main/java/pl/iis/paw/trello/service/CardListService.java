@@ -58,7 +58,7 @@ public class CardListService {
 
 		Optional.ofNullable(cardList.getName()).filter(n -> !n.equals(existingCardList.getName())).ifPresent(n -> {
 			recordService.record(existingCardList.getBoard(), RecordType.LIST_RENAME, null,
-					p("oldListName", existingCardList.getName()), null, p("newListName", n));
+					p("oldListName", existingCardList.getName()), p("newListName", n));
 			existingCardList.setName(n);
 		});
 
