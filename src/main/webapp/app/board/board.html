@@ -36,26 +36,26 @@
                      dnd-dragstart="movingCard = card"
                      ng-class="{'selected': movingCard.id === card.id}">
 
+                    <dnd-nodrag>
                     <span ng-repeat="label in card.labels" class="label-mark" style="background-color: {{label.color}}"
                           title="{{label.name}}">&nbsp;
                     </span>
                     <div class="clearfix"></div>
 
-                    <a ng-show="!cardInput" ng-click="cardInput = true" href="" class="card">
-                        <span class="col-xs-10">
-                            {{card.name}}
-                        </span>
+                    <a dnd-handle ng-show="!cardInput" ng-click="cardInput = true" href="" class="card">
+                    <span class="col-xs-10">
+                        {{card.name}}
+                    </span>
                         <span class="col-xs-1">
-                            <i class="fa fa-clock-o" aria-hidden="true" data-toggle="tooltip"
-                               ng-if="isDefined(card.completionDate) && !card.completionDate.finished"
-                               title="{{parsedDate(card.completionDate.date)}}"></i>
-                        </span>
+                        <i class="fa fa-clock-o" aria-hidden="true" data-toggle="tooltip"
+                           ng-if="isDefined(card.completionDate) && !card.completionDate.finished"
+                           title="{{parsedDate(card.completionDate.date)}}"></i>
+                    </span>
                         <div class="clearfix"></div>
                     </a>
-                    <input ng-show="cardInput" type="text" ng-model="card.name" value="card.name" class="card card-editable">
 
-                    <span class="center-block text-center">
-                        <div>
+                    <input dnd-handle ng-show="cardInput" type="text" ng-model="card.name" value="card.name" class="card card-editable">
+                        <span class="center-block text-center">
                             <button ng-show="cardInput" ng-click="updateCard(card,list);
                                 cardInput = false" class="btn btn-success card-button-manage">
                                 <i class="fa fa-check" aria-hidden="true"></i>
@@ -72,8 +72,9 @@
                                 cardInput = false" class="btn btn-default card-button-manage">
                                 <i class="fa fa-asterisk" aria-hidden="true"></i>
                             </button>
-                        </div>
-                    </span>
+                        </span>
+                    </dnd-nodrag>
+
 
                     <div class="card-menu" ng-show="cardMenu">
                         <button ng-click="cardMenu = false" class="btn btn-info menu-close-btn">
