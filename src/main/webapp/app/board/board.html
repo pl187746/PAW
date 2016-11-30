@@ -9,6 +9,7 @@
              dnd-effect-allowed="move"
              dnd-moved="listMoved(list, $index)"
              dnd-dragstart="movingList = list"
+             dnd-handle
              ng-class="{'selected': movingList.id === list.id}">
             <div class="card-list-heading">
                 <a ng-show="!listInput" ng-click="listInput = true" href="" class="list">
