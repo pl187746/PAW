@@ -69,6 +69,8 @@ public class RecordService {
 	public void record(Board board, RecordType type, List<User> notifiedUsers, Map<String, String> params) {
 		if (notifiedUsers == null) {
 			notifiedUsers = new ArrayList<>();
+		} else {
+			notifiedUsers = new ArrayList<>(notifiedUsers);
 		}
 		Record rec = new Record(type, new Date(), board, currentUser(), notifiedUsers, params);
 		recordRepository.save(rec);

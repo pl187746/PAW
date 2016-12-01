@@ -38,7 +38,7 @@
                         </a>
                     </span>
                 </li>
-				<li class="dropdown">
+				<li ng-switch-when="true" class="dropdown">
 					<a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" ng-click="updateNotificationsViewTime()" ng-switch="areThereNewNotifications()">
 						<img ng-switch-when="false" class="notifications-img" ng-src="/assets/img/bell.png">
 						<img ng-switch-when="true" class="notifications-img" ng-src="/assets/img/bell-new.png">
